@@ -1,0 +1,40 @@
+
+# Created by https://www.gitignore.io/api/java
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+*.log.*
+
+# Package Files #
+*.jar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+target/
+.git
+.settings
+.classpath
+.project
+.errai
+
+hibernate.properties
+log4j.xml
+
+/build*.cmd
+# End of https://www.gitignore.io/api/java
+
+# projektdaten
+/kunden_projekte/**/recover
+/kunden_projekte/**/report
+/kunden_projekte/**/script
+/kunden_projekte/**/additional
+/kunden_projekte/**/entity_updates
+/kunden_projekte/**/diag
+
+# erzeugte Updates
+/kunden_projekte/**/test_update
