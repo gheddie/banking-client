@@ -77,7 +77,7 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener {
 				Object aEntity = entities.get(table.getSelectedRow());
 				tablePanelListener.onEntitySelected(aEntity);	
 			} catch (Exception e2) {
-				e2.printStackTrace();
+				System.err.println(e2.getMessage());
 			}			
 		}		
 	}

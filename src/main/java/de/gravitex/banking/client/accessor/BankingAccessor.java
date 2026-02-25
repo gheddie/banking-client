@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
+import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.StandingOrder;
@@ -51,6 +53,26 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(StandingOrder.class));
 	}
 	
+	public List<Booking> readBookings() {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
+	}
+	
+	public void saveBooking(Booking aBooking) {
+		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
+		int werner = 5;
+		remoteHandler.patchEntity(url, aBooking);
+	}
+	
+	public void saveCreditInstitute(CreditInstitute aCreditInstitute) {
+		String url = HttpRequestBuilder.forEntity(CreditInstitute.class).buildRequestUrl();
+		remoteHandler.patchEntity(url, aCreditInstitute);
+	}
+	
+	public void saveTradingPartner(TradingPartner aTradingPartner) {
+		String url = HttpRequestBuilder.forEntity(TradingPartner.class).buildRequestUrl();
+		remoteHandler.patchEntity(url, aTradingPartner);		
+	}
+	
 	public void updateTradingPartner(Long aTradingPartnerId, Long aPurposeCategoryId) {
 		System.out.println("updateTradingPartner -->" + aTradingPartnerId + " [" + aPurposeCategoryId + "]");
 		try {
@@ -65,5 +87,9 @@ public class BankingAccessor implements IBankingAccessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public BookingAdminData readAdminData() {
+		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}
 }

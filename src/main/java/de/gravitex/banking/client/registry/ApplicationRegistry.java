@@ -9,6 +9,7 @@ import de.gravitex.banking.client.interaction.GuiInteractionHandler;
 import de.gravitex.banking.client.interaction.InteractionHandler;
 import de.gravitex.banking.client.sorter.DefaultEntitySorter;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
+import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.formatter.base.ValueFormatter;
 
 public class ApplicationRegistry {
@@ -24,9 +25,11 @@ public class ApplicationRegistry {
 	private Window parentView;
 
 	private StringTranslator stringTranslator;
+
+	private BookingAdminData adminData;
     
     private ApplicationRegistry() {
-    	// ...
+    	adminData = bankingAccessor.readAdminData();
     }
     
     public static ApplicationRegistry getInstance() {
@@ -67,5 +70,9 @@ public class ApplicationRegistry {
 			stringTranslator.init();
 		}
 		return stringTranslator;
+	}
+
+	public BookingAdminData getAdminData() {
+		return adminData;
 	}
 }

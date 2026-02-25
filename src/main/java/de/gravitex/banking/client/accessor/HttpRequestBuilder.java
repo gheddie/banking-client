@@ -10,20 +10,20 @@ public class HttpRequestBuilder {
 
 	private boolean listRequest = false;
 
-	private Class<? extends NoIdEntity> entityClass;
+	private Class<?> entityClass;
 
 	private String attribute;
 
 	private Long identifier;
 
-	private HttpRequestBuilder(Class<? extends NoIdEntity> aEntityClass) {
+	private HttpRequestBuilder(Class<?> aEntityClass, boolean aListRequest) {
 		super();
 		this.entityClass = aEntityClass;
-		this.listRequest = true;
+		this.listRequest = aListRequest;
 	}
 
 	public static HttpRequestBuilder forEntityList(Class<? extends NoIdEntity> aEntityClass) {
-		return new HttpRequestBuilder(aEntityClass);
+		return new HttpRequestBuilder(aEntityClass, true);
 	}
 
 	public String buildRequestUrl() {
@@ -55,7 +55,11 @@ public class HttpRequestBuilder {
 		return this;
 	}
 	
-	public Class<? extends NoIdEntity> getEntityClass() {
+	public Class<?> getEntityClass() {
 		return entityClass;
+	}
+
+	public static HttpRequestBuilder forEntity(Class<?> aEntityClass) {
+		return new HttpRequestBuilder(aEntityClass, false);		
 	}
 }

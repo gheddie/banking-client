@@ -1,7 +1,6 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.StandingOrderPanelTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.view.BookingView;
@@ -44,7 +44,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 		setLayout(new BorderLayout());
 
-		setTitle("Banking");
+		setTitle("Banking (DB:"+ApplicationRegistry.getInstance().getAdminData().getDatasourceName()+")");
 		setSize(900, 600);
 		setLocation(200, 200);
 
@@ -122,17 +122,10 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	public BankingClient onStartUp() {
-		/*
-		 * try { List<TradingPartner> noPurposeCategory = new
-		 * ArrayList<TradingPartner>(); for (TradingPartner tradingPartner :
-		 * ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners())
-		 * { if (tradingPartner.getPurposeCategory() == null) {
-		 * noPurposeCategory.add(tradingPartner); } } if (!noPurposeCategory.isEmpty())
-		 * { TradingPartner first = noPurposeCategory.get(0);
-		 * ApplicationRegistry.getInstance().getBankingAccessor().readBookings(first); }
-		 * } catch (BankingException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
+		BookingAdminData adminData = ApplicationRegistry.getInstance().getInstance().getAdminData();
+		String database = adminData.getDatasourceName();
+		String importDir = adminData.getImportRoot();
+		ApplicationRegistry.getInstance().getInteractionHandler().showMessage("Datenbank : " + database + " (Import von:"+importDir+")", this);
 		return this;
 	}
 }
