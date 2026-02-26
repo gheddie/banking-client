@@ -59,7 +59,6 @@ public class BankingAccessor implements IBankingAccessor {
 	
 	public void saveBooking(Booking aBooking) {
 		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
-		int werner = 5;
 		remoteHandler.patchEntity(url, aBooking);
 	}
 	

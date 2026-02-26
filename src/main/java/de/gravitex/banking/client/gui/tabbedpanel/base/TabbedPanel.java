@@ -1,6 +1,5 @@
 package de.gravitex.banking.client.gui.tabbedpanel.base;
 
-import java.awt.Container;
 import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
@@ -25,8 +24,7 @@ public abstract class TabbedPanel extends JPanel {
 	public abstract void onPanelActivated(Object aContextEntity);
 	
 	protected void extendTitle(String aTitle) {
-		Container parent = getParent();
-		int werner = 5;
+
 	}
 	
 	public abstract void reload();

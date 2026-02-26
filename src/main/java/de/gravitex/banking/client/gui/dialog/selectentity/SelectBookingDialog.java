@@ -6,6 +6,7 @@ import java.util.List;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
+import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class SelectBookingDialog extends BrowseEntitiesDialog<Account, BookingView> {
@@ -32,5 +33,16 @@ public class SelectBookingDialog extends BrowseEntitiesDialog<Account, BookingVi
 	@Override
 	protected String getTitleDialog() {
 		return "Buchungen des Kontos";
+	}
+	
+	@Override
+	public Object getSelectedObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void acceptEditedEntity(IdEntity aEntity) {
+		// TODO Auto-generated method stub		
 	}
 }

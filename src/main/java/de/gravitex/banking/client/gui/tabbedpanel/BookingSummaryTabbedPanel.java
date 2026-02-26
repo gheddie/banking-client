@@ -6,13 +6,10 @@ import java.awt.Component;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +35,6 @@ import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.view.BookingView;
 import de.gravitex.banking_core.formatter.DateTimeValueFormatter;
-import de.gravitex.banking_core.formatter.DateValueFormatter;
 import de.gravitex.banking_core.util.DateUtil;
 
 public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionListener {

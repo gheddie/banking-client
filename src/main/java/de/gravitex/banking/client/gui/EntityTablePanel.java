@@ -2,6 +2,8 @@ package de.gravitex.banking.client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Window;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -9,12 +11,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class EntityTablePanel extends JPanel implements ListSelectionListener {
+import de.gravitex.banking.client.gui.action.EditTableContextAction;
+import de.gravitex.banking.client.gui.action.base.TableContextAction;
+import de.gravitex.banking.client.gui.action.util.ActionProvider;
+import de.gravitex.banking.client.registry.ApplicationRegistry;
+
+public class EntityTablePanel extends JPanel implements ListSelectionListener, EntityTableListener, ActionProvider {
 
 	private static final long serialVersionUID = 8638444496803145253L;
 	
@@ -86,7 +92,7 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener {
 		tablePanelListener.onEntityDoubeClicked(entities.get(selectedRow));
 	}
 	
-	public void setEntities(List<?> entities) {
+	public void acceptEntities(List<?> entities) {
 		this.entities = entities;
 	}
 	
@@ -97,5 +103,27 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener {
 			// TODO Auto-generated method stub
 			return value;
 		}		
+	}
+
+	@Override
+	public List<TableContextAction<?>> getContextActions() {
+		List<TableContextAction<?>> actions = new ArrayList<>();
+		actions.add(new EditTableContextAction(this));
+		return actions;
+	}
+
+	@Override
+	public Object getContextObject() {
+		return tablePanelListener.getSelectedObject();
+	}
+
+	@Override
+	public Window getWindow() {
+		return ApplicationRegistry.getInstance().getParentView();
+	}
+
+	@Override
+	public Object getInvoker() {
+		return tablePanelListener;
 	}
 }

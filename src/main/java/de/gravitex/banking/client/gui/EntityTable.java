@@ -9,11 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
 import de.gravitex.banking_core.entity.annotation.PresentMe;
@@ -24,12 +27,13 @@ public class EntityTable extends JTable {
 	
 	private boolean singleSelection;
 
-	private EntityTablePanel panel;
+	private EntityTableListener entityTableListener;
 	
-	public EntityTable(boolean aSingleSelection, EntityTablePanel aPanel) {
+	public EntityTable(boolean aSingleSelection, EntityTableListener aEntityTableListener) {
 		super();
 		this.singleSelection = aSingleSelection;
-		this.panel = aPanel;
+		this.entityTableListener = aEntityTableListener;
+		setComponentPopupMenu(makePopupMenu());
 		if (singleSelection) {
 			setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		}
@@ -38,10 +42,20 @@ public class EntityTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				if (e.getClickCount() == 2) {
-					panel.handleDoubeClick(getSelectedRow());
+					entityTableListener.handleDoubeClick(getSelectedRow());
 				}
 			}
 		});
+	}
+
+	private JPopupMenu makePopupMenu() {
+		JPopupMenu menu = new JPopupMenu();
+		for (TableContextAction aTableContextAction : entityTableListener.getContextActions()) {
+			JMenuItem menuItem = new JMenuItem(aTableContextAction.getActionText());
+			menuItem.addActionListener(aTableContextAction);
+			menu.add(menuItem);
+		}
+		return menu;
 	}
 
 	public void display(List<?> entities) {				
@@ -55,7 +69,7 @@ public class EntityTable extends JTable {
 		Object firstEntity = entites.get(0);
 		List<Field> fields = getPresentableFields(firstEntity);
 		List<?> sorted = sort(entites, firstEntity, fields);
-		panel.setEntities(sorted);
+		entityTableListener.acceptEntities(sorted);
 		return new ReadOnlyTableModel(buildData(fields, sorted), buildColumnNames(fields));
 	}
 
@@ -121,10 +135,6 @@ public class EntityTable extends JTable {
 		try {
 			return ApplicationRegistry.getInstance().formatValue(field.get(entity),
 					field.getAnnotation(PresentMe.class).valueFormatter());
-			/*
-			return ApplicationRegistry.getInstance().formatValue(stringifyValue(field.get(entity)),
-					field.getAnnotation(PresentMe.class).valueFormatter());
-					*/
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,13 +144,4 @@ public class EntityTable extends JTable {
 		}
 		return "";
 	}
-
-	/*
-	private String stringifyValue(Object object) {
-		if (object == null) {
-			return "";
-		}
-		return object.toString();
-	}
-	*/
 }

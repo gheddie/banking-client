@@ -12,8 +12,8 @@ public class BankingClientMain {
 	
 	public static void main(String[] args) {
 		
-		// runClient();
-		testSaveBooingWithPurposeCategoryWithHttpClient();
+		runClient();
+		// testSaveBooingWithPurposeCategoryWithHttpClient();
 	}
 	
 	private static void testSaveBooingWithPurposeCategoryWithHttpClient() {

@@ -17,6 +17,7 @@ import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.TradingPartner;
+import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelListener, ActionListener {
 	
@@ -114,5 +115,19 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	@Override
 	public void reload() {
 		fillData();
+	}
+	
+	@Override
+	public Object getSelectedObject() {
+		return selectedTradingPartner;
+	}
+	
+	@Override
+	public void acceptEditedEntity(IdEntity aEntity) {
+		System.out.println("DO SAVE TP --> " + aEntity);
+		TradingPartner aTradingPartner = (TradingPartner) aEntity;
+		aTradingPartner.setTradingKey(aTradingPartner.getTradingKey()+"_M");
+		ApplicationRegistry.getInstance().getBankingAccessor().saveTradingPartner(aTradingPartner);
+		reload();
 	}
 }

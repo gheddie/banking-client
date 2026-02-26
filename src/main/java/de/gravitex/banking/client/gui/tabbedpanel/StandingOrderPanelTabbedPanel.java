@@ -9,12 +9,15 @@ import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.StandingOrder;
+import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class StandingOrderPanelTabbedPanel extends TabbedPanel implements EntityTablePanelListener {
 
 	private static final long serialVersionUID = 797161186805941583L;
 	
 	private EntityTablePanel standingOrderTable;
+
+	private StandingOrder selectedOrder;
 
 	@Override
 	protected void putListeners() {
@@ -39,16 +42,25 @@ public class StandingOrderPanelTabbedPanel extends TabbedPanel implements Entity
 	}
 
 	public void onEntitySelected(Object aEntity) {
-		// TODO Auto-generated method stub
-		
+		selectedOrder = (StandingOrder) aEntity;		
 	}
 
 	public void onEntityDoubeClicked(Object aEntity) {
-		int werner = 5;
+
 	}
 	
 	@Override
 	public void reload() {
 		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public Object getSelectedObject() {
+		return selectedOrder;
+	}
+	
+	@Override
+	public void acceptEditedEntity(IdEntity aEntity) {
+		System.out.println("DO SAVE SO --> " + aEntity);		
 	}
 }

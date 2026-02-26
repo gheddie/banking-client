@@ -7,8 +7,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -75,10 +73,6 @@ public class JsonRemoteHandler {
 	}
 
 	public void patchEntity(String aUrl, IdEntity aEntity) {
-
-		((Booking) aEntity).setText("wr noch");
-		((Booking) aEntity).setBookingDate(LocalDate.now().minusDays(483));
-
 		try {
 			JSONObject json = new JSONObject(aEntity);
 			System.out.println(json.toString());

@@ -6,6 +6,7 @@ import java.util.List;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.TradingPartner;
+import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<TradingPartner, BookingView> {
@@ -17,11 +18,11 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	private static final long serialVersionUID = -6244586446953480938L;
 
 	public void onEntitySelected(Object aEntity) {
-		int werner = 5;
+		
 	}
 
 	public void onEntityDoubeClicked(Object aEntity) {
-		int werner = 5;
+		
 	}
 
 	@Override
@@ -33,5 +34,16 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	@Override
 	protected String getTitleDialog() {
 		return "Buchungen des Partners";
+	}
+	
+	@Override
+	public Object getSelectedObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void acceptEditedEntity(IdEntity aEntity) {
+		// TODO Auto-generated method stub		
 	}
 }

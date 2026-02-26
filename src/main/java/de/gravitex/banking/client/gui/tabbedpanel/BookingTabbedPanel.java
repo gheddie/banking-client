@@ -11,7 +11,7 @@ public class BookingTabbedPanel extends TabbedPanel {
 	
 	@Override
 	protected void init() {
-		int werner = 5;
+		
 	}
 
 	@Override
