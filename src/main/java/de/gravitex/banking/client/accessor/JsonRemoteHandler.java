@@ -7,6 +7,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -17,12 +20,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.exception.BankingRequestException;
+import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class JsonRemoteHandler {
 
 	private HttpClient client;
-	
+
 	private ObjectMapper objectMapper;
 
 	public JsonRemoteHandler() {
@@ -30,7 +34,7 @@ public class JsonRemoteHandler {
 		client = HttpClient.newHttpClient();
 		objectMapper = initObjectMapper();
 	}
-	
+
 	private ObjectMapper initObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
@@ -40,23 +44,22 @@ public class JsonRemoteHandler {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> readEntityList(HttpRequestBuilder aRequestBuilder) {
 		try {
-			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, aRequestBuilder.getEntityClass());
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(aRequestBuilder.buildRequestUrl()))
-					.build();
+			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class,
+					aRequestBuilder.getEntityClass());
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(aRequestBuilder.buildRequestUrl())).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 			List<T> result = (List<T>) objectMapper.readValue(response.body(), type);
-			return (List<T>) result;			
+			return (List<T>) result;
 		} catch (Exception e) {
 			throw new BankingRequestException(aRequestBuilder, e);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <T> T readEntity(HttpRequestBuilder aRequestBuilder, Class<?> entityClass) {
 		try {
 			String requestUrl = aRequestBuilder.buildRequestUrl();
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl))
-					.build();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 			return (T) objectMapper.readValue(response.body(), entityClass);
 		} catch (Exception e) {
@@ -72,52 +75,19 @@ public class JsonRemoteHandler {
 	}
 
 	public void patchEntity(String aUrl, IdEntity aEntity) {
-		
-		JSONObject json = new JSONObject(aEntity);
-		System.out.println(json.toString());
-		
-		/*
-		try {
-			StringEntity moo = new StringEntity(json.toString());
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
 
-		/*
+		((Booking) aEntity).setText("wr noch");
+		((Booking) aEntity).setBookingDate(LocalDate.now().minusDays(483));
+
 		try {
-			HttpPost post = new HttpPost(aUrl);
-			post.setEntity(moo);
-			// client.send(post, null);						
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		*/		
-		
-		/*
-		try {
-			String payload = mapper.writeValueAsString(aEntity);
-			// patch.setEntity(new StringEntity(payload, ContentType.APPLICATION_JSON));
-			HttpRequest request = HttpRequest.newBuilder().method(HttpMethod.PATCH.name(), BodyPublishers.noBody())
-					.uri(URI.create(aUrl)).build();
-			// request.
-			HttpResponse<String> result = client.send(request, BodyHandlers.ofString());
-			int werner = 5;
+			JSONObject json = new JSONObject(aEntity);
+			System.out.println(json.toString());
+			HttpRequest request = HttpRequest.newBuilder().header("Content-type", "application/json")
+					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(json.toString())).uri(URI.create(aUrl))
+					.build();
+			client.send(request, BodyHandlers.ofString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/		
-		
-		/*
-		HttpPost httppost = new HttpPost(aUrl);
-		httppost.setHeader("X-GWT-Permutation", "3DE824138FE65400740EC1816A73CACC");
-		httppost.setHeader("Content-Type", "text/x-gwt-rpc; charset=UTF-8");
-		// StringEntity se = new StringEntity(payLoadLogin );      
-		httppost.setEntity(new BasicHttpEntity());
-		client.send(httppost, BodyHandlers.ofString());
-		*/
-		
-		int werner = 5;
 	}
 }
