@@ -37,6 +37,7 @@ import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.view.BookingView;
+import de.gravitex.banking_core.formatter.DateTimeValueFormatter;
 import de.gravitex.banking_core.formatter.DateValueFormatter;
 import de.gravitex.banking_core.util.DateUtil;
 
@@ -50,7 +51,7 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 
 	private JButton createOverview;
 
-	private DateValueFormatter dateFormatter = new DateValueFormatter();
+	private DateTimeValueFormatter dateFormatter = new DateTimeValueFormatter();
 
 	private BookingSummary bookingSummary;
 
@@ -375,13 +376,13 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 
 		public String summary() {
 			Collections.sort(bookingsMillis);
-			return bookings.size() + " Buchungen, " + dateFormMillis(bookingsMillis.get(0)) + " bis "
-					+ dateFormMillis(bookingsMillis.get(bookingsMillis.size() - 1)) + " (" + sumBookings()
+			return bookings.size() + " Buchungen, " + dateFromMillis(bookingsMillis.get(0)) + " bis "
+					+ dateFromMillis(bookingsMillis.get(bookingsMillis.size() - 1)) + " (" + sumBookings()
 					+ " Euro total)";
 		}
 
-		private String dateFormMillis(Long millis) {
-			return dateFormatter.format(new Date(millis));
+		private String dateFromMillis(Long millis) {
+			return dateFormatter.format(DateUtil.getLocalDate(millis));
 		}
 
 		private BigDecimal sumBookings() {
