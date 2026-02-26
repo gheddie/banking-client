@@ -1,24 +1,20 @@
 package de.gravitex.banking.client.accessor;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
 import org.springframework.http.HttpMethod;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.exception.BankingRequestException;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -27,25 +23,31 @@ public class JsonRemoteHandler {
 
 	private HttpClient client;
 	
-	private ObjectMapper mapper;
+	private ObjectMapper objectMapper;
 
 	public JsonRemoteHandler() {
 		super();
 		client = HttpClient.newHttpClient();
-		mapper = new ObjectMapper();
+		objectMapper = initObjectMapper();
 	}
 	
+	private ObjectMapper initObjectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		return mapper;
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> List<T> readEntityList(HttpRequestBuilder aRequestBuilder) {
 		try {
-			JavaType type = mapper.getTypeFactory().constructParametricType(List.class, aRequestBuilder.getEntityClass());
+			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, aRequestBuilder.getEntityClass());
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(aRequestBuilder.buildRequestUrl()))
 					.build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			List<T> result = (List<T>) mapper.readValue(response.body(), type);
+			List<T> result = (List<T>) objectMapper.readValue(response.body(), type);
 			return (List<T>) result;			
 		} catch (Exception e) {
-			throw new BankingRequestException(aRequestBuilder);
+			throw new BankingRequestException(aRequestBuilder, e);
 		}
 	}
 	
@@ -56,9 +58,9 @@ public class JsonRemoteHandler {
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl))
 					.build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			return (T) mapper.readValue(response.body(), entityClass);
+			return (T) objectMapper.readValue(response.body(), entityClass);
 		} catch (Exception e) {
-			throw new BankingRequestException(aRequestBuilder);
+			throw new BankingRequestException(aRequestBuilder, e);
 		}
 	}
 

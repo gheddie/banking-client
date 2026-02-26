@@ -6,11 +6,12 @@ public class BankingRequestException extends RuntimeException {
 	
 	private static final long serialVersionUID = 4421273141893315579L;
 
-	public BankingRequestException(HttpRequestBuilder aRequestBuilder) {
-		super(buildMessage(aRequestBuilder));
+	public BankingRequestException(HttpRequestBuilder aRequestBuilder, Throwable aThrowable) {
+		super(buildMessage(aRequestBuilder, aThrowable), aThrowable);
 	}
 
-	private static String buildMessage(HttpRequestBuilder aRequestBuilder) {
-		return "unable to request entities of type ["+aRequestBuilder.getEntityClass()+"] for url: " + aRequestBuilder.buildRequestUrl();
+	private static String buildMessage(HttpRequestBuilder aRequestBuilder, Throwable aThrowable) {
+		return "unable to request entities of type [" + aRequestBuilder.getEntityClass() + "] for url: "
+				+ aRequestBuilder.buildRequestUrl() + " ["+aThrowable.getMessage()+"]";
 	}
 }

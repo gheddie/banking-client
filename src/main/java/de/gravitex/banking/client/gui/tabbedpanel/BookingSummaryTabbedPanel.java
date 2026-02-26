@@ -38,6 +38,7 @@ import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.view.BookingView;
 import de.gravitex.banking_core.formatter.DateValueFormatter;
+import de.gravitex.banking_core.util.DateUtil;
 
 public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionListener {
 
@@ -159,7 +160,7 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 		BookingView startBooking = (BookingView) dialog.getSelectedEntity();
 		List<BookingView> result = new ArrayList<BookingView>();
 		for (BookingView aBookingView : aBookingViewsForAccount) {
-			if (aBookingView.getBookingDate().after(startBooking.getBookingDate())
+			if (aBookingView.getBookingDate().isAfter(startBooking.getBookingDate())
 					|| aBookingView.getBookingDate().equals(startBooking.getBookingDate())) {
 				result.add(aBookingView);
 			}
@@ -364,7 +365,7 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 		public void accept(BookingWrapper wrapper) {
 			for (BookingView aBookingView : wrapper.getBookings()) {
 				bookings.add(aBookingView);
-				bookingsMillis.add(aBookingView.getBookingDate().getTime());
+				bookingsMillis.add(DateUtil.getMilliSeconds(aBookingView.getBookingDate()));
 			}
 		}
 

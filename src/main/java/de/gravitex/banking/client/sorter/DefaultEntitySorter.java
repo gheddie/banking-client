@@ -1,6 +1,7 @@
 package de.gravitex.banking.client.sorter;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 import de.gravitex.banking.client.sorter.base.EntitySorter;
 import de.gravitex.banking.client.sorter.key.DateKeySorter;
+import de.gravitex.banking.client.sorter.key.LocalDateKeySorter;
 import de.gravitex.banking.client.sorter.key.StringKeySorter;
 import de.gravitex.banking.client.sorter.key.base.KeySorter;
 import de.gravitex.banking_core.entity.annotation.PresentMe;
@@ -24,6 +26,7 @@ public class DefaultEntitySorter implements EntitySorter {
 	static {
 		SORTERS.put(Date.class, new DateKeySorter());
 		SORTERS.put(String.class, new StringKeySorter());
+		SORTERS.put(LocalDate.class, new LocalDateKeySorter());
 	}
 
 	public List<?> sortEntities(List<?> entites, Object firstEntity, List<Field> displayableFields) {
@@ -55,7 +58,8 @@ public class DefaultEntitySorter implements EntitySorter {
 			}
 		}
 		List<Object> sorted = new ArrayList<Object>();
-		for (Object aKey : sortKeys(tmp.keySet())) {
+		List sortedKeys = sortKeys(tmp.keySet());
+		for (Object aKey : sortedKeys) {
 			sorted.addAll(tmp.get(aKey));
 		}
 		return sorted;
