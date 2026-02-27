@@ -34,6 +34,7 @@ import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.view.BookingView;
 import de.gravitex.banking_core.formatter.DateTimeValueFormatter;
 import de.gravitex.banking_core.util.DateUtil;
+import de.gravitex.banking_core.util.StringHelper;
 
 public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionListener {
 
@@ -137,7 +138,7 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 					ApplicationRegistry.getInstance().getBankingAccessor().readBookingViewsByAccount(account));
 			System.out.println("read " + bookings.size() + " bookings...");
 			for (BookingView bookingView : bookings) {
-				String purposeKey = bookingView.getPurposeKey();
+				String purposeKey = getPurposeKey(bookingView);
 				if (map.get(purposeKey) == null) {
 					map.put(purposeKey, new BookingWrapper(purposeKey));
 				}
@@ -147,6 +148,14 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 		} else {
 			ApplicationRegistry.getInstance().getInteractionHandler().showError("Kein Konto gewählt", createOverview);
 		}
+	}
+
+	private String getPurposeKey(BookingView bookingView) {
+		String bookingPurposeKey = bookingView.getBookingPurposeKey();
+		if (!StringHelper.isBlank(bookingPurposeKey)) {
+			return bookingPurposeKey;	
+		}
+		return bookingView.getPurposeKey();
 	}
 
 	private List<BookingView> filterBookings(List<BookingView> aBookingViewsForAccount) {

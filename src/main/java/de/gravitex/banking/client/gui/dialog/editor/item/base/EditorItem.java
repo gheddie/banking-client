@@ -42,7 +42,9 @@ public abstract class EditorItem {
 		return editorItemListener;
 	}
 	
-	protected Field getField() {
+	public Field getField() {
 		return field;
 	}
+
+	public abstract void disableEdit();
 }

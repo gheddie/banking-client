@@ -76,4 +76,9 @@ public class BankingAccessor implements IBankingAccessor {
 	public BookingAdminData readAdminData() {
 		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}
+
+	@Override
+	public List<Account> readAccounts() {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
+	}
 }

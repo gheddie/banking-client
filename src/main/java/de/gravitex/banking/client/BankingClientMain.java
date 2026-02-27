@@ -13,22 +13,4 @@ public class BankingClientMain {
 		ApplicationRegistry.getInstance().setParentView(bankingClient);
 		bankingClient.onStartUp().setVisible(true);
 	}
-	
-	/*
-	private static void testSaveBooingWithPurposeCategoryWithHttpClient() {
-		
-		IBankingAccessor bankingAccessor = new BankingAccessor();
-		
-		List<Booking> b = bankingAccessor.readBookings();
-		System.out.println(b.size());
-		
-		List<PurposeCategory> pc = bankingAccessor.readPurposeCategorys();
-		System.out.println(pc.size());
-		
-		Booking booking = b.get(0);
-		booking.setPurposeCategory(pc.get(12));
-		
-		bankingAccessor.saveBooking(booking);		
-	}
-	*/
 }

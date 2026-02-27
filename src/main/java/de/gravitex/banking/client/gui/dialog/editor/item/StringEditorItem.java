@@ -13,13 +13,15 @@ import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class StringEditorItem extends EditorItem implements CaretListener {
 
+	private JTextField textField;
+
 	public StringEditorItem(Field aField, IdEntity aEntity, EditorItemListener aEditorItemListener) {
 		super(aField, aEntity, aEditorItemListener);
 	}
 
 	@Override
 	public Component makeComponent() {
-		JTextField textField = new JTextField((String) getFieldValue());
+		textField = new JTextField((String) getFieldValue());
 		textField.addCaretListener(this);
 		return textField;
 	}
@@ -28,5 +30,10 @@ public class StringEditorItem extends EditorItem implements CaretListener {
 	public void caretUpdate(CaretEvent e) {
 		String changedValue = ((JTextField) e.getSource()).getText();
 		getEditorItemListener().onFieldValueChanged(changedValue, getField());
+	}
+	
+	@Override
+	public void disableEdit() {
+		textField.setEditable(false);
 	}
 }

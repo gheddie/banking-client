@@ -12,6 +12,8 @@ import de.gravitex.banking_core.entity.view.BookingView;
 
 public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<TradingPartner, BookingView> {
 
+	private BookingView selectedBooking;
+
 	public ListBookingsByTradingsPartnerDialog(TradingPartner aReferenceObject, Window owner) {
 		super(aReferenceObject, owner);
 	}
@@ -19,7 +21,7 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	private static final long serialVersionUID = -6244586446953480938L;
 
 	public void onEntitySelected(Object aEntity) {
-		
+		selectedBooking = (BookingView) aEntity;
 	}
 
 	public void onEntityDoubeClicked(Object aEntity) {
@@ -39,8 +41,7 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	
 	@Override
 	public Object getSelectedObject() {
-		// TODO Auto-generated method stub
-		return null;
+		return selectedBooking;
 	}
 	
 	@Override

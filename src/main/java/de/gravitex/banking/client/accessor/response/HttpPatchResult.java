@@ -1,8 +1,12 @@
 package de.gravitex.banking.client.accessor.response;
 
+import de.gravitex.banking_core.util.StringHelper;
+
 public class HttpPatchResult {
 
 	private static final int UNDEFINED_RESPONSE_CODE = -1;
+
+	private static final String DEFAULT_ERROR_MESSAGE = "Fehler";
 	
 	private int statusCode;
 
@@ -27,6 +31,9 @@ public class HttpPatchResult {
 	}
 
 	public String getErrorMessage() {
-		return errorMessage;
+		if (!StringHelper.isBlank(errorMessage)) {
+			return errorMessage;	
+		}
+		return DEFAULT_ERROR_MESSAGE;
 	}
 }

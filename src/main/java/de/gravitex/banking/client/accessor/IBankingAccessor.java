@@ -37,4 +37,6 @@ public interface IBankingAccessor {
 	HttpPatchResult saveTradingPartner(TradingPartner aTradingPartner);
 
 	BookingAdminData readAdminData();
+
+	List<Account> readAccounts();
 }

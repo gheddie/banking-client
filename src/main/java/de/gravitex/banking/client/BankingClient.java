@@ -1,6 +1,7 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.swing.event.ChangeListener;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
+import de.gravitex.banking.client.gui.tabbedpanel.BookingListTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingSummaryTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
@@ -68,6 +70,12 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		mainPane.addTab("Partner", getPartnerPanel());
 		mainPane.addTab("Übersicht", getBookingSummaryPanel());
 		mainPane.addTab("Dauerauftrag", getStandingOrderPanel());
+		mainPane.addTab("Buchungsliste", getBookingListPanel());
+	}
+
+	private Component getBookingListPanel() {
+		TabbedPanel panel = new BookingListTabbedPanel();
+		return panel;
 	}
 
 	private TabbedPanel getStandingOrderPanel() {

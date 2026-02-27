@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
 
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
@@ -19,13 +18,15 @@ import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class GenericItemListEditorItem extends EditorItem implements ActionListener {
 
+	private JComboBox<IdEntity> comboBox;
+
 	public GenericItemListEditorItem(Field aField, IdEntity aEntity, EditorItemListener aEditorItemListener) {
 		super(aField, aEntity, aEditorItemListener);
 	}
 
 	@Override
 	public Component makeComponent() {
-		JComboBox<IdEntity> comboBox = new JComboBox<>();
+		comboBox = new JComboBox<IdEntity>();
 		comboBox.setModel(makeListModel());
 		comboBox.addActionListener(this);
 		return comboBox;
@@ -50,5 +51,10 @@ public class GenericItemListEditorItem extends EditorItem implements ActionListe
 	public void actionPerformed(ActionEvent e) {
 		IdEntity selectedEntity = (IdEntity) ((JComboBox<IdEntity>) e.getSource()).getSelectedItem();
 		getEditorItemListener().onFieldValueChanged(selectedEntity, getField());
+	}
+
+	@Override
+	public void disableEdit() {
+		comboBox.setEnabled(false);
 	}
 }

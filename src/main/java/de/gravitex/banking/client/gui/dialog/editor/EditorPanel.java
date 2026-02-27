@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.factory.EditorItemFactory;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
+import de.gravitex.banking_core.entity.annotation.EnableEdit;
+import de.gravitex.banking_core.entity.annotation.util.EditType;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class EditorPanel extends JPanel implements EditorItemListener {
@@ -33,6 +35,7 @@ public class EditorPanel extends JPanel implements EditorItemListener {
 			add(new JLabel(aEditorItem.getLabelText()));
 			add(aEditorItem.makeComponent());
 		}
+		configureEnableStates(editorItems);
 	}
 
 	private List<EditorItem> getEditorItems() {
@@ -41,6 +44,18 @@ public class EditorPanel extends JPanel implements EditorItemListener {
 			EditorItem item = factory.getEditorItem(aField, entity, this);
 			if (item != null) {
 				items.add(item);
+			}
+		}
+		return items;
+	}
+
+	private List<EditorItem> configureEnableStates(List<EditorItem> items) {
+		for (EditorItem aEditorItem : items) {
+			EnableEdit enableEdit = aEditorItem.getField().getAnnotation(EnableEdit.class);
+			if (enableEdit != null) {
+				if (enableEdit.type().equals(EditType.NEVER)) {
+					aEditorItem.disableEdit();
+				}
 			}
 		}
 		return items;
