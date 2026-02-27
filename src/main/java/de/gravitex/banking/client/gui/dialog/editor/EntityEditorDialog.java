@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
@@ -58,14 +59,16 @@ public class EntityEditorDialog extends JDialog {
 	}
 
 	private void saveEntity() {
-		Object tmp = actionProvider.getInvoker();
-		// TODO
-		if (tmp instanceof EntityTablePanelListener) {
-			EntityTablePanelListener invoker = (EntityTablePanelListener) tmp;
-			System.out.println("saveEntity --> " + entity + " of class {" + entity.getClass().getSimpleName()
-					+ "} for invoker [" + invoker + "]");
-			invoker.acceptEditedEntity(entity);
-			dispose();
+		Object tmpInvoker = actionProvider.getInvoker();
+		if (tmpInvoker instanceof EntityTablePanelListener) {
+			EntityTablePanelListener invoker = (EntityTablePanelListener) tmpInvoker;
+			HttpPatchResult patchResult = invoker.acceptEditedEntity(entity);
+			if (patchResult.hasValidStatusCode()) {
+				dispose();	
+			} else {
+				ApplicationRegistry.getInstance().getInteractionHandler().showError(patchResult.getErrorMessage(),
+						this);
+			}			
 		}
 	}
 

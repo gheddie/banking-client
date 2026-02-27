@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.LayoutManager;
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
@@ -60,7 +61,8 @@ public class StandingOrderPanelTabbedPanel extends TabbedPanel implements Entity
 	}
 	
 	@Override
-	public void acceptEditedEntity(IdEntity aEntity) {
-		System.out.println("DO SAVE SO --> " + aEntity);		
+	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
+		System.out.println("DO SAVE SO --> " + aEntity);
+		return null;		
 	}
 }

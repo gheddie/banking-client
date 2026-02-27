@@ -1,13 +1,11 @@
 package de.gravitex.banking.client.accessor;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -17,11 +15,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.exception.BankingRequestException;
-import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class JsonRemoteHandler {
+
+	private static final String JSON_CONTEXT_TYPE = "application/json";
 
 	private HttpClient client;
 
@@ -65,23 +65,16 @@ public class JsonRemoteHandler {
 		}
 	}
 
-	public void patch(String aPatchCommand) throws IOException, InterruptedException {
-		System.out.println("Patch --> " + aPatchCommand);
-		HttpRequest request = HttpRequest.newBuilder().method(HttpMethod.PATCH.name(), BodyPublishers.noBody())
-				.uri(URI.create(aPatchCommand)).build();
-		client.send(request, BodyHandlers.ofString());
-	}
-
-	public void patchEntity(String aUrl, IdEntity aEntity) {
+	public HttpPatchResult patchEntity(String aUrl, IdEntity aEntity) {
 		try {
-			JSONObject json = new JSONObject(aEntity);
-			System.out.println(json.toString());
-			HttpRequest request = HttpRequest.newBuilder().header("Content-type", "application/json")
-					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(json.toString())).uri(URI.create(aUrl))
-					.build();
-			client.send(request, BodyHandlers.ofString());
+			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
+					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
+					.uri(URI.create(aUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			return new HttpPatchResult(response.statusCode(), null);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new HttpPatchResult();
 		}
 	}
 }

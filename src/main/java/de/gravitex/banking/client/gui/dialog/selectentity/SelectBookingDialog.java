@@ -3,6 +3,7 @@ package de.gravitex.banking.client.gui.dialog.selectentity;
 import java.awt.Window;
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
@@ -42,7 +43,7 @@ public class SelectBookingDialog extends BrowseEntitiesDialog<Account, BookingVi
 	}
 	
 	@Override
-	public void acceptEditedEntity(IdEntity aEntity) {
-		// TODO Auto-generated method stub		
+	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
+		return null;
 	}
 }

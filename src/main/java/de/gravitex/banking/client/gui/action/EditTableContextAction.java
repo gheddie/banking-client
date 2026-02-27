@@ -16,4 +16,12 @@ public class EditTableContextAction extends TableContextAction<IdEntity> {
 		System.out.println("Bearbeiten von [" + aEntity + "]");
 		new EntityEditorDialog(aEntity, getActionProvider()).setVisible(true);
 	}
+
+	@Override
+	protected void checkContextObject(Object aContextObject) throws ActionException {
+		if (!(aContextObject instanceof IdEntity)) {
+			throw new ActionException("Objekt vom Typ [" + aContextObject.getClass().getSimpleName()
+					+ "] kann nicht bearbeitet werden!!!", null);
+		}
+	}
 }

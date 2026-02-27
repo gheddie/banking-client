@@ -9,6 +9,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingSummaryTabbedPanel;
@@ -137,9 +138,11 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	@Override
-	public void acceptEditedEntity(IdEntity aEntity) {
+	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
 		if (aEntity instanceof CreditInstitute) {
-			ApplicationRegistry.getInstance().getBankingAccessor().saveCreditInstitute((CreditInstitute) aEntity);
-		}		
+			return ApplicationRegistry.getInstance().getBankingAccessor()
+					.saveCreditInstitute((CreditInstitute) aEntity);
+		}
+		return null;		
 	}
 }

@@ -5,5 +5,4 @@ import java.lang.reflect.Field;
 public interface EditorItemListener {
 
 	void onFieldValueChanged(Object aChangedValue, Field aField);
-
 }

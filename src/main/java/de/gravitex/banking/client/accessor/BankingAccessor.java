@@ -3,6 +3,7 @@ package de.gravitex.banking.client.accessor;
 import java.io.IOException;
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
@@ -57,37 +58,21 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
 	}
 	
-	public void saveBooking(Booking aBooking) {
+	public HttpPatchResult saveBooking(Booking aBooking) {
 		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
-		remoteHandler.patchEntity(url, aBooking);
+		return remoteHandler.patchEntity(url, aBooking);
 	}
 	
-	public void saveCreditInstitute(CreditInstitute aCreditInstitute) {
+	public HttpPatchResult saveCreditInstitute(CreditInstitute aCreditInstitute) {
 		String url = HttpRequestBuilder.forEntity(CreditInstitute.class).buildRequestUrl();
-		remoteHandler.patchEntity(url, aCreditInstitute);
+		return remoteHandler.patchEntity(url, aCreditInstitute);
 	}
 	
-	public void saveTradingPartner(TradingPartner aTradingPartner) {
+	public HttpPatchResult saveTradingPartner(TradingPartner aTradingPartner) {
 		String url = HttpRequestBuilder.forEntity(TradingPartner.class).buildRequestUrl();
-		remoteHandler.patchEntity(url, aTradingPartner);		
+		return remoteHandler.patchEntity(url, aTradingPartner);		
 	}
 	
-	public void updateTradingPartner(Long aTradingPartnerId, Long aPurposeCategoryId) {
-		System.out.println("updateTradingPartner -->" + aTradingPartnerId + " [" + aPurposeCategoryId + "]");
-		try {
-			remoteHandler.patch("http://localhost:8080/tradingpartners/" + aTradingPartnerId + "?purposeCategoryId="
-					+ aPurposeCategoryId);
-			ApplicationRegistry.getInstance().getInteractionHandler().showMessage("Kategorie erfolgreich geändert!!!",
-					null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public BookingAdminData readAdminData() {
 		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}

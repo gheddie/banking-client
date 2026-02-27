@@ -1,12 +1,15 @@
 package de.gravitex.banking.client.registry;
 
 import java.awt.Window;
+import java.util.List;
 
 import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
+import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.formatter.ValueFormatterFactory;
 import de.gravitex.banking.client.interaction.GuiInteractionHandler;
 import de.gravitex.banking.client.interaction.InteractionHandler;
+import de.gravitex.banking.client.registry.entityRetriever.AllEntityRetriever;
 import de.gravitex.banking.client.sorter.DefaultEntitySorter;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
@@ -27,9 +30,12 @@ public class ApplicationRegistry {
 	private StringTranslator stringTranslator;
 
 	private BookingAdminData adminData;
+
+	private AllEntityRetriever allEntityRetriever;
     
     private ApplicationRegistry() {
     	adminData = bankingAccessor.readAdminData();
+    	allEntityRetriever = new AllEntityRetriever();
     }
     
     public static ApplicationRegistry getInstance() {
@@ -74,5 +80,9 @@ public class ApplicationRegistry {
 
 	public BookingAdminData getAdminData() {
 		return adminData;
+	}
+
+	public List<?> retrieveEntities(Class<?> type) throws BankingException {
+		return allEntityRetriever.retrieveEntities(type, bankingAccessor);
 	}
 }

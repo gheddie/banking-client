@@ -19,7 +19,6 @@ public class ValueFormatterFactory {
 				formatters.put(formatterClass, createdFormatter);
 				return createdFormatter.format(aValue);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}

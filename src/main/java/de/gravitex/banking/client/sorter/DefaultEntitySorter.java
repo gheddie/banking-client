@@ -22,7 +22,7 @@ public class DefaultEntitySorter implements EntitySorter {
 	
 	private Class<?> sortType;
 
-	private static final Map<Class<?>, KeySorter> SORTERS = new HashMap<Class<?>, KeySorter>();
+	private static final Map<Class<?>, KeySorter<?>> SORTERS = new HashMap<>();
 	static {
 		SORTERS.put(Date.class, new DateKeySorter());
 		SORTERS.put(String.class, new StringKeySorter());
@@ -58,13 +58,14 @@ public class DefaultEntitySorter implements EntitySorter {
 			}
 		}
 		List<Object> sorted = new ArrayList<Object>();
-		List sortedKeys = sortKeys(tmp.keySet());
+		List<?> sortedKeys = sortKeys(tmp.keySet());
 		for (Object aKey : sortedKeys) {
 			sorted.addAll(tmp.get(aKey));
 		}
 		return sorted;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private List sortKeys(Set<Object> keySet) {
 		KeySorter keySorter = SORTERS.get(sortType);
 		if (keySorter == null) {

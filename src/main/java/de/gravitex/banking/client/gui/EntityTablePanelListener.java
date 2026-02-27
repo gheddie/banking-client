@@ -1,5 +1,6 @@
 package de.gravitex.banking.client.gui;
 
+import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public interface EntityTablePanelListener {
@@ -10,5 +11,5 @@ public interface EntityTablePanelListener {
 
 	Object getSelectedObject();
 
-	void acceptEditedEntity(IdEntity aEntity);
+	HttpPatchResult acceptEditedEntity(IdEntity aEntity);
 }

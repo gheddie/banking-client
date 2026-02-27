@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -387,18 +385,6 @@ public class BookingSummaryTabbedPanel extends TabbedPanel implements ActionList
 				sum = sum.add(aBookingView.getAmount());
 			}
 			return sum;
-		}
-	}
-	
-	private class BookingSummaryTreeCellEditor extends DefaultTreeCellEditor {
-
-		public BookingSummaryTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
-			super(tree, renderer);
-		}
-		
-		@Override
-		public boolean shouldSelectCell(EventObject event) {
-			return true;
 		}
 	}
 }
