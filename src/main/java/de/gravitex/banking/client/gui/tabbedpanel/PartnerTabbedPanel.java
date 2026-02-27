@@ -125,9 +125,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	@Override
 	public void acceptEditedEntity(IdEntity aEntity) {
 		System.out.println("DO SAVE TP --> " + aEntity);
-		TradingPartner aTradingPartner = (TradingPartner) aEntity;
-		aTradingPartner.setTradingKey(aTradingPartner.getTradingKey()+"_M");
-		ApplicationRegistry.getInstance().getBankingAccessor().saveTradingPartner(aTradingPartner);
+		ApplicationRegistry.getInstance().getBankingAccessor().saveTradingPartner((TradingPartner) aEntity);
 		reload();
 	}
 }

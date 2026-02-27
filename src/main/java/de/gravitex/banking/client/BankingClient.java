@@ -17,7 +17,6 @@ import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.StandingOrderPanelTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -123,21 +122,24 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	public BankingClient onStartUp() {
+		/*
 		BookingAdminData adminData = ApplicationRegistry.getInstance().getAdminData();
 		String database = adminData.getDatasourceName();
 		String importDir = adminData.getImportRoot();
 		ApplicationRegistry.getInstance().getInteractionHandler().showMessage("Datenbank : " + database + " (Import von:"+importDir+")", this);
+		*/
 		return this;
 	}
 
 	@Override
 	public Object getSelectedObject() {
-		// TODO Auto-generated method stub
-		return null;
+		return selectedEntity;
 	}
 
 	@Override
 	public void acceptEditedEntity(IdEntity aEntity) {
-		// TODO Auto-generated method stub		
+		if (aEntity instanceof CreditInstitute) {
+			ApplicationRegistry.getInstance().getBankingAccessor().saveCreditInstitute((CreditInstitute) aEntity);
+		}		
 	}
 }
