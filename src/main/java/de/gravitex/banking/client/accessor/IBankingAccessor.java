@@ -2,6 +2,7 @@ package de.gravitex.banking.client.accessor;
 
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
@@ -10,6 +11,7 @@ import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.StandingOrder;
 import de.gravitex.banking_core.entity.TradingPartner;
+import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public interface IBankingAccessor {
@@ -39,4 +41,8 @@ public interface IBankingAccessor {
 	BookingAdminData readAdminData();
 
 	List<Account> readAccounts();
+
+	HttpPatchResult saveAccount(Account account);
+
+	HttpDeleteResult deleteEntity(IdEntity aEntity);
 }

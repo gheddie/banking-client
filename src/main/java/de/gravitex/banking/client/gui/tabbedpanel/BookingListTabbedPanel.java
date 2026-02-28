@@ -50,7 +50,7 @@ public class BookingListTabbedPanel extends TabbedPanel implements EntityTablePa
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
+		fillData();
 	}
 
 	@Override

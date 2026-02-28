@@ -15,6 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import de.gravitex.banking.client.gui.action.DeleteTableContextAction;
 import de.gravitex.banking.client.gui.action.EditTableContextAction;
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
@@ -109,6 +110,7 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 	public List<TableContextAction<?>> getContextActions() {
 		List<TableContextAction<?>> actions = new ArrayList<>();
 		actions.add(new EditTableContextAction(this));
+		actions.add(new DeleteTableContextAction(this));
 		return actions;
 	}
 

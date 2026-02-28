@@ -7,6 +7,7 @@ import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.formatter.ValueFormatterFactory;
+import de.gravitex.banking.client.gui.action.factory.ActionFactory;
 import de.gravitex.banking.client.interaction.GuiInteractionHandler;
 import de.gravitex.banking.client.interaction.InteractionHandler;
 import de.gravitex.banking.client.registry.entityRetriever.AllEntityRetriever;
@@ -32,10 +33,13 @@ public class ApplicationRegistry {
 	private BookingAdminData adminData;
 
 	private AllEntityRetriever allEntityRetriever;
+	
+	private ActionFactory actionFactory;
     
     private ApplicationRegistry() {
     	adminData = bankingAccessor.readAdminData();
     	allEntityRetriever = new AllEntityRetriever();
+    	actionFactory = new ActionFactory();
     }
     
     public static ApplicationRegistry getInstance() {

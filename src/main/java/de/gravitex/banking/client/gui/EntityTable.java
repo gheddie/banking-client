@@ -33,7 +33,7 @@ public class EntityTable extends JTable {
 		super();
 		this.singleSelection = aSingleSelection;
 		this.entityTableListener = aEntityTableListener;
-		setComponentPopupMenu(makePopupMenu());
+		setComponentPopupMenu(initActions());
 		if (singleSelection) {
 			setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		}
@@ -48,9 +48,9 @@ public class EntityTable extends JTable {
 		});
 	}
 
-	private JPopupMenu makePopupMenu() {
+	private JPopupMenu initActions() {
 		JPopupMenu menu = new JPopupMenu();
-		for (TableContextAction aTableContextAction : entityTableListener.getContextActions()) {
+		for (TableContextAction<?> aTableContextAction : entityTableListener.getContextActions()) {
 			JMenuItem menuItem = new JMenuItem(aTableContextAction.getActionText());
 			menuItem.addActionListener(aTableContextAction);
 			menu.add(menuItem);

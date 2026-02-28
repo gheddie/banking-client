@@ -1,10 +1,9 @@
 package de.gravitex.banking.client.accessor;
 
-import java.io.IOException;
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
-import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
@@ -12,15 +11,16 @@ import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.StandingOrder;
 import de.gravitex.banking_core.entity.TradingPartner;
+import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingAccessor implements IBankingAccessor {
 
-	private JsonRemoteHandler remoteHandler;
+	private HttpRemoteHandler remoteHandler;
 
 	public BankingAccessor() {
 		super();
-		remoteHandler = new JsonRemoteHandler();
+		remoteHandler = new HttpRemoteHandler();
 	}
 
 	public List<CreditInstitute> readCreditInstitutes() {
@@ -80,5 +80,17 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public List<Account> readAccounts() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
+	}
+
+	@Override
+	public HttpPatchResult saveAccount(Account account) {
+		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
+		return remoteHandler.patchEntity(url, account);
+	}
+
+	@Override
+	public HttpDeleteResult deleteEntity(IdEntity aEntity) {
+		String aUrl = HttpRequestBuilder.forEntity(aEntity.getClass()).identified(aEntity.getId()).buildRequestUrl();
+		return remoteHandler.deleteEntity(aUrl, aEntity);
 	}
 }

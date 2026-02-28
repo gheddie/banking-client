@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.factory.EditorItemFactory;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
+import de.gravitex.banking.client.util.ObjectUtil;
 import de.gravitex.banking_core.entity.annotation.EnableEdit;
 import de.gravitex.banking_core.entity.annotation.util.EditType;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -64,8 +65,36 @@ public class EditorPanel extends JPanel implements EditorItemListener {
 	@Override
 	public void onFieldValueChanged(Object aChangedValue, Field aField) {
 		System.out.println("["+aField.getName()+"] onFieldValueChanged --> " + aChangedValue);
-		entityEditorDialog.markDirty();
+		if (hasFieldValueChanged(aChangedValue, aField)) {
+			entityEditorDialog.markDirty();	
+		}		
 		updateFieldValue(aField, aChangedValue);
+	}
+
+	private boolean hasFieldValueChanged(Object aChangedValue, Field aField) {
+		String aChangedValueStr = replaceNull(String.valueOf(aChangedValue));
+		String actualFieldValueStr = replaceNull(String.valueOf(getActualFieldValue(aField)));
+		return !(ObjectUtil.areValuesEqual(aChangedValueStr, actualFieldValueStr));
+	}
+
+	private String replaceNull(String aValue) {
+		if (aValue == null) {
+			return "";
+		}
+		if (aValue.toLowerCase().equals("null")) {
+			return "";
+		}
+		return aValue;
+	}
+
+	private Object getActualFieldValue(Field aField) {
+		aField.setAccessible(true);
+		try {
+			return aField.get(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private void updateFieldValue(Field aField, Object aChangedValue) {

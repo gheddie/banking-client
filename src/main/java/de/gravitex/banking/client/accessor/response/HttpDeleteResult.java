@@ -2,13 +2,13 @@ package de.gravitex.banking.client.accessor.response;
 
 import de.gravitex.banking.client.accessor.response.base.HttpResult;
 
-public class HttpPatchResult extends HttpResult {
+public class HttpDeleteResult extends HttpResult {
 
-	public HttpPatchResult(int aStatusCode, String aErrorMessage) {
+	public HttpDeleteResult(int aStatusCode, String aErrorMessage) {
 		super(aStatusCode, aErrorMessage);
 	}
 
-	public HttpPatchResult() {
+	public HttpDeleteResult() {
 		super();
 	}
 }

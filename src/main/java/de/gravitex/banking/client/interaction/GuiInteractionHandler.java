@@ -19,7 +19,7 @@ public class GuiInteractionHandler implements InteractionHandler {
 	}
 
 	public void confirm(String aInputQuery, boolean aRetryOnError, Component aParent) {
-		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(aParent, aInputQuery);
 	}
 
 	public boolean yesNo(String aInputQuery, boolean aRetryOnError, Component aParent) {

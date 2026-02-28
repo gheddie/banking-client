@@ -14,6 +14,7 @@ import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingListTabbedPanel;
+import de.gravitex.banking.client.gui.tabbedpanel.BookingSummaryNewTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingSummaryTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
@@ -38,6 +39,8 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	private JTabbedPane mainPane;
 
 	private Object selectedEntity;
+
+	private CreditInstitute selectedCreditInstitute;
 
 	public BankingClient() {
 
@@ -65,16 +68,26 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		mainPane = new JTabbedPane();
 		mainPane.addChangeListener(this);
 		add(mainPane, BorderLayout.CENTER);
+		
+		initTabbedPanels();
+	}
 
+	private void initTabbedPanels() {
 		mainPane.addTab("Buchungen", getBookingPanel());
 		mainPane.addTab("Partner", getPartnerPanel());
 		mainPane.addTab("Übersicht", getBookingSummaryPanel());
+		mainPane.addTab("Übersicht (neu)", getNewBookingSummaryPanel());
 		mainPane.addTab("Dauerauftrag", getStandingOrderPanel());
 		mainPane.addTab("Buchungsliste", getBookingListPanel());
 	}
 
-	private Component getBookingListPanel() {
-		TabbedPanel panel = new BookingListTabbedPanel();
+	private TabbedPanel getNewBookingSummaryPanel() {
+		TabbedPanel panel = new BookingSummaryNewTabbedPanel();
+		return panel;
+	}
+
+	private TabbedPanel getBookingListPanel() {
+		TabbedPanel panel = new BookingSummaryNewTabbedPanel();
 		return panel;
 	}
 
@@ -114,6 +127,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 			List<Account> creditInstitutes = ApplicationRegistry.getInstance().getBankingAccessor()
 					.readAccounts((CreditInstitute) aEntity);
 			accountTable.displayEntities(creditInstitutes);
+			selectedCreditInstitute = (CreditInstitute) aEntity;
 		}
 		if (aEntity instanceof Account) {
 			List<BookingView> accounts = ApplicationRegistry.getInstance().getBankingAccessor()
@@ -123,7 +137,8 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		((TabbedPanel) mainPane.getComponentAt(mainPane.getSelectedIndex())).onPanelActivated(selectedEntity);
+		TabbedPanel tabbedPanel = (TabbedPanel) mainPane.getComponentAt(mainPane.getSelectedIndex());
+		tabbedPanel.onPanelActivated(selectedEntity);
 	}
 
 	public void onEntityDoubeClicked(Object aEntity) {
@@ -150,6 +165,9 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		if (aEntity instanceof CreditInstitute) {
 			return ApplicationRegistry.getInstance().getBankingAccessor()
 					.saveCreditInstitute((CreditInstitute) aEntity);
+		}
+		if (aEntity instanceof Account) {
+			return ApplicationRegistry.getInstance().getBankingAccessor().saveAccount((Account) aEntity);
 		}
 		return null;		
 	}

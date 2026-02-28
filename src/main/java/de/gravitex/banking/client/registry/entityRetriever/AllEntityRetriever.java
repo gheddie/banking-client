@@ -7,10 +7,12 @@ import java.util.Map;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.registry.entityRetriever.stub.AccountEntityRetrieverStub;
+import de.gravitex.banking.client.registry.entityRetriever.stub.CreditInstituteEntityRetrieverStub;
 import de.gravitex.banking.client.registry.entityRetriever.stub.PurposeCategoryEntityRetrieverStub;
 import de.gravitex.banking.client.registry.entityRetriever.stub.TradingPartnerEntityRetrieverStub;
 import de.gravitex.banking.client.registry.entityRetriever.stub.base.EntityRetrieverStub;
 import de.gravitex.banking_core.entity.Account;
+import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -22,6 +24,7 @@ public class AllEntityRetriever {
 		RETRIEVERS.put(PurposeCategory.class, new PurposeCategoryEntityRetrieverStub());
 		RETRIEVERS.put(TradingPartner.class, new TradingPartnerEntityRetrieverStub());
 		RETRIEVERS.put(Account.class, new AccountEntityRetrieverStub());
+		RETRIEVERS.put(CreditInstitute.class, new CreditInstituteEntityRetrieverStub());
 	}
 
 	public List<?> retrieveEntities(Class<?> aEntityClass, IBankingAccessor aBankingAccessor) throws BankingException {

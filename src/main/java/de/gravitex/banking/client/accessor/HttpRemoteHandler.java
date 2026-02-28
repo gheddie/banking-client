@@ -15,11 +15,12 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.exception.BankingRequestException;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
-public class JsonRemoteHandler {
+public class HttpRemoteHandler {
 
 	private static final String JSON_CONTEXT_TYPE = "application/json";
 
@@ -27,7 +28,7 @@ public class JsonRemoteHandler {
 
 	private ObjectMapper objectMapper;
 
-	public JsonRemoteHandler() {
+	public HttpRemoteHandler() {
 		super();
 		client = HttpClient.newHttpClient();
 		objectMapper = initObjectMapper();
@@ -75,6 +76,21 @@ public class JsonRemoteHandler {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HttpPatchResult();
+		}
+	}
+
+	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
+		try {
+			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
+					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(String.valueOf(aEntity.getId())))
+					.uri(URI.create(aUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			System.out.println("Löschen ---> " + aEntity + " [" + aUrl + "]");
+			String body = response.body();
+			return new HttpDeleteResult(response.statusCode(), body);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HttpDeleteResult();
 		}
 	}
 }
