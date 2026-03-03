@@ -20,6 +20,8 @@ import de.gravitex.banking.client.gui.action.EditTableContextAction;
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.client.util.ObjectUtil;
+import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public class EntityTablePanel extends JPanel implements ListSelectionListener, EntityTableListener, ActionProvider {
 
@@ -36,19 +38,23 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 	private EntityTablePanelListener tablePanelListener;
 	
 	private JList<ValueFilterItem> filterItemList;
-	
-	public EntityTablePanel(String aBorderText, EntityTablePanelListener aTablePanelListener, boolean aSingleSelection) {
+
+	private Class<? extends NoIdEntity> entityClass;
+
+	public EntityTablePanel(String aBorderText, EntityTablePanelListener aTablePanelListener, boolean aSingleSelection,
+			Class<? extends NoIdEntity> aEntityClass) {
 		super();
 		this.borderText = aBorderText;
 		this.tablePanelListener = aTablePanelListener;
+		this.entityClass = aEntityClass;
 		setLayout(new BorderLayout());
 		table = new EntityTable(aSingleSelection, this);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getSelectionModel().addListSelectionListener(this);		
+		table.getSelectionModel().addListSelectionListener(this);
 		JPanel filterPanel = getFilterPanel();
 		if (filterPanel != null) {
-			add(GuiUtil.nestComponent(filterPanel, "Filter"), BorderLayout.WEST);	
-		}		
+			add(GuiUtil.nestComponent(filterPanel, "Filter"), BorderLayout.WEST);
+		}
 		add(GuiUtil.nestComponent(table, borderText), BorderLayout.CENTER);
 		statusLabel = new JLabel();
 		add(statusLabel, BorderLayout.SOUTH);
@@ -74,8 +80,18 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 
 	public void displayEntities(List<?> aEntities) {		
 		this.entities = aEntities;
+		checkEntityClass();
 		table.display(aEntities);
 		statusLabel.setText(aEntities.size() + " Einträge");
+	}
+
+	private void checkEntityClass() {
+		for (Object aEntity : entities) {
+			if (!ObjectUtil.areClassesEqual(aEntity.getClass(), entityClass)) {
+				throw new IllegalArgumentException("expected entity of class [" + entityClass.getCanonicalName()
+						+ "], but got [" + aEntity.getClass().getCanonicalName() + "]!!!");
+			}
+		}
 	}
 
 	public void valueChanged(ListSelectionEvent e) {				
@@ -126,6 +142,16 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 
 	@Override
 	public Object getInvoker() {
+		return tablePanelListener;
+	}
+
+	@Override
+	public Class<? extends NoIdEntity> getEntityClass() {
+		return entityClass;
+	}
+
+	@Override
+	public EntityTablePanelListener getPanelListener() {
 		return tablePanelListener;
 	}
 }

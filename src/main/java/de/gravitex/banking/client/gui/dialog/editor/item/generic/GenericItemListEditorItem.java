@@ -57,4 +57,9 @@ public class GenericItemListEditorItem extends EditorItem implements ActionListe
 	public void disableEdit() {
 		comboBox.setEnabled(false);
 	}
+
+	@Override
+	public void syncValue() {
+		comboBox.getModel().setSelectedItem(getFieldValue());
+	}
 }

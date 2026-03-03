@@ -33,4 +33,11 @@ public class ObjectUtilTest {
 		assertFalse(ObjectUtil.areValuesEqual(booking, null));
 		assertFalse(ObjectUtil.areValuesEqual(tradingPartner, null));
 	}
+	
+	@Test
+	public void testObjectEqualityWithClasses() {
+		
+		assertTrue(ObjectUtil.areValuesEqual(String.class, String.class));
+		assertFalse(ObjectUtil.areValuesEqual(String.class, Long.class));
+	}
 }

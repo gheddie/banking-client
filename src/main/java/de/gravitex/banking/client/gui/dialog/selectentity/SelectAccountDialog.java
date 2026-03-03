@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.exception.BankingException;
+import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.CreditInstitute;
@@ -15,7 +16,7 @@ public class SelectAccountDialog extends BrowseEntitiesDialog<CreditInstitute, A
 	private static final long serialVersionUID = 2259759020222389093L;
 
 	public SelectAccountDialog(CreditInstitute aReferenceObject, Window owner) {
-		super(aReferenceObject, owner);
+		super(aReferenceObject, owner, Account.class);
 	}
 
 	@Override
@@ -49,5 +50,11 @@ public class SelectAccountDialog extends BrowseEntitiesDialog<CreditInstitute, A
 	@Override
 	protected List<Account> readSelectableEntities() throws BankingException {
 		return ApplicationRegistry.getInstance().getBankingAccessor().readAccounts();
+	}
+	
+	@Override
+	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

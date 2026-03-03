@@ -44,35 +44,35 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingView.class)
 				.byAttribute("tradingpartner").identified(aTradingPartner.getId()));
 	}
-	
+
 	public List<Account> readAccounts(CreditInstitute creditInstitute) {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class)
 				.byAttribute("creditInstitute").identified(creditInstitute.getId()));
 	}
-	
+
 	public List<StandingOrder> readStandingOrders() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(StandingOrder.class));
 	}
-	
+
 	public List<Booking> readBookings() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
 	}
-	
+
 	public HttpPatchResult saveBooking(Booking aBooking) {
 		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
 		return remoteHandler.patchEntity(url, aBooking);
 	}
-	
+
 	public HttpPatchResult saveCreditInstitute(CreditInstitute aCreditInstitute) {
 		String url = HttpRequestBuilder.forEntity(CreditInstitute.class).buildRequestUrl();
 		return remoteHandler.patchEntity(url, aCreditInstitute);
 	}
-	
+
 	public HttpPatchResult saveTradingPartner(TradingPartner aTradingPartner) {
 		String url = HttpRequestBuilder.forEntity(TradingPartner.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, aTradingPartner);		
+		return remoteHandler.patchEntity(url, aTradingPartner);
 	}
-	
+
 	public BookingAdminData readAdminData() {
 		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}
@@ -92,5 +92,15 @@ public class BankingAccessor implements IBankingAccessor {
 	public HttpDeleteResult deleteEntity(IdEntity aEntity) {
 		String aUrl = HttpRequestBuilder.forEntity(aEntity.getClass()).identified(aEntity.getId()).buildRequestUrl();
 		return remoteHandler.deleteEntity(aUrl, aEntity);
+	}
+
+	@Override
+	public Account readAccountById(Long accountId) {
+		return remoteHandler.readById(HttpRequestBuilder.forEntity(Account.class).identified(accountId));
+	}
+
+	@Override
+	public Booking readBookingById(Long bookingId) {
+		return remoteHandler.readById(HttpRequestBuilder.forEntity(Booking.class).identified(bookingId));
 	}
 }

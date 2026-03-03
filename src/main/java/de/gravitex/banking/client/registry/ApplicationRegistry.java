@@ -89,4 +89,8 @@ public class ApplicationRegistry {
 	public List<?> retrieveEntities(Class<?> type) throws BankingException {
 		return allEntityRetriever.retrieveEntities(type, bankingAccessor);
 	}
+	
+	public ActionFactory getActionFactory() {
+		return actionFactory;
+	}
 }

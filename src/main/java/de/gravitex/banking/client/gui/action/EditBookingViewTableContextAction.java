@@ -1,0 +1,30 @@
+package de.gravitex.banking.client.gui.action;
+
+import de.gravitex.banking.client.gui.action.base.TableContextAction;
+import de.gravitex.banking.client.gui.action.util.ActionProvider;
+import de.gravitex.banking.client.gui.dialog.editor.EntityEditorDialog;
+import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking_core.entity.Booking;
+import de.gravitex.banking_core.entity.view.BookingView;
+
+public class EditBookingViewTableContextAction extends TableContextAction<BookingView> {
+
+	public EditBookingViewTableContextAction(ActionProvider tActionProvider) {
+		super("Buchung bearbeiten", tActionProvider);
+	}
+
+	@Override
+	protected void checkContextObject(Object aContextObject) throws ActionException {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void executeAction(BookingView aBookingView) {
+		new EntityEditorDialog(getBooking(aBookingView), getActionProvider()).setVisible(true);
+	}
+
+	private Booking getBooking(BookingView aBookingView) {
+		Booking booking = ApplicationRegistry.getInstance().getBankingAccessor().readBookingById(aBookingView.getId());
+		return booking;
+	}
+}

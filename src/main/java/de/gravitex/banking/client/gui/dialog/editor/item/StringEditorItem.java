@@ -21,7 +21,7 @@ public class StringEditorItem extends EditorItem implements CaretListener {
 
 	@Override
 	public Component makeComponent() {
-		textField = new JTextField((String) getFieldValue());
+		textField = new JTextField();
 		textField.addCaretListener(this);
 		return textField;
 	}
@@ -35,5 +35,10 @@ public class StringEditorItem extends EditorItem implements CaretListener {
 	@Override
 	public void disableEdit() {
 		textField.setEditable(false);
+	}
+
+	@Override
+	public void syncValue() {
+		textField.setText((String) getFieldValue());
 	}
 }

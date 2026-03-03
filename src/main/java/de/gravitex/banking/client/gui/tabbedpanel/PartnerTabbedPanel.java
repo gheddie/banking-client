@@ -7,6 +7,7 @@ import java.util.List;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
+import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.dialog.selectentity.ListBookingsByTradingsPartnerDialog;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
@@ -35,7 +36,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 
 	@Override
 	protected void init() {
-		partnerTable = new EntityTablePanel("Partner", this, true);
+		partnerTable = new EntityTablePanel("Partner", this, true, TradingPartner.class);
 		add(partnerTable, BorderLayout.CENTER);
 	}
 
@@ -74,5 +75,11 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 		HttpPatchResult patchResult = ApplicationRegistry.getInstance().getBankingAccessor().saveTradingPartner((TradingPartner) aEntity);
 		reload();
 		return patchResult;
+	}
+
+	@Override
+	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

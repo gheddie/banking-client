@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.exception.BankingException;
+import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -15,7 +16,7 @@ public class SelectBookingDialog extends BrowseEntitiesDialog<Account, BookingVi
 	private static final long serialVersionUID = -7228634929714047125L;
 
 	public SelectBookingDialog(Account account, Window owner) {
-		super(account, owner);
+		super(account, owner, BookingView.class);
 	}
 
 	public void onEntityDoubeClicked(Object aEntity) {
@@ -44,6 +45,12 @@ public class SelectBookingDialog extends BrowseEntitiesDialog<Account, BookingVi
 	
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
+		return null;
+	}
+	
+	@Override
+	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

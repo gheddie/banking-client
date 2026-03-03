@@ -45,6 +45,12 @@ public abstract class EditorItem {
 	public Field getField() {
 		return field;
 	}
+	
+	protected String getFieldName() {
+		return getField().getName();
+	}
 
 	public abstract void disableEdit();
+
+	public abstract void syncValue();
 }

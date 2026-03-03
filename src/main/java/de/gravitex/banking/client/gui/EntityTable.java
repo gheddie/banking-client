@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
+import de.gravitex.banking.client.gui.action.filter.ActionFilter;
+import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
 import de.gravitex.banking_core.entity.annotation.PresentMe;
@@ -49,13 +51,31 @@ public class EntityTable extends JTable {
 	}
 
 	private JPopupMenu initActions() {
+		List<TableContextAction<?>> actions = ApplicationRegistry.getInstance().getActionFactory()
+				.getContextActions((ActionProvider) entityTableListener, entityTableListener.getEntityClass());
 		JPopupMenu menu = new JPopupMenu();
-		for (TableContextAction<?> aTableContextAction : entityTableListener.getContextActions()) {
+		for (TableContextAction<?> aTableContextAction : filterActions(actions)) {
 			JMenuItem menuItem = new JMenuItem(aTableContextAction.getActionText());
 			menuItem.addActionListener(aTableContextAction);
 			menu.add(menuItem);
 		}
 		return menu;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<TableContextAction<?>> filterActions(List<TableContextAction<?>> actions) {
+		EntityTablePanelListener panelListener = entityTableListener.getPanelListener();
+		ActionFilter actionFilter = panelListener.getActionFilter();
+		if (actionFilter == null) {
+			return actions;	
+		}
+		List<TableContextAction<?>> result = new ArrayList<>();
+		for (TableContextAction<?> action : actions) {
+			if (!actionFilter.isActionFiltered((Class<? extends TableContextAction<?>>) action.getClass())) {
+				result.add(action);
+			}
+		}
+		return result;
 	}
 
 	public void display(List<?> entities) {				

@@ -12,4 +12,8 @@ public class ObjectUtil {
 		}
 		return (aValue1.equals(aValue2));
 	}
+
+	public static boolean areClassesEqual(Class<?> clazz1, Class<?> clazz2) {
+		return areValuesEqual(clazz1, clazz2);
+	}
 }

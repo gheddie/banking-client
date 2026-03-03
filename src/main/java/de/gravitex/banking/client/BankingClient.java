@@ -1,7 +1,6 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -13,15 +12,13 @@ import javax.swing.event.ChangeListener;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
-import de.gravitex.banking.client.gui.tabbedpanel.BookingListTabbedPanel;
-import de.gravitex.banking.client.gui.tabbedpanel.BookingSummaryNewTabbedPanel;
-import de.gravitex.banking.client.gui.tabbedpanel.BookingSummaryTabbedPanel;
+import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
-import de.gravitex.banking.client.gui.tabbedpanel.StandingOrderPanelTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
+import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
@@ -39,8 +36,6 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	private JTabbedPane mainPane;
 
 	private Object selectedEntity;
-
-	private CreditInstitute selectedCreditInstitute;
 
 	public BankingClient() {
 
@@ -61,9 +56,9 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 	private void makeLayout() {
 
-		creditInstituteTable = new EntityTablePanel("Institute", this, true);
-		accountTable = new EntityTablePanel("Konten", this, true);
-		bookingTable = new EntityTablePanel("Buchungen", this, true);
+		creditInstituteTable = new EntityTablePanel("Institute", this, true, CreditInstitute.class);
+		accountTable = new EntityTablePanel("Konten", this, true, Account.class);
+		bookingTable = new EntityTablePanel("Buchungen", this, true, BookingView.class);
 
 		mainPane = new JTabbedPane();
 		mainPane.addChangeListener(this);
@@ -75,30 +70,6 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	private void initTabbedPanels() {
 		mainPane.addTab("Buchungen", getBookingPanel());
 		mainPane.addTab("Partner", getPartnerPanel());
-		mainPane.addTab("Übersicht", getBookingSummaryPanel());
-		mainPane.addTab("Übersicht (neu)", getNewBookingSummaryPanel());
-		mainPane.addTab("Dauerauftrag", getStandingOrderPanel());
-		mainPane.addTab("Buchungsliste", getBookingListPanel());
-	}
-
-	private TabbedPanel getNewBookingSummaryPanel() {
-		TabbedPanel panel = new BookingSummaryNewTabbedPanel();
-		return panel;
-	}
-
-	private TabbedPanel getBookingListPanel() {
-		TabbedPanel panel = new BookingSummaryNewTabbedPanel();
-		return panel;
-	}
-
-	private TabbedPanel getStandingOrderPanel() {
-		TabbedPanel panel = new StandingOrderPanelTabbedPanel();
-		return panel;
-	}
-
-	private TabbedPanel getBookingSummaryPanel() {
-		TabbedPanel panel = new BookingSummaryTabbedPanel();
-		return panel;
 	}
 
 	private TabbedPanel getPartnerPanel() {
@@ -127,7 +98,6 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 			List<Account> creditInstitutes = ApplicationRegistry.getInstance().getBankingAccessor()
 					.readAccounts((CreditInstitute) aEntity);
 			accountTable.displayEntities(creditInstitutes);
-			selectedCreditInstitute = (CreditInstitute) aEntity;
 		}
 		if (aEntity instanceof Account) {
 			List<BookingView> accounts = ApplicationRegistry.getInstance().getBankingAccessor()
@@ -142,16 +112,10 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	public void onEntityDoubeClicked(Object aEntity) {
-		// TODO Auto-generated method stub
+
 	}
 
 	public BankingClient onStartUp() {
-		/*
-		BookingAdminData adminData = ApplicationRegistry.getInstance().getAdminData();
-		String database = adminData.getDatasourceName();
-		String importDir = adminData.getImportRoot();
-		ApplicationRegistry.getInstance().getInteractionHandler().showMessage("Datenbank : " + database + " (Import von:"+importDir+")", this);
-		*/
 		return this;
 	}
 
@@ -169,6 +133,15 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		if (aEntity instanceof Account) {
 			return ApplicationRegistry.getInstance().getBankingAccessor().saveAccount((Account) aEntity);
 		}
+		if (aEntity instanceof Booking) {
+			return ApplicationRegistry.getInstance().getBankingAccessor().saveBooking((Booking) aEntity);
+		}
 		return null;		
+	}
+
+	@Override
+	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

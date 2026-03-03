@@ -20,14 +20,14 @@ public abstract class BrowseEntitiesDialog<T extends NoIdEntity, E extends NoIdE
 
 	private E selectedEntity;
 	
-	public BrowseEntitiesDialog(T aReferenceObject, Window owner) {
+	public BrowseEntitiesDialog(T aReferenceObject, Window owner, Class<? extends NoIdEntity> aEntityClass) {
 		super(owner);
 		this.referenceObject = aReferenceObject;
 		// setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setModal(true);
 		setSize(900, 600);
 		setLayout(new BorderLayout());
-		entityTable = new EntityTablePanel(getTitleDialog(), this, true);
+		entityTable = new EntityTablePanel(getTitleDialog(), this, true, aEntityClass);
 		add(entityTable, BorderLayout.CENTER);
 		fillEntities();
 		setVisible(true);

@@ -1,7 +1,6 @@
 package de.gravitex.banking.client.gui.dialog.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -95,6 +94,9 @@ public class EntityEditorDialog extends JDialog {
 		if (tmpInvoker instanceof EntityTablePanelListener) {
 			EntityTablePanelListener invoker = (EntityTablePanelListener) tmpInvoker;
 			HttpPatchResult patchResult = invoker.acceptEditedEntity(entity);
+			if (patchResult == null) {
+				throw new IllegalArgumentException("no patch result provided for entity ["+entity+"]!!!");
+			}
 			if (patchResult.hasValidStatusCode()) {
 				dispose();	
 			} else {

@@ -39,6 +39,18 @@ public class HttpRemoteHandler {
 		mapper.registerModule(new JavaTimeModule());
 		return mapper;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T readById(HttpRequestBuilder aRequestBuilder) {
+		try {
+			String requestUrl = aRequestBuilder.buildRequestUrl();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			return (T) objectMapper.readValue(response.body(), aRequestBuilder.getEntityClass());
+		} catch (Exception e) {
+			throw new BankingRequestException(aRequestBuilder, e);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> readEntityList(HttpRequestBuilder aRequestBuilder) {

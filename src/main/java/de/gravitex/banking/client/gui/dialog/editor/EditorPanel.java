@@ -1,5 +1,6 @@
 package de.gravitex.banking.client.gui.dialog.editor;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,7 +35,9 @@ public class EditorPanel extends JPanel implements EditorItemListener {
 		setLayout(new GridLayout(editorItems.size(), 2));
 		for (EditorItem aEditorItem : editorItems) {
 			add(new JLabel(aEditorItem.getLabelText()));
-			add(aEditorItem.makeComponent());
+			Component aComponent = aEditorItem.makeComponent();
+			aEditorItem.syncValue();
+			add(aComponent);
 		}
 		configureEnableStates(editorItems);
 	}

@@ -45,4 +45,8 @@ public interface IBankingAccessor {
 	HttpPatchResult saveAccount(Account account);
 
 	HttpDeleteResult deleteEntity(IdEntity aEntity);
+
+	Account readAccountById(Long accountId);
+
+	Booking readBookingById(Long bookingId);
 }
