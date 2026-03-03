@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
+import de.gravitex.banking.client.crudhandler.DefaultCrudHandler;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.formatter.ValueFormatterFactory;
 import de.gravitex.banking.client.gui.action.factory.ActionFactory;
@@ -35,11 +36,14 @@ public class ApplicationRegistry {
 	private AllEntityRetriever allEntityRetriever;
 	
 	private ActionFactory actionFactory;
+	
+	private DefaultCrudHandler crudHandler;
     
     private ApplicationRegistry() {
     	adminData = bankingAccessor.readAdminData();
     	allEntityRetriever = new AllEntityRetriever();
     	actionFactory = new ActionFactory();
+    	crudHandler = new DefaultCrudHandler();
     }
     
     public static ApplicationRegistry getInstance() {
@@ -92,5 +96,9 @@ public class ApplicationRegistry {
 	
 	public ActionFactory getActionFactory() {
 		return actionFactory;
+	}
+	
+	public DefaultCrudHandler getCrudHandler() {
+		return crudHandler;
 	}
 }

@@ -14,6 +14,7 @@ import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.client.util.ObjectUtil;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class GenericItemListEditorItem extends EditorItem implements ActionListener {
@@ -36,6 +37,13 @@ public class GenericItemListEditorItem extends EditorItem implements ActionListe
 		DefaultComboBoxModel<IdEntity> model = new DefaultComboBoxModel<>();
 		try {
 			List<?> entities = ApplicationRegistry.getInstance().retrieveEntities(getField().getType());
+			if (ObjectUtil.isFieldNullable(getField())) {
+				// System.out.println("################################################ add combo null value for field [" + getField() + "]...");
+				System.out.println("################################################ NULLABLE field [" + getField() + "]...");
+				model.addElement(null);	
+			} else {
+				System.out.println("################################################ NOT NULLABLE field [" + getField() + "]...");
+			}	
 			for (Object aEntity : entities) {
 				model.addElement((IdEntity) aEntity);
 			}

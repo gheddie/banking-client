@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.crudhandler.CrudHandler;
+import de.gravitex.banking.client.exception.CrudException;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
@@ -32,10 +34,13 @@ public class EntityEditorDialog extends JDialog {
 
 	private ActionProvider actionProvider;
 	
-	public EntityEditorDialog(IdEntity aEntity, ActionProvider actionProvider) {
+	private CrudHandler crudHandler;
+	
+	public EntityEditorDialog(IdEntity aEntity, ActionProvider actionProvider, CrudHandler aCrudHandler) {
 		super(actionProvider.getWindow());
 		this.entity = aEntity;
 		this.actionProvider = actionProvider;
+		this.crudHandler = aCrudHandler;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setModal(true);
 		setTitle(makeTitle());
@@ -93,17 +98,18 @@ public class EntityEditorDialog extends JDialog {
 		Object tmpInvoker = actionProvider.getInvoker();
 		if (tmpInvoker instanceof EntityTablePanelListener) {
 			EntityTablePanelListener invoker = (EntityTablePanelListener) tmpInvoker;
-			HttpPatchResult patchResult = invoker.acceptEditedEntity(entity);
-			if (patchResult == null) {
-				throw new IllegalArgumentException("no patch result provided for entity ["+entity+"]!!!");
-			}
-			if (patchResult.hasValidStatusCode()) {
-				dispose();	
-			} else {
-				ApplicationRegistry.getInstance().getInteractionHandler().showError(patchResult.getErrorMessage(),
-						this);
-			}			
+			tryClose(invoker.acceptEditedEntity(entity));
 		}
+	}
+
+	private void tryClose(HttpPatchResult aHttpPatchResult) {
+		try {
+			crudHandler.evaluateResult(aHttpPatchResult);
+			crudHandler.onSuccessFullyPatched(entity);
+			dispose();
+		} catch (CrudException aCrudException) {
+			crudHandler.handleException(aCrudException);
+		}		
 	}
 
 	public void markDirty() {

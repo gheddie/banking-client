@@ -26,6 +26,8 @@ import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewEntry;
 import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewModel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking_core.entity.Booking;
+import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 import de.gravitex.banking_core.util.StringHelper;
@@ -41,6 +43,8 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 	private BookingOverviewModel bookingOverviewModel;
 
 	private EntityTablePanel bookingTable;
+
+	private BookingView selectedBooking;
 
 	public BookingOverviewDialog(BookingOverviewModel aBookingOverviewModel) {
 		super(ApplicationRegistry.getInstance().getParentView());
@@ -122,7 +126,7 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 
 	@Override
 	public void onEntitySelected(Object aEntity) {
-		// TODO Auto-generated method stub		
+		selectedBooking = (BookingView) aEntity;
 	}
 
 	@Override
@@ -132,12 +136,12 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 
 	@Override
 	public Object getSelectedObject() {
-		return null;
+		return selectedBooking;
 	}
 
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
-		return null;
+		return ApplicationRegistry.getInstance().getBankingAccessor().saveBooking((Booking) aEntity);
 	}
 	
 	@SuppressWarnings("unchecked")

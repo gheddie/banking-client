@@ -2,7 +2,7 @@ package de.gravitex.banking.client.gui.action;
 
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
-import de.gravitex.banking.client.gui.dialog.editor.EntityEditorDialog;
+import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class EditTableContextAction extends TableContextAction<IdEntity> {
@@ -14,7 +14,7 @@ public class EditTableContextAction extends TableContextAction<IdEntity> {
 	@Override
 	protected void executeAction(IdEntity aEntity) {
 		System.out.println("Bearbeiten von [" + aEntity + "]");
-		new EntityEditorDialog(aEntity, getActionProvider()).setVisible(true);
+		ApplicationRegistry.getInstance().getCrudHandler().editEntity(aEntity, getActionProvider());
 	}
 
 	@Override

@@ -40,4 +40,11 @@ public abstract class TableContextAction<T> implements ActionListener {
 	public ActionProvider getActionProvider() {
 		return actionProvider;
 	}
+	
+	protected void ensureContextObject(Object aContextObject) throws ActionException {
+		if (aContextObject == null) {
+			throw new ActionException(
+					"action of class [" + getClass().getSimpleName() + "] must have a context object set!!!", null);
+		}
+	}
 }

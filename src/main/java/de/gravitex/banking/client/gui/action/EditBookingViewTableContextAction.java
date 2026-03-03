@@ -2,7 +2,6 @@ package de.gravitex.banking.client.gui.action;
 
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
-import de.gravitex.banking.client.gui.dialog.editor.EntityEditorDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.view.BookingView;
@@ -15,12 +14,12 @@ public class EditBookingViewTableContextAction extends TableContextAction<Bookin
 
 	@Override
 	protected void checkContextObject(Object aContextObject) throws ActionException {
-		// TODO Auto-generated method stub
+		ensureContextObject(aContextObject);
 	}
 
 	@Override
 	protected void executeAction(BookingView aBookingView) {
-		new EntityEditorDialog(getBooking(aBookingView), getActionProvider()).setVisible(true);
+		ApplicationRegistry.getInstance().getCrudHandler().editEntity(getBooking(aBookingView), getActionProvider());
 	}
 
 	private Booking getBooking(BookingView aBookingView) {
