@@ -15,19 +15,11 @@ public class FPS1Rows extends FPS {
 	
 	private static final long serialVersionUID = 7035655556060658686L;
 	
-	private JLabel label1;
-	private JTextField textField1;
-	private JButton button1;
-	
 	public FPS1Rows() {
 		initComponents();
 	}
 
 	private void initComponents() {
-
-		label1 = new JLabel();
-		textField1 = new JTextField();
-		button1 = new JButton();
 
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
@@ -39,17 +31,15 @@ public class FPS1Rows extends FPS {
 		layout.rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
 
 		//---- label1 ----
-		label1.setText("Eier");
-		add(label1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+		add(new JLabel("Wurst"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 5, 5), 0, 0));
-		add(textField1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+		add(new JTextField(), new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 5, 0), 0, 0));
 
 		//---- button1 ----
-		button1.setText("text");
-		add(button1, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0,
+		add(new JButton("OK"), new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 0, 0), 0, 0));
 	}
