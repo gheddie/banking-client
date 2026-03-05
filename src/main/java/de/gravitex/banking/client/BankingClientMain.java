@@ -1,10 +1,15 @@
 package de.gravitex.banking.client;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JDialog;
+
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTableContextAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
 import de.gravitex.banking.client.gui.action.EditBookingViewTableContextAction;
 import de.gravitex.banking.client.gui.action.EditTableContextAction;
 import de.gravitex.banking.client.gui.action.factory.ActionFactory;
+import de.gravitex.banking.client.gui.test.FilterPanelSample;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.TradingPartner;
@@ -15,8 +20,19 @@ public class BankingClientMain {
 	private static final String LOOK_AND_FEEL = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 
 	public static void main(String[] args) {
+		
 		registerActions();
 		runClient();
+		
+		testGridbagFilterPanelLayout();
+	}
+
+	private static void testGridbagFilterPanelLayout() {
+		JDialog dialog = new JDialog();
+		dialog.setSize(800, 600);
+		dialog.setLayout(new BorderLayout());
+		dialog.add(new FilterPanelSample(), BorderLayout.CENTER);
+		dialog.setVisible(true);
 	}
 	
 	private static void registerActions() {
