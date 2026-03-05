@@ -81,8 +81,7 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 
 	@Override
 	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
-		ApplicationRegistry.getInstance().getBankingAccessor().putPurposeCategory((PurposeCategory) entity);
-		return null;
+		return ApplicationRegistry.getInstance().getBankingAccessor().putPurposeCategory((PurposeCategory) entity);
 	}
 
 	@Override
