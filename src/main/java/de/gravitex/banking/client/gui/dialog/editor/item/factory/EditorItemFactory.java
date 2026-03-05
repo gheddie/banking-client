@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import de.gravitex.banking.client.gui.dialog.editor.item.StringEditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
+import de.gravitex.banking.client.gui.dialog.editor.item.generic.EnumeratedEditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.generic.GenericItemListEditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -27,12 +28,19 @@ public class EditorItemFactory {
 		if (IdEntity.class.isAssignableFrom(fieldType)) {
 			return new GenericItemListEditorItem(aField, entity, aEditorItemListener);
 		}
+		if (isEnum(aField)) {
+			return new EnumeratedEditorItem(aField, entity, aEditorItemListener);
+		}
 		Class<? extends EditorItem> clazz = ITEM_STUBS.get(fieldType);
 		if (clazz == null) {
 			logger.info("ITEM IGNORED --> " + fieldType);
 			return null;
 		}
 		return makeInstance(clazz, aField, entity, aEditorItemListener);
+	}
+
+	private boolean isEnum(Field aField) {
+		return aField.getType() instanceof Class && ((Class<?>) aField.getType()).isEnum();
 	}
 
 	private EditorItem makeInstance(Class<? extends EditorItem> clazz, Field aField, IdEntity aEntity, EditorItemListener aEditorItemListener) {

@@ -18,43 +18,32 @@ import de.gravitex.banking_core.entity.view.BookingView;
 
 public interface IBankingAccessor {
 
-	List<CreditInstitute> readCreditInstitutes(EntityRequester entityRequester);
-	
-	List<Account> readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester);
-	
-	List<TradingPartner> readTradingPartners(EntityRequester entityRequester);
-	
+	// read
+	Account readAccountById(Long accountId, EntityRequester entityRequester);
+	Booking readBookingById(Long bookingId, EntityRequester entityRequester);
+	List<CreditInstitute> readCreditInstitutes(EntityRequester entityRequester);	
+	List<Account> readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester);	
+	List<TradingPartner> readTradingPartners(EntityRequester entityRequester);	
 	List<BookingView> readBookingViewsByAccount(Account account, EntityRequester entityRequester);
-
 	List<PurposeCategory> readPurposeCategorys(EntityRequester entityRequester);
-
 	List<BookingView> readBookingViewsByTradingPartner(TradingPartner aTradingPartner, EntityRequester entityRequester);
-
 	List<StandingOrder> readStandingOrders(EntityRequester entityRequester);
-
 	List<Booking> readBookings(EntityRequester entityRequester);
-
-	HttpPatchResult patchBooking(Booking aBooking);
-
-	HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute);
-
-	HttpPatchResult patchTradingPartner(TradingPartner aTradingPartner);
-
 	BookingAdminData readAdminData(EntityRequester entityRequester);
-
 	List<Account> readAccounts(EntityRequester entityRequester);
 
+	// patch
+	HttpPatchResult patchBooking(Booking aBooking);
+	HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute);
+	HttpPatchResult patchTradingPartner(TradingPartner aTradingPartner);
 	HttpPatchResult patchAccount(Account account);
 
-	HttpDeleteResult deleteEntity(IdEntity aEntity);
-
-	Account readAccountById(Long accountId, EntityRequester entityRequester);
-
-	Booking readBookingById(Long bookingId, EntityRequester entityRequester);
-
+	// put
 	HttpPutResult putTradingPartner(TradingPartner aTradingPartner);
-
 	HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory);
-
 	HttpPutResult putCreditInstitute(CreditInstitute aCreditInstitute);
+	HttpPutResult putAccount(Account entity);
+
+	// delete
+	HttpDeleteResult deleteEntity(IdEntity aEntity);
 }

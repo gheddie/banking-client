@@ -9,7 +9,7 @@ import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public interface CrudHandler {
 
-	void evaluatePatchResult(HttpPatchResult aHttpPatchResult) throws CrudException;
+	void evaluatePatchResult(HttpPatchResult aHttpPatchResult, ActionProvider actionProvider) throws CrudException;
 
 	void handleException(CrudException aCrudException);
 
@@ -19,7 +19,7 @@ public interface CrudHandler {
 
 	void createEntity(Class<? extends NoIdEntity> aEntityClass, ActionProvider actionProvider);
 
-	void evaluatePutResult(HttpPutResult aHttpPutResult) throws CrudException;
+	void evaluatePutResult(HttpPutResult aHttpPutResult, ActionProvider actionProvider) throws CrudException;
 
 	void onSuccessFullyPut(IdEntity entity);
 }

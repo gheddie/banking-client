@@ -36,9 +36,11 @@ public class DefaultCrudHandler implements CrudHandler {
 	}
 
 	@Override
-	public void evaluatePatchResult(HttpPatchResult aHttpPatchResult) throws CrudException {		
+	public void evaluatePatchResult(HttpPatchResult aHttpPatchResult, ActionProvider actionProvider) throws CrudException {		
 		if (aHttpPatchResult == null) {
-			throw new CrudException("no patch result was provided!!!", null);
+			throw new CrudException(
+					"no patch result was provided by [" + actionProvider.getInvoker().getClass().getSimpleName() + "]!!!",
+					null);
 		}
 		if (!aHttpPatchResult.hasValidStatusCode()) {
 			throw new CrudException(aHttpPatchResult.getErrorMessage(), null);
@@ -46,9 +48,11 @@ public class DefaultCrudHandler implements CrudHandler {
 	}
 	
 	@Override
-	public void evaluatePutResult(HttpPutResult aHttpPutResult) throws CrudException {
+	public void evaluatePutResult(HttpPutResult aHttpPutResult, ActionProvider actionProvider) throws CrudException {
 		if (aHttpPutResult == null) {
-			throw new CrudException("no put result was provided!!!", null);
+			throw new CrudException(
+					"no put result was provided by [" + actionProvider.getInvoker().getClass().getSimpleName() + "]!!!",
+					null);
 		}
 		if (!aHttpPutResult.hasValidStatusCode()) {
 			throw new CrudException(aHttpPutResult.getErrorMessage(), null);

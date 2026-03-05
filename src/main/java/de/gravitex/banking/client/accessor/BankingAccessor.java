@@ -175,12 +175,6 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory) {
-		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, aPurposeCategory);		
-	}
-
-	@Override
 	public HttpPutResult putCreditInstitute(CreditInstitute aCreditInstitute) {
 		String url = HttpRequestBuilder.forEntity(CreditInstitute.class).buildRequestUrl();
 		return remoteHandler.putEntity(url, aCreditInstitute);		
@@ -190,5 +184,17 @@ public class BankingAccessor implements IBankingAccessor {
 		if (entityRequester == null) {
 			throw new IllegalArgumentException("entity requester must not be NULL!!!");
 		}
+	}
+	
+	@Override
+	public HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory) {
+		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
+		return remoteHandler.putEntity(url, aPurposeCategory);		
+	}
+
+	@Override
+	public HttpPutResult putAccount(Account account) {
+		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
+		return remoteHandler.putEntity(url, account);
 	}
 }

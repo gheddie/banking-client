@@ -119,7 +119,7 @@ public class EntityCrudDialog extends JDialog {
 
 	private void tryClose(HttpPutResult aHttpPutResult) {
 		try {
-			crudHandler.evaluatePutResult(aHttpPutResult);
+			crudHandler.evaluatePutResult(aHttpPutResult, actionProvider);
 			crudHandler.onSuccessFullyPut(entity);
 			dispose();
 		} catch (CrudException aCrudException) {
@@ -129,7 +129,7 @@ public class EntityCrudDialog extends JDialog {
 
 	private void tryClose(HttpPatchResult aHttpPatchResult) {
 		try {
-			crudHandler.evaluatePatchResult(aHttpPatchResult);
+			crudHandler.evaluatePatchResult(aHttpPatchResult, actionProvider);
 			crudHandler.onSuccessFullyPatched(entity);
 			dispose();
 		} catch (CrudException aCrudException) {

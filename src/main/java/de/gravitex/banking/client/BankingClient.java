@@ -189,6 +189,9 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		if (entity instanceof CreditInstitute) {
 			return ApplicationRegistry.getInstance().getBankingAccessor().putCreditInstitute((CreditInstitute) entity);	
 		}		
+		if (entity instanceof Account) {
+			return ApplicationRegistry.getInstance().getBankingAccessor().putAccount((Account) entity);	
+		}		
 		return null;
 	}
 
