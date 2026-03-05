@@ -10,6 +10,6 @@ public class AccountEntityRetrieverStub extends EntityRetrieverStub<Account> {
 
 	@Override
 	public List<Account> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readAccounts();
+		return aBankingAccessor.readAccounts(null);
 	}
 }

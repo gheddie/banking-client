@@ -36,7 +36,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 
 	private void fillData() {
 		List<TradingPartner> tradingPartners = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readTradingPartners();
+				.readTradingPartners(null);
 		logger.info("read " + tradingPartners.size() + " trading partners...");
 		partnerTable.displayEntities(tradingPartners);
 	}
@@ -85,20 +85,20 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	
 	@Override
 	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
-		return ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners();
+		return ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners(null);
 	}
 	
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
 		HttpPatchResult patchResult = ApplicationRegistry.getInstance().getBankingAccessor()
-				.saveTradingPartner((TradingPartner) aEntity);
+				.patchTradingPartner((TradingPartner) aEntity);
 		reload();
 		return patchResult;
 	}
 	
 	@Override
 	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
-		ApplicationRegistry.getInstance().getBankingAccessor().createTradingPartner((TradingPartner) entity);
+		ApplicationRegistry.getInstance().getBankingAccessor().putTradingPartner((TradingPartner) entity);
 		return null;
 	}
 }

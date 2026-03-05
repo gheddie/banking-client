@@ -10,6 +10,6 @@ public class PurposeCategoryEntityRetrieverStub extends EntityRetrieverStub<Purp
 
 	@Override
 	public List<PurposeCategory> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readPurposeCategorys();
+		return aBankingAccessor.readPurposeCategorys(null);
 	}
 }

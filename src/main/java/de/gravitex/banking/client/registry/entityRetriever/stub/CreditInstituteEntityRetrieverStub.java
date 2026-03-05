@@ -10,6 +10,6 @@ public class CreditInstituteEntityRetrieverStub extends EntityRetrieverStub<Cred
 
 	@Override
 	public List<CreditInstitute> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readCreditInstitutes();
+		return aBankingAccessor.readCreditInstitutes(null);
 	}
 }

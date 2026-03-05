@@ -3,7 +3,6 @@ package de.gravitex.banking.client.gui.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewEntry
 import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewModel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
@@ -61,9 +59,9 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 		overviewEntryList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 		overviewEntryList.addListSelectionListener(this);
 		overviewEntryList.setCellRenderer(new BookingOverviewEntryCellRenderer());
-		add(GuiUtil.nestComponent(overviewEntryList, "Verwendungszwecke"), BorderLayout.NORTH);
+		JPanel nestedOverviewEntryList = GuiUtil.nestComponent(overviewEntryList, "Verwendungszwecke");
 		bookingTable = new EntityTablePanel("Buchungen zum Verwendungszweck", this, true, BookingView.class);
-		add(bookingTable, BorderLayout.CENTER);		
+		add(GuiUtil.getSplitPane(nestedOverviewEntryList, bookingTable, false), BorderLayout.CENTER);
 		fillEntries();
 		setTitle(bookingOverviewModel.buildTitle() + " (" + bookingOverviewModel.getFilteredBookings().size()
 				+ " Buchungen)");
@@ -144,7 +142,7 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
-		return ApplicationRegistry.getInstance().getBankingAccessor().saveBooking((Booking) aEntity);
+		return ApplicationRegistry.getInstance().getBankingAccessor().patchBooking((Booking) aEntity);
 	}
 	
 	@SuppressWarnings("unchecked")

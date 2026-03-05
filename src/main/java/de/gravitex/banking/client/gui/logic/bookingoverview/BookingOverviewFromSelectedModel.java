@@ -15,7 +15,7 @@ public class BookingOverviewFromSelectedModel extends BookingOverviewModel {
 	@Override
 	protected List<BookingView> filterBookings() {
 		List<BookingView> aBookingViewsForAccount = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBookingViewsByAccount(getAccount());
+				.readBookingViewsByAccount(getAccount(), null);
 		List<BookingView> result = new ArrayList<>();
 		for (BookingView aBookingView : aBookingViewsForAccount) {
 			if (aBookingView.getBookingDate().isAfter(getReferenceBooking().getBookingDate())

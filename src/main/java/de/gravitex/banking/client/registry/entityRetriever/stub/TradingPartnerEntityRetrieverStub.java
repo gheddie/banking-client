@@ -10,6 +10,6 @@ public class TradingPartnerEntityRetrieverStub extends EntityRetrieverStub<Tradi
 
 	@Override
 	public List<TradingPartner> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readTradingPartners();
+		return aBankingAccessor.readTradingPartners(null);
 	}
 }

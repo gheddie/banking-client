@@ -4,6 +4,8 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
+import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
@@ -16,41 +18,43 @@ import de.gravitex.banking_core.entity.view.BookingView;
 
 public interface IBankingAccessor {
 
-	List<CreditInstitute> readCreditInstitutes();
+	List<CreditInstitute> readCreditInstitutes(EntityRequester entityRequester);
 	
-	List<Account> readAccounts(CreditInstitute creditInstitute);
+	List<Account> readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester);
 	
-	List<TradingPartner> readTradingPartners();
+	List<TradingPartner> readTradingPartners(EntityRequester entityRequester);
 	
-	List<BookingView> readBookingViewsByAccount(Account account);
+	List<BookingView> readBookingViewsByAccount(Account account, EntityRequester entityRequester);
 
-	List<PurposeCategory> readPurposeCategorys();
+	List<PurposeCategory> readPurposeCategorys(EntityRequester entityRequester);
 
-	List<BookingView> readBookingViewsByTradingPartner(TradingPartner aTradingPartner);
+	List<BookingView> readBookingViewsByTradingPartner(TradingPartner aTradingPartner, EntityRequester entityRequester);
 
-	List<StandingOrder> readStandingOrders();
+	List<StandingOrder> readStandingOrders(EntityRequester entityRequester);
 
-	List<Booking> readBookings();
+	List<Booking> readBookings(EntityRequester entityRequester);
 
-	HttpPatchResult saveBooking(Booking aBooking);
+	HttpPatchResult patchBooking(Booking aBooking);
 
-	HttpPatchResult saveCreditInstitute(CreditInstitute aCreditInstitute);
+	HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute);
 
-	HttpPatchResult saveTradingPartner(TradingPartner aTradingPartner);
+	HttpPatchResult patchTradingPartner(TradingPartner aTradingPartner);
 
-	BookingAdminData readAdminData();
+	BookingAdminData readAdminData(EntityRequester entityRequester);
 
-	List<Account> readAccounts();
+	List<Account> readAccounts(EntityRequester entityRequester);
 
-	HttpPatchResult saveAccount(Account account);
+	HttpPatchResult patchAccount(Account account);
 
 	HttpDeleteResult deleteEntity(IdEntity aEntity);
 
-	Account readAccountById(Long accountId);
+	Account readAccountById(Long accountId, EntityRequester entityRequester);
 
-	Booking readBookingById(Long bookingId);
+	Booking readBookingById(Long bookingId, EntityRequester entityRequester);
 
-	void createTradingPartner(TradingPartner aTradingPartner);
+	HttpPutResult putTradingPartner(TradingPartner aTradingPartner);
 
-	void createPurposeCategory(PurposeCategory aPurposeCategory);
+	HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory);
+
+	HttpPutResult putCreditInstitute(CreditInstitute aCreditInstitute);
 }

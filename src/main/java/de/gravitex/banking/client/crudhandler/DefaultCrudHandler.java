@@ -8,6 +8,7 @@ import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.CrudException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.editor.EntityCrudDialog;
+import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
 
@@ -40,25 +41,29 @@ public class DefaultCrudHandler implements CrudHandler {
 			throw new CrudException("no patch result was provided!!!", null);
 		}
 		if (!aHttpPatchResult.hasValidStatusCode()) {
-			throw new CrudException("received invalid status code [" + aHttpPatchResult.getStatusCode() + "]!!!", null);
+			throw new CrudException(aHttpPatchResult.getErrorMessage(), null);
 		}	
+	}
+	
+	@Override
+	public void evaluatePutResult(HttpPutResult aHttpPutResult) throws CrudException {
+		if (aHttpPutResult == null) {
+			throw new CrudException("no put result was provided!!!", null);
+		}
+		if (!aHttpPutResult.hasValidStatusCode()) {
+			throw new CrudException(aHttpPutResult.getErrorMessage(), null);
+		}
 	}
 
 	@Override
 	public void handleException(CrudException aCrudException) {
-		// TODO
-		aCrudException.printStackTrace();
+		ApplicationRegistry.getInstance().getInteractionHandler().showError(aCrudException.getMessage(),
+				ApplicationRegistry.getInstance().getParentView());
 	}
 
 	@Override
 	public void onSuccessFullyPatched(IdEntity aEntity) {
 		logger.info("...onSuccessFullyPatched ["+aEntity.getClass().getCanonicalName()+"]...");		
-	}
-
-	@Override
-	public void evaluatePutResult(HttpPutResult aHttpPutResult) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

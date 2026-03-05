@@ -23,7 +23,8 @@ public class EditBookingViewTableContextAction extends TableContextAction<Bookin
 	}
 
 	private Booking getBooking(BookingView aBookingView) {
-		Booking booking = ApplicationRegistry.getInstance().getBankingAccessor().readBookingById(aBookingView.getId());
+		Booking booking = ApplicationRegistry.getInstance().getBankingAccessor().readBookingById(aBookingView.getId(),
+				null);
 		return booking;
 	}
 }

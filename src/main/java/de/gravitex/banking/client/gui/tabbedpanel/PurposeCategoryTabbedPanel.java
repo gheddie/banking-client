@@ -12,7 +12,6 @@ import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.PurposeCategory;
-import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
 
@@ -48,7 +47,7 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 
 	private void fillData() {
 		List<PurposeCategory> purposeCategories = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readPurposeCategorys();
+				.readPurposeCategorys(null);
 		purposeCategoryTable.displayEntities(purposeCategories);		
 	}
 
@@ -82,7 +81,7 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 
 	@Override
 	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
-		ApplicationRegistry.getInstance().getBankingAccessor().createPurposeCategory((PurposeCategory) entity);
+		ApplicationRegistry.getInstance().getBankingAccessor().putPurposeCategory((PurposeCategory) entity);
 		return null;
 	}
 
@@ -94,6 +93,6 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 
 	@Override
 	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
-		return ApplicationRegistry.getInstance().getBankingAccessor().readPurposeCategorys();
+		return ApplicationRegistry.getInstance().getBankingAccessor().readPurposeCategorys(null);
 	}
 }

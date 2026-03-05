@@ -148,7 +148,10 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 		table.display(filtered);
 	}
 
-	public void displayEntities(List<?> aEntities) {		
+	public void displayEntities(List<?> aEntities) {
+		if (aEntities == null) {
+			throw new IllegalArgumentException("entities must not be NULL!!!");
+		}
 		this.entities = aEntities;
 		checkEntityClasses();
 		table.display(aEntities);
