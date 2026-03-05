@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -17,6 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.GuiUtil;
@@ -29,6 +31,7 @@ import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking_core.entity.base.NoIdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 import de.gravitex.banking_core.util.StringHelper;
 
@@ -149,5 +152,17 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 	public ActionFilter getActionFilter() {
 		return ActionFilter.forActions(CreateBookingOverviewFromBookingTableContextAction.class,
 				CreateBookingOverviewActualMonthTableContextAction.class);
+	}
+
+	@Override
+	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

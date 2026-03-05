@@ -49,4 +49,8 @@ public interface IBankingAccessor {
 	Account readAccountById(Long accountId);
 
 	Booking readBookingById(Long bookingId);
+
+	void createTradingPartner(TradingPartner aTradingPartner);
+
+	void createPurposeCategory(PurposeCategory aPurposeCategory);
 }

@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.crudhandler.CrudHandler;
 import de.gravitex.banking.client.exception.CrudException;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
@@ -18,11 +19,14 @@ import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
-public class EntityEditorDialog extends JDialog {
+public class EntityCrudDialog extends JDialog {
 
 	private static final long serialVersionUID = -5975553157168276421L;
 	
 	private static final int OFFSET = 25;
+
+	private static final String EDIT_POSTFIX = ".Edit.Title";
+	private static final String CREATE_POSTFIX = ".Create.Title";
 
 	private IdEntity entity;
 
@@ -35,12 +39,15 @@ public class EntityEditorDialog extends JDialog {
 	private ActionProvider actionProvider;
 	
 	private CrudHandler crudHandler;
+
+	private boolean editing;
 	
-	public EntityEditorDialog(IdEntity aEntity, ActionProvider actionProvider, CrudHandler aCrudHandler) {
+	public EntityCrudDialog(IdEntity aEntity, ActionProvider actionProvider, CrudHandler aCrudHandler, boolean aEditing) {
 		super(actionProvider.getWindow());
 		this.entity = aEntity;
 		this.actionProvider = actionProvider;
 		this.crudHandler = aCrudHandler;
+		this.editing = aEditing;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setModal(true);
 		setTitle(makeTitle());
@@ -76,7 +83,11 @@ public class EntityEditorDialog extends JDialog {
 	}
 
 	private String makeTitle() {
-		return ApplicationRegistry.getInstance().getStringTranslator().translate(entity.getClass().getSimpleName()+ ".Edit.Title");
+		if (editing) {
+			return ApplicationRegistry.getInstance().getStringTranslator().translate(entity.getClass().getSimpleName()+ EDIT_POSTFIX);	
+		} else {
+			return ApplicationRegistry.getInstance().getStringTranslator().translate(entity.getClass().getSimpleName()+ CREATE_POSTFIX);
+		}
 	}
 
 	private EditorPanel getEditorPanel() {
@@ -98,13 +109,27 @@ public class EntityEditorDialog extends JDialog {
 		Object tmpInvoker = actionProvider.getInvoker();
 		if (tmpInvoker instanceof EntityTablePanelListener) {
 			EntityTablePanelListener invoker = (EntityTablePanelListener) tmpInvoker;
-			tryClose(invoker.acceptEditedEntity(entity));
+			if (editing) {
+				tryClose(invoker.acceptEditedEntity(entity));	
+			} else {
+				tryClose(invoker.acceptCreatedEntity(entity));	
+			}			
 		}
+	}
+
+	private void tryClose(HttpPutResult aHttpPutResult) {
+		try {
+			crudHandler.evaluatePutResult(aHttpPutResult);
+			crudHandler.onSuccessFullyPut(entity);
+			dispose();
+		} catch (CrudException aCrudException) {
+			crudHandler.handleException(aCrudException);
+		}		
 	}
 
 	private void tryClose(HttpPatchResult aHttpPatchResult) {
 		try {
-			crudHandler.evaluateResult(aHttpPatchResult);
+			crudHandler.evaluatePatchResult(aHttpPatchResult);
 			crudHandler.onSuccessFullyPatched(entity);
 			dispose();
 		} catch (CrudException aCrudException) {

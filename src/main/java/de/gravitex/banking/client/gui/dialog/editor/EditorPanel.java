@@ -9,6 +9,9 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.factory.EditorItemFactory;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
@@ -19,15 +22,17 @@ import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class EditorPanel extends JPanel implements EditorItemListener {
 	
+	private Logger logger = LoggerFactory.getLogger(EditorPanel.class);
+	
 	private static final long serialVersionUID = 1385245399458480102L;
 	
 	private IdEntity entity;
 
 	private EditorItemFactory factory = new EditorItemFactory();
 
-	private EntityEditorDialog entityEditorDialog;
+	private EntityCrudDialog entityEditorDialog;
 
-	public EditorPanel(IdEntity aEntity, EntityEditorDialog aEntityEditorDialog) {
+	public EditorPanel(IdEntity aEntity, EntityCrudDialog aEntityEditorDialog) {
 		super();
 		this.entity = aEntity;
 		this.entityEditorDialog = aEntityEditorDialog;
@@ -67,7 +72,7 @@ public class EditorPanel extends JPanel implements EditorItemListener {
 
 	@Override
 	public void onFieldValueChanged(Object aChangedValue, Field aField) {
-		System.out.println("["+aField.getName()+"] onFieldValueChanged --> " + aChangedValue);
+		logger.info("["+aField.getName()+"] onFieldValueChanged --> " + aChangedValue);
 		if (hasFieldValueChanged(aChangedValue, aField)) {
 			entityEditorDialog.markDirty();	
 		}		

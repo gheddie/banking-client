@@ -103,4 +103,16 @@ public class BankingAccessor implements IBankingAccessor {
 	public Booking readBookingById(Long bookingId) {
 		return remoteHandler.readById(HttpRequestBuilder.forEntity(Booking.class).identified(bookingId));
 	}
+
+	@Override
+	public void createTradingPartner(TradingPartner aTradingPartner) {
+		String url = HttpRequestBuilder.forEntity(TradingPartner.class).buildRequestUrl();
+		remoteHandler.putEntity(url, aTradingPartner);
+	}
+
+	@Override
+	public void createPurposeCategory(PurposeCategory aPurposeCategory) {
+		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
+		remoteHandler.putEntity(url, aPurposeCategory);		
+	}
 }

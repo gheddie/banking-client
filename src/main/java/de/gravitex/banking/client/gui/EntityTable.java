@@ -102,13 +102,17 @@ public class EntityTable extends JTable {
 	}
 
 	private List<Field> getPresentableFields(Object firstEntity) {
-		List<FieldPresentation> result = new ArrayList<FieldPresentation>();
+		List<FieldPresentation> fieldPresentations = new ArrayList<FieldPresentation>();
 		for (Field field : firstEntity.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(PresentMe.class) != null) {
-				result.add(new FieldPresentation(field, field.getAnnotation(PresentMe.class).order()));	
+				fieldPresentations.add(new FieldPresentation(field, field.getAnnotation(PresentMe.class).order()));	
 			}			
 		}
-		return sortFields(result, firstEntity);
+		if (fieldPresentations.isEmpty()) {
+			throw new IllegalArgumentException("no presentable field determined for entity ["
+					+ firstEntity.getClass().getCanonicalName() + "]!!!");
+		}
+		return sortFields(fieldPresentations, firstEntity);
 	}
 
 	private List<Field> sortFields(List<FieldPresentation> aFieldPresentations, Object firstEntity) {

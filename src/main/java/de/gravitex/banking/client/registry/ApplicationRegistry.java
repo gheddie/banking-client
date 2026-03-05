@@ -5,10 +5,12 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
+import de.gravitex.banking.client.crudhandler.CrudHandler;
 import de.gravitex.banking.client.crudhandler.DefaultCrudHandler;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.formatter.ValueFormatterFactory;
 import de.gravitex.banking.client.gui.action.factory.ActionFactory;
+import de.gravitex.banking.client.gui.filter.EntityFilterProvider;
 import de.gravitex.banking.client.interaction.GuiInteractionHandler;
 import de.gravitex.banking.client.interaction.InteractionHandler;
 import de.gravitex.banking.client.registry.entityRetriever.AllEntityRetriever;
@@ -37,13 +39,16 @@ public class ApplicationRegistry {
 	
 	private ActionFactory actionFactory;
 	
-	private DefaultCrudHandler crudHandler;
+	private CrudHandler crudHandler;
+	
+	private EntityFilterProvider filterProvider;
     
     private ApplicationRegistry() {
     	adminData = bankingAccessor.readAdminData();
     	allEntityRetriever = new AllEntityRetriever();
     	actionFactory = new ActionFactory();
     	crudHandler = new DefaultCrudHandler();
+    	filterProvider = new EntityFilterProvider();
     }
     
     public static ApplicationRegistry getInstance() {
@@ -98,7 +103,11 @@ public class ApplicationRegistry {
 		return actionFactory;
 	}
 	
-	public DefaultCrudHandler getCrudHandler() {
+	public CrudHandler getCrudHandler() {
 		return crudHandler;
+	}
+	
+	public EntityFilterProvider getFilterProvider() {
+		return filterProvider;
 	}
 }

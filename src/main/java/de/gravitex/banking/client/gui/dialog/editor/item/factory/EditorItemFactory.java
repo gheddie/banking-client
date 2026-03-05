@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.gravitex.banking.client.gui.dialog.editor.item.StringEditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.generic.GenericItemListEditorItem;
@@ -11,6 +14,8 @@ import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class EditorItemFactory {
+	
+	private Logger logger = LoggerFactory.getLogger(EditorItemFactory.class);
 
 	private static final Map<Class<?>, Class<? extends EditorItem>> ITEM_STUBS = new HashMap<>();
 	static {
@@ -24,7 +29,7 @@ public class EditorItemFactory {
 		}
 		Class<? extends EditorItem> clazz = ITEM_STUBS.get(fieldType);
 		if (clazz == null) {
-			System.out.println("ITEM IGNORED --> " + fieldType);
+			logger.info("ITEM IGNORED --> " + fieldType);
 			return null;
 		}
 		return makeInstance(clazz, aField, entity, aEditorItemListener);

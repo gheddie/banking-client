@@ -4,11 +4,13 @@ import java.awt.Window;
 import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking_core.entity.base.NoIdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<TradingPartner, BookingView> {
@@ -52,6 +54,18 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	
 	@Override
 	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}

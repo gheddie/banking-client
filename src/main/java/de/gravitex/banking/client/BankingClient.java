@@ -1,6 +1,7 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -9,21 +10,29 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
+import de.gravitex.banking.client.gui.tabbedpanel.PurposeCategoryTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking_core.entity.base.NoIdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClient extends JFrame implements EntityTablePanelListener, ChangeListener {
+	
+	private Logger logger = LoggerFactory.getLogger(BankingClient.class);
 
 	private static final long serialVersionUID = -8912127709159268030L;
 
@@ -36,6 +45,10 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	private JTabbedPane mainPane;
 
 	private Object selectedEntity;
+
+	private CreditInstitute selectedCreditInstitute;
+
+	private Account selectedAccount;
 
 	public BankingClient() {
 
@@ -70,6 +83,11 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	private void initTabbedPanels() {
 		mainPane.addTab("Buchungen", getBookingPanel());
 		mainPane.addTab("Partner", getPartnerPanel());
+		mainPane.addTab("Kategorien", getPurposeCategoryPanel());
+	}
+
+	private TabbedPanel getPurposeCategoryPanel() {
+		return new PurposeCategoryTabbedPanel();
 	}
 
 	private TabbedPanel getPartnerPanel() {
@@ -93,13 +111,15 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 		selectedEntity = aEntity;
 		
-		System.out.println("onEntitySelected --> " + selectedEntity + " [" + aEntity.getClass().getSimpleName() + "]");
+		logger.info("onEntitySelected --> " + selectedEntity + " [" + aEntity.getClass().getSimpleName() + "]");
 		if (aEntity instanceof CreditInstitute) {
+			selectedCreditInstitute = (CreditInstitute) aEntity;
 			List<Account> creditInstitutes = ApplicationRegistry.getInstance().getBankingAccessor()
 					.readAccounts((CreditInstitute) aEntity);
 			accountTable.displayEntities(creditInstitutes);
 		}
 		if (aEntity instanceof Account) {
+			selectedAccount = (Account) aEntity;
 			List<BookingView> accounts = ApplicationRegistry.getInstance().getBankingAccessor()
 					.readBookingViewsByAccount((Account) aEntity);
 			bookingTable.displayEntities(accounts);
@@ -141,6 +161,26 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 	@Override
 	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+		if (aEntityClass.equals(CreditInstitute.class)) {
+			return ApplicationRegistry.getInstance().getBankingAccessor().readCreditInstitutes();
+		}
+		if (aEntityClass.equals(Account.class)) {
+			return ApplicationRegistry.getInstance().getBankingAccessor().readAccounts(selectedCreditInstitute);
+		}
+		if (aEntityClass.equals(BookingView.class)) {
+			return ApplicationRegistry.getInstance().getBankingAccessor().readBookingViewsByAccount(selectedAccount);
+		}		
+		return null;
+	}
+
+	@Override
+	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}

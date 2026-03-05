@@ -4,7 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.LayoutManager;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
@@ -13,8 +17,11 @@ import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelListener {
+	
+	private Logger logger = LoggerFactory.getLogger(PartnerTabbedPanel.class);
 
 	private static final long serialVersionUID = 8715991386775560682L;
 
@@ -30,7 +37,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	private void fillData() {
 		List<TradingPartner> tradingPartners = ApplicationRegistry.getInstance().getBankingAccessor()
 				.readTradingPartners();
-		System.out.println("read " + tradingPartners.size() + " trading partners...");
+		logger.info("read " + tradingPartners.size() + " trading partners...");
 		partnerTable.displayEntities(tradingPartners);
 	}
 
@@ -42,7 +49,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 
 	public void onEntitySelected(Object aEntity) {
 		selectedTradingPartner = (TradingPartner) aEntity;
-		System.out.println("selectedTradingPartner --> " + selectedTradingPartner);
+		logger.info("selectedTradingPartner --> " + selectedTradingPartner);
 	}
 
 	@Override
@@ -71,15 +78,27 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	}
 
 	@Override
+	public ActionFilter getActionFilter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+		return ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners();
+	}
+	
+	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
-		HttpPatchResult patchResult = ApplicationRegistry.getInstance().getBankingAccessor().saveTradingPartner((TradingPartner) aEntity);
+		HttpPatchResult patchResult = ApplicationRegistry.getInstance().getBankingAccessor()
+				.saveTradingPartner((TradingPartner) aEntity);
 		reload();
 		return patchResult;
 	}
-
+	
 	@Override
-	public ActionFilter getActionFilter() {
-		// TODO Auto-generated method stub
+	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
+		ApplicationRegistry.getInstance().getBankingAccessor().createTradingPartner((TradingPartner) entity);
 		return null;
 	}
 }

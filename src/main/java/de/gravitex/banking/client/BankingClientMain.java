@@ -12,6 +12,8 @@ import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClientMain {
 	
+	private static final String LOOK_AND_FEEL = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+
 	public static void main(String[] args) {
 		registerActions();
 		runClient();
@@ -34,8 +36,15 @@ public class BankingClientMain {
 	}
 
 	private static void runClient() {
-		BankingClient bankingClient = new BankingClient();
-		ApplicationRegistry.getInstance().setParentView(bankingClient);
-		bankingClient.onStartUp().setVisible(true);
+		
+		try {
+			// UIManager.setLookAndFeel(LOOK_AND_FEEL);
+			BankingClient bankingClient = new BankingClient();
+			ApplicationRegistry.getInstance().setParentView(bankingClient);
+			bankingClient.onStartUp().setVisible(true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 }

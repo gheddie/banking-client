@@ -9,6 +9,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -17,10 +19,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.BankingRequestException;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
 public class HttpRemoteHandler {
+	
+	private Logger logger = LoggerFactory.getLogger(HttpRemoteHandler.class);
 
 	private static final String JSON_CONTEXT_TYPE = "application/json";
 
@@ -78,6 +83,21 @@ public class HttpRemoteHandler {
 		}
 	}
 
+	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
+		try {
+			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
+					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(String.valueOf(aEntity.getId())))
+					.uri(URI.create(aUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			logger.info("Löschen ---> " + aEntity + " [" + aUrl + "]");
+			String body = response.body();
+			return new HttpDeleteResult(response.statusCode(), body);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HttpDeleteResult();
+		}
+	}
+	
 	public HttpPatchResult patchEntity(String aUrl, IdEntity aEntity) {
 		try {
 			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
@@ -91,18 +111,16 @@ public class HttpRemoteHandler {
 		}
 	}
 
-	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
+	public HttpPutResult putEntity(String aUrl, IdEntity aEntity) {
 		try {
 			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
-					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(String.valueOf(aEntity.getId())))
+					.method(HttpMethod.PUT.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
 					.uri(URI.create(aUrl)).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			System.out.println("Löschen ---> " + aEntity + " [" + aUrl + "]");
-			String body = response.body();
-			return new HttpDeleteResult(response.statusCode(), body);
+			return new HttpPutResult(response.statusCode(), null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new HttpDeleteResult();
+			return new HttpPutResult();
 		}
 	}
 }
