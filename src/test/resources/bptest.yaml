@@ -1,0 +1,7 @@
+month: 2
+year: 2027
+items:
+  - purposeCategory: ABC
+    quantity: 123
+  - purposeCategory: DEF
+    quantity: 234
