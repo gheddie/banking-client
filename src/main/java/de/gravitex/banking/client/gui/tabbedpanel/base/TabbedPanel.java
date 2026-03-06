@@ -10,7 +10,12 @@ public abstract class TabbedPanel extends JPanel {
 	
 	public TabbedPanel() {
 		super();
-		setLayout(getPanelLayout());
+		LayoutManager panelLayout = getPanelLayout();
+		if (panelLayout == null) {
+			throw new IllegalArgumentException("tabbed panel of class {" + getClass().getSimpleName()
+					+ "} must provide a panel layout manager!!!");
+		} 
+		setLayout(panelLayout);
 		init();
 		putListeners();
 	}

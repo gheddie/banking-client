@@ -48,14 +48,14 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 
 	private EntityTablePanelListener tablePanelListener;
 	
-	private Class<? extends NoIdEntity> entityClass;
+	private Class<?> entityClass;
 
 	private EntityFilterConfig filterConfig;
 
 	private JButton createEntity;
 
 	public EntityTablePanel(String aBorderText, EntityTablePanelListener aTablePanelListener, boolean aSingleSelection,
-			Class<? extends NoIdEntity> aEntityClass) {
+			Class<?> aEntityClass) {
 		super();
 		this.borderText = aBorderText;
 		this.tablePanelListener = aTablePanelListener;
@@ -86,8 +86,11 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 		return panel;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void createEntity() {
-		ApplicationRegistry.getInstance().getCrudHandler().createEntity(entityClass, this);
+		if (NoIdEntity.class.isAssignableFrom(entityClass)) {
+			ApplicationRegistry.getInstance().getCrudHandler().createEntity((Class<? extends NoIdEntity>) entityClass, this);	
+		}		
 	}
 
 	private boolean entityCreatable() {
@@ -219,7 +222,7 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 	}
 
 	@Override
-	public Class<? extends NoIdEntity> getEntityClass() {
+	public Class<?> getEntityClass() {
 		return entityClass;
 	}
 

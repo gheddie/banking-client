@@ -166,7 +166,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	@Override
-	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		if (aEntityClass.equals(CreditInstitute.class)) {
 			return ApplicationRegistry.getInstance().getBankingAccessor().readCreditInstitutes(null);
 		}

@@ -14,7 +14,7 @@ public class ActionFactory {
 	private Map<Class<? extends NoIdEntity>, List<Class<? extends TableContextAction<?>>>> actionMap = new HashMap<>();
 
 	public List<TableContextAction<?>> getContextActions(ActionProvider actionProvider,
-			Class<? extends NoIdEntity> actionObjectClass) {
+			Class<?> actionObjectClass) {
 		List<TableContextAction<?>> actions = new ArrayList<>();
 		List<Class<? extends TableContextAction<?>>> actionClassList = actionMap.get(actionObjectClass);
 		if (actionClassList != null) {

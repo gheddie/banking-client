@@ -59,7 +59,7 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	}
 	
 	@Override
-	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,8 +8,10 @@ import javax.swing.JTabbedPane;
 
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTableContextAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
+import de.gravitex.banking.client.gui.action.DeleteTableContextAction;
 import de.gravitex.banking.client.gui.action.EditBookingViewTableContextAction;
 import de.gravitex.banking.client.gui.action.EditTableContextAction;
+import de.gravitex.banking.client.gui.action.ImportBookingsForAccountAction;
 import de.gravitex.banking.client.gui.action.factory.ActionFactory;
 import de.gravitex.banking.client.gui.test.FPS1Rows;
 import de.gravitex.banking.client.gui.test.FPS2Rows;
@@ -18,6 +20,8 @@ import de.gravitex.banking.client.gui.test.FPS4Rows;
 import de.gravitex.banking.client.gui.test.Moo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
+import de.gravitex.banking_core.entity.CreditInstitute;
+import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.view.BookingView;
 
@@ -54,9 +58,13 @@ public class BankingClientMain {
 	private static void registerActions() {
 		
 		ActionFactory actionFactory = ApplicationRegistry.getInstance().getActionFactory();
+		
+		// CreditInstitute
+		actionFactory.registerAction(CreditInstitute.class, DeleteTableContextAction.class);
 
 		// Account
 		actionFactory.registerAction(Account.class, EditTableContextAction.class);
+		actionFactory.registerAction(Account.class, ImportBookingsForAccountAction.class);
 		
 		// TradingPartner
 		actionFactory.registerAction(TradingPartner.class, EditTableContextAction.class);
@@ -65,6 +73,10 @@ public class BankingClientMain {
 		actionFactory.registerAction(BookingView.class, CreateBookingOverviewFromBookingTableContextAction.class);
 		actionFactory.registerAction(BookingView.class, CreateBookingOverviewActualMonthTableContextAction.class);
 		actionFactory.registerAction(BookingView.class, EditBookingViewTableContextAction.class);
+		
+		// PurposeCategory
+		actionFactory.registerAction(PurposeCategory.class, DeleteTableContextAction.class);
+		actionFactory.registerAction(PurposeCategory.class, EditTableContextAction.class);
 	}
 
 	private static void runClient() {

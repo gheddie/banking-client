@@ -1,4 +1,4 @@
-package de.gravitex.banking.client.gui.action;
+package de.gravitex.banking.client.gui.action.exception;
 
 public class ActionException extends Exception {
 	

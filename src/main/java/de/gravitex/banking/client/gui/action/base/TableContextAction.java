@@ -3,7 +3,7 @@ package de.gravitex.banking.client.gui.action.base;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import de.gravitex.banking.client.gui.action.ActionException;
+import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 

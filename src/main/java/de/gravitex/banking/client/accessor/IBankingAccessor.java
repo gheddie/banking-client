@@ -39,6 +39,7 @@ public interface IBankingAccessor {
 	HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute);
 	HttpPatchResult patchTradingPartner(TradingPartner aTradingPartner);
 	HttpPatchResult patchAccount(Account account);
+	HttpPatchResult patchPurposeCategory(PurposeCategory aPurposeCategory);
 
 	// put
 	HttpPutResult putTradingPartner(TradingPartner aTradingPartner);
@@ -47,5 +48,8 @@ public interface IBankingAccessor {
 	HttpPutResult putAccount(Account entity);
 
 	// delete
-	HttpDeleteResult deleteEntity(IdEntity aEntity);	
+	HttpDeleteResult deleteEntity(IdEntity aEntity);
+	
+	// misc
+	List<Booking> importBookings(Account account);	
 }

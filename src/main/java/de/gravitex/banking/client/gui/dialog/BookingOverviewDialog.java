@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -69,7 +72,12 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 
 	private void fillEntries() {
 		DefaultListModel<BookingOverviewEntry> model = new DefaultListModel<>();
-		for (BookingOverviewEntry aBookingOverviewEntry : bookingOverviewModel.generateEntries()) {
+		List<BookingOverviewEntry> tmp = new ArrayList<>();
+		for (BookingOverviewEntry aBookingOverviewEntry : bookingOverviewModel.generateEntries()) {			
+			tmp.add(aBookingOverviewEntry);
+		}
+		Collections.sort(tmp, new BookingOverviewEntryComparator());
+		for (BookingOverviewEntry aBookingOverviewEntry : tmp) {
 			model.addElement(aBookingOverviewEntry);
 		}
 		overviewEntryList.setModel(model);
@@ -153,7 +161,7 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 	}
 
 	@Override
-	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -162,5 +170,12 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private class BookingOverviewEntryComparator implements Comparator<BookingOverviewEntry>  {
+		@Override
+		public int compare(BookingOverviewEntry o1, BookingOverviewEntry o2) {
+			return o1.sumAmount().compareTo(o2.sumAmount()) * (1);
+		}
 	}
 }

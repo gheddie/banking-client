@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -21,15 +22,18 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
-public class HttpRemoteHandler {
-	
+public class HttpRemoteHandler {		
+
 	private Logger logger = LoggerFactory.getLogger(HttpRemoteHandler.class);
 
 	private static final String JSON_CONTEXT_TYPE = "application/json";
+	
+	private static final String CONTENT_TYPE_ATTRIBUTE = "Content-type";
 
 	private HttpClient client;
 
@@ -48,6 +52,60 @@ public class HttpRemoteHandler {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public <T> T readEntity(HttpRequestBuilder aRequestBuilder, Class<?> entityClass) throws EntityRequestException {
+		HttpResponse<String> response = null;
+		try {
+			String requestUrl = aRequestBuilder.buildRequestUrl();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
+			response = client.send(request, BodyHandlers.ofString());
+			return (T) objectMapper.readValue(response.body(), entityClass);
+		} catch (Exception e) {
+			throw new EntityRequestException(response.body(), e, aRequestBuilder);
+		}
+	}
+
+	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
+		try {
+			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
+					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(String.valueOf(aEntity.getId())))
+					.uri(URI.create(aUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			logger.info("Löschen ---> " + aEntity + " [" + aUrl + "]");
+			String body = response.body();
+			return new HttpDeleteResult(response.statusCode(), body);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HttpDeleteResult();
+		}
+	}
+	
+	public HttpPatchResult patchEntity(String aUrl, IdEntity aEntity) {
+		try {
+			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
+					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
+					.uri(URI.create(aUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			return new HttpPatchResult(response.statusCode(), response.body());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HttpPatchResult();
+		}
+	}
+
+	public HttpPutResult putEntity(String aUrl, IdEntity aEntity) {
+		try {
+			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
+					.method(HttpMethod.PUT.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
+					.uri(URI.create(aUrl)).build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			return new HttpPutResult(response.statusCode(), response.body());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HttpPutResult();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
 	public <T> T readById(HttpRequestBuilder aRequestBuilder) throws EntityRequestException {
 		HttpResponse<String> response = null;
 		try {
@@ -59,7 +117,7 @@ public class HttpRemoteHandler {
 			throw new EntityRequestException(response.body(), e, aRequestBuilder);
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public <T> List<T> readEntityList(HttpRequestBuilder aRequestBuilder) throws EntityRequestException {
 		HttpResponse<String> response = null;
@@ -82,56 +140,19 @@ public class HttpRemoteHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T readEntity(HttpRequestBuilder aRequestBuilder, Class<?> entityClass) throws EntityRequestException {
-		HttpResponse<String> response = null;
+	public <T> List<T> post(HttpRequestBuilder aRequestBuilder) {
 		try {
-			String requestUrl = aRequestBuilder.buildRequestUrl();
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
-			response = client.send(request, BodyHandlers.ofString());
-			return (T) objectMapper.readValue(response.body(), entityClass);
-		} catch (Exception e) {
-			throw new EntityRequestException(response.body(), e, aRequestBuilder);
-		}
-	}
-
-	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
-		try {
-			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
-					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(String.valueOf(aEntity.getId())))
-					.uri(URI.create(aUrl)).build();
+			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class,
+					aRequestBuilder.getEntityClass());
+			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
+					.method(HttpMethod.POST.name(), BodyPublishers.ofString(""))
+					.uri(URI.create(aRequestBuilder.buildRequestUrl())).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			logger.info("Löschen ---> " + aEntity + " [" + aUrl + "]");
 			String body = response.body();
-			return new HttpDeleteResult(response.statusCode(), body);
+			return (List<T>) objectMapper.readValue(body, type);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new HttpDeleteResult();
-		}
-	}
-	
-	public HttpPatchResult patchEntity(String aUrl, IdEntity aEntity) {
-		try {
-			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
-					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
-					.uri(URI.create(aUrl)).build();
-			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			return new HttpPatchResult(response.statusCode(), response.body());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new HttpPatchResult();
-		}
-	}
-
-	public HttpPutResult putEntity(String aUrl, IdEntity aEntity) {
-		try {
-			HttpRequest request = HttpRequest.newBuilder().header("Content-type", JSON_CONTEXT_TYPE)
-					.method(HttpMethod.PUT.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
-					.uri(URI.create(aUrl)).build();
-			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			return new HttpPutResult(response.statusCode(), response.body());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new HttpPutResult();
+			return new ArrayList<>();
 		}
 	}
 }

@@ -2,6 +2,7 @@ package de.gravitex.banking.client.gui.action;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
+import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.base.IdEntity;

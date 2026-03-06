@@ -22,5 +22,5 @@ public interface EntityTablePanelListener {
 
 	ActionFilter getActionFilter();
 
-	List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass);
+	List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking.client.exception.EntityRequestException;
@@ -92,11 +93,6 @@ public class BankingAccessor implements IBankingAccessor {
 			entityRequester.handleRequestException(e);
 			return null;
 		}
-	}
-
-	public HttpPatchResult patchBooking(Booking aBooking) {
-		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, aBooking);
 	}
 
 	public HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute) {
@@ -208,5 +204,23 @@ public class BankingAccessor implements IBankingAccessor {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public HttpPatchResult patchBooking(Booking aBooking) {
+		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
+		return remoteHandler.patchEntity(url, aBooking);
+	}
+
+	@Override
+	public HttpPatchResult patchPurposeCategory(PurposeCategory aPurposeCategory) {
+		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
+		return remoteHandler.patchEntity(url, aPurposeCategory);
+	}
+
+	@Override
+	public List<Booking> importBookings(Account account) {
+		HttpRequestBuilder requestBuilder = HttpRequestBuilder.forEntity(Booking.class).byAttribute("import")
+				.identified(account.getId());
+		return remoteHandler.post(requestBuilder);
 	}
 }

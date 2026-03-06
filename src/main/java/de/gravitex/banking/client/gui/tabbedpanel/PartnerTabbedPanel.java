@@ -84,7 +84,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	}
 	
 	@Override
-	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		return ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners(null);
 	}
 	

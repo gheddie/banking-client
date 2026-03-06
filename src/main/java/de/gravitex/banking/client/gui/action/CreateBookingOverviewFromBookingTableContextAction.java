@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
+import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.BookingOverviewDialog;
 import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewFromSelectedModel;

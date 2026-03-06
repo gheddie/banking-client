@@ -69,14 +69,12 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 
 	@Override
 	public Object getSelectedObject() {
-		// TODO Auto-generated method stub
-		return null;
+		return selectedPurposeCategory;
 	}
 
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
-		// TODO Auto-generated method stub
-		return null;
+		return ApplicationRegistry.getInstance().getBankingAccessor().patchPurposeCategory(selectedPurposeCategory);
 	}
 
 	@Override
@@ -91,7 +89,7 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 	}
 
 	@Override
-	public List<? extends NoIdEntity> reloadEntities(Class<? extends NoIdEntity> aEntityClass) {
+	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		return ApplicationRegistry.getInstance().getBankingAccessor().readPurposeCategorys(null);
 	}
 }
