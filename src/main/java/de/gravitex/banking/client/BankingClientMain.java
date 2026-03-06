@@ -1,6 +1,7 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
+import java.util.Arrays;
 
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
@@ -14,6 +15,7 @@ import de.gravitex.banking.client.gui.test.FPS1Rows;
 import de.gravitex.banking.client.gui.test.FPS2Rows;
 import de.gravitex.banking.client.gui.test.FPS3Rows;
 import de.gravitex.banking.client.gui.test.FPS4Rows;
+import de.gravitex.banking.client.gui.test.Moo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.TradingPartner;
@@ -28,7 +30,7 @@ public class BankingClientMain {
 		registerActions();
 		runClient();
 		
-		testGridbagFilterPanelLayout();
+		// testGridbagFilterPanelLayout();
 	}
 
 	private static void testGridbagFilterPanelLayout() {
@@ -38,10 +40,12 @@ public class BankingClientMain {
 		dialog.setLayout(new BorderLayout());
 		
 		JTabbedPane tp = new JTabbedPane();
-		tp.addTab("1", new FPS1Rows());
-		tp.addTab("2", new FPS2Rows());
-		tp.addTab("3", new FPS3Rows());
-		tp.addTab("4", new FPS4Rows());
+		
+		tp.addTab("1", new FPS1Rows(Arrays.asList(new Moo[] { new Moo() })));
+		tp.addTab("2", new FPS2Rows(Arrays.asList(new Moo[] { new Moo(), new Moo() })));
+		tp.addTab("3", new FPS3Rows(Arrays.asList(new Moo[] { new Moo(), new Moo(), new Moo() })));
+		tp.addTab("4", new FPS4Rows(Arrays.asList(new Moo[] { new Moo(), new Moo(), new Moo(), new Moo() })));
+		
 		dialog.add(tp, BorderLayout.CENTER);
 		
 		dialog.setVisible(true);

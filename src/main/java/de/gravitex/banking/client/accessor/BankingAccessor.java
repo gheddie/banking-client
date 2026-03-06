@@ -8,6 +8,7 @@ import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.dto.AccountInfo;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.CreditInstitute;
@@ -39,15 +40,6 @@ public class BankingAccessor implements IBankingAccessor {
 	public List<TradingPartner> readTradingPartners(EntityRequester entityRequester) {
 		try {
 			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartner.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
-	}
-
-	public List<PurposeCategory> readPurposeCategorys(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
 		} catch (EntityRequestException e) {
 			entityRequester.handleRequestException(e);
 			return null;
@@ -196,5 +188,25 @@ public class BankingAccessor implements IBankingAccessor {
 	public HttpPutResult putAccount(Account account) {
 		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
 		return remoteHandler.putEntity(url, account);
+	}
+	
+	public List<PurposeCategory> readPurposeCategorys(EntityRequester entityRequester) {
+		try {
+			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
+		} catch (EntityRequestException e) {
+			entityRequester.handleRequestException(e);
+			return null;
+		}
+	}
+
+	@Override
+	public List<AccountInfo> readAccountInfos(EntityRequester entityRequester) {
+		try {
+			return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
+		} catch (EntityRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

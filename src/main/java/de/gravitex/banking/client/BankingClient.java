@@ -1,6 +1,7 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
+import de.gravitex.banking.client.gui.tabbedpanel.AccountBalanceTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PurposeCategoryTabbedPanel;
@@ -83,16 +85,9 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 	private void initTabbedPanels() {
 		mainPane.addTab("Buchungen", getBookingPanel());
-		mainPane.addTab("Partner", getPartnerPanel());
-		mainPane.addTab("Kategorien", getPurposeCategoryPanel());
-	}
-
-	private TabbedPanel getPurposeCategoryPanel() {
-		return new PurposeCategoryTabbedPanel();
-	}
-
-	private TabbedPanel getPartnerPanel() {
-		return new PartnerTabbedPanel();
+		mainPane.addTab("Partner", new PartnerTabbedPanel());
+		mainPane.addTab("Kategorien", new PurposeCategoryTabbedPanel());
+		mainPane.addTab("Kontostände", new AccountBalanceTabbedPanel());
 	}
 
 	private TabbedPanel getBookingPanel() {

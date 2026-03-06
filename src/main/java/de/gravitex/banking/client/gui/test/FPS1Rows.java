@@ -1,6 +1,8 @@
 package de.gravitex.banking.client.gui.test;
 
 import java.awt.*;
+import java.util.List;
+
 import javax.swing.*;
 /*
  * Created by JFormDesigner on Thu Mar 05 23:17:43 CET 2026
@@ -15,7 +17,8 @@ public class FPS1Rows extends FPS {
 	
 	private static final long serialVersionUID = 7035655556060658686L;
 	
-	public FPS1Rows() {
+	public FPS1Rows(List<Moo> aMoos) {
+		super(aMoos);
 		initComponents();
 	}
 
@@ -25,9 +28,8 @@ public class FPS1Rows extends FPS {
 		setLayout(layout);
 		
 		layout.columnWidths = columnWidths();
-		layout.columnWeights = columnWeights();
-		
-		layout.rowHeights = new int[] {0, 0, 0, 0};
+		layout.columnWeights = columnWeights();		
+		layout.rowHeights = makeRowHeights(getLayoutRowCount());
 		layout.rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
 
 		//---- label1 ----

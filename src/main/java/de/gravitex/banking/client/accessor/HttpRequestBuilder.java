@@ -1,12 +1,13 @@
 package de.gravitex.banking.client.accessor;
 
+import de.gravitex.banking_core.dto.base.BankingDto;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public class HttpRequestBuilder {
 
 	private String server = "localhost";
 
-	private int port = 8080;
+	private int port = 4711;
 
 	private boolean listRequest = false;
 
@@ -20,10 +21,6 @@ public class HttpRequestBuilder {
 		super();
 		this.entityClass = aEntityClass;
 		this.listRequest = aListRequest;
-	}
-
-	public static HttpRequestBuilder forEntityList(Class<? extends NoIdEntity> aEntityClass) {
-		return new HttpRequestBuilder(aEntityClass, true);
 	}
 
 	public String buildRequestUrl() {
@@ -61,5 +58,13 @@ public class HttpRequestBuilder {
 
 	public static HttpRequestBuilder forEntity(Class<?> aEntityClass) {
 		return new HttpRequestBuilder(aEntityClass, false);		
+	}
+	
+	public static HttpRequestBuilder forEntityList(Class<? extends NoIdEntity> aEntityClass) {
+		return new HttpRequestBuilder(aEntityClass, true);
+	}
+
+	public static HttpRequestBuilder forDtoList(Class<? extends BankingDto> aDtoClass) {
+		return new HttpRequestBuilder(aDtoClass, true);
 	}
 }

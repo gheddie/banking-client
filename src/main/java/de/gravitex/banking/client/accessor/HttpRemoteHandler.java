@@ -66,7 +66,8 @@ public class HttpRemoteHandler {
 		try {
 			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class,
 					aRequestBuilder.getEntityClass());
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(aRequestBuilder.buildRequestUrl())).build();
+			String requestUrl = aRequestBuilder.buildRequestUrl();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
 			List<T> result = (List<T>) objectMapper.readValue(body, type);
