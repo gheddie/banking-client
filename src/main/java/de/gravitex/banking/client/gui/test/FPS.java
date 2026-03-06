@@ -8,9 +8,9 @@ public abstract class FPS extends JPanel {
 
 	private static final long serialVersionUID = -8300870676510814846L;
 	
-	private List<Moo> moos;
+	private List<FpsMoo> moos;
 	
-	public FPS(List<Moo> aMoos) {
+	public FPS(List<FpsMoo> aMoos) {
 		super();
 		this.moos = aMoos;
 	}
@@ -23,7 +23,7 @@ public abstract class FPS extends JPanel {
 		return new double[] {0.0, 1.0, 1.0E-4};
 	}
 	
-	public List<Moo> getMoos() {
+	public List<FpsMoo> getMoos() {
 		return moos;
 	}
 	

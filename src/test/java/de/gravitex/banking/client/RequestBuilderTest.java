@@ -14,13 +14,13 @@ public class RequestBuilderTest {
 		
 		HttpRequestBuilder builder = HttpRequestBuilder.forEntityList(Booking.class);
 		
-		assertEquals("http://localhost:8080/bookings",
+		assertEquals("http://localhost:4711/bookings",
 				builder.buildRequestUrl());
 		
-		assertEquals("http://localhost:8080/bookings/account",
+		assertEquals("http://localhost:4711/bookings/account",
 				builder.byAttribute("account").buildRequestUrl());
 		
-		assertEquals("http://localhost:8080/bookings/account?id=12",
+		assertEquals("http://localhost:4711/bookings/account?id=12",
 				builder.identified(Long.valueOf(12)).buildRequestUrl());
 	}
 }

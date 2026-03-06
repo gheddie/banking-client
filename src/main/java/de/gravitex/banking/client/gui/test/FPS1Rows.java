@@ -17,7 +17,7 @@ public class FPS1Rows extends FPS {
 	
 	private static final long serialVersionUID = 7035655556060658686L;
 	
-	public FPS1Rows(List<Moo> aMoos) {
+	public FPS1Rows(List<FpsMoo> aMoos) {
 		super(aMoos);
 		initComponents();
 	}
