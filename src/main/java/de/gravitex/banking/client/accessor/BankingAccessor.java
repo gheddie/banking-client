@@ -9,9 +9,12 @@ import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.AccountInfo;
+import de.gravitex.banking_core.dto.BookingFileImportDto;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
+import de.gravitex.banking_core.entity.BudgetPlanning;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.StandingOrder;
@@ -218,9 +221,25 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public List<Booking> importBookings(Account account) {
-		HttpRequestBuilder requestBuilder = HttpRequestBuilder.forEntity(Booking.class).byAttribute("import")
-				.identified(account.getId());
-		return remoteHandler.post(requestBuilder);
+	public ImportBookings importBookings(Account account) {
+		try {
+			HttpRequestBuilder requestBuilder = HttpRequestBuilder.forEntity(ImportBookings.class)
+					.identified(account.getId(), "accountId");
+			ImportBookings bookingImport = remoteHandler.readEntity(requestBuilder, ImportBookings.class);
+			return bookingImport;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<BudgetPlanning> readBudgetPlannings(EntityRequester entityRequester) {
+		try {
+			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BudgetPlanning.class));
+		} catch (EntityRequestException e) {
+			entityRequester.handleRequestException(e);
+			return null;
+		}
 	}
 }

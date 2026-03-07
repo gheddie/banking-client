@@ -70,7 +70,7 @@ public class HttpRemoteHandler {
 					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(String.valueOf(aEntity.getId())))
 					.uri(URI.create(aUrl)).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			logger.info("Löschen ---> " + aEntity + " [" + aUrl + "]");
+			logger.info("Lï¿½schen ---> " + aEntity + " [" + aUrl + "]");
 			String body = response.body();
 			return new HttpDeleteResult(response.statusCode(), body);
 		} catch (Exception e) {

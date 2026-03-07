@@ -7,9 +7,12 @@ import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.AccountInfo;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
+import de.gravitex.banking_core.entity.BookingImport;
+import de.gravitex.banking_core.entity.BudgetPlanning;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
 import de.gravitex.banking_core.entity.StandingOrder;
@@ -33,6 +36,7 @@ public interface IBankingAccessor {
 	BookingAdminData readAdminData(EntityRequester entityRequester);
 	List<Account> readAccounts(EntityRequester entityRequester);
 	List<AccountInfo> readAccountInfos(EntityRequester entityRequester);
+	List<BudgetPlanning> readBudgetPlannings(EntityRequester entityRequester);	
 
 	// patch
 	HttpPatchResult patchBooking(Booking aBooking);
@@ -51,5 +55,5 @@ public interface IBankingAccessor {
 	HttpDeleteResult deleteEntity(IdEntity aEntity);
 	
 	// misc
-	List<Booking> importBookings(Account account);	
+	ImportBookings importBookings(Account account);
 }

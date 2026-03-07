@@ -22,6 +22,7 @@ import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.tabbedpanel.AccountBalanceTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
+import de.gravitex.banking.client.gui.tabbedpanel.BudgetPlanningTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PurposeCategoryTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
@@ -87,7 +88,8 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		mainPane.addTab("Buchungen", getBookingPanel());
 		mainPane.addTab("Partner", new PartnerTabbedPanel());
 		mainPane.addTab("Kategorien", new PurposeCategoryTabbedPanel());
-		mainPane.addTab("Kontostände", new AccountBalanceTabbedPanel());
+		mainPane.addTab("Kontostï¿½nde", new AccountBalanceTabbedPanel());
+		mainPane.addTab("Budget-Planungen", new BudgetPlanningTabbedPanel());
 	}
 
 	private TabbedPanel getBookingPanel() {

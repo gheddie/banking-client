@@ -3,6 +3,7 @@ package de.gravitex.banking.client.gui.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,6 +15,8 @@ import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
+import de.gravitex.banking_core.dto.BookingFileImportDto;
 import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
@@ -24,15 +27,15 @@ public class BookingImportResultDialog extends JDialog implements EntityTablePan
 	
 	private static final int OFFSET = 20;
 
-	private List<Booking> importedBookings;
+	private ImportBookings importedBookings;
 
 	private EntityTablePanel bookingTable;
 
 	private JButton ok;
 
-	public BookingImportResultDialog(List<Booking> aImportedBookings) {
+	public BookingImportResultDialog(ImportBookings imported) {
 		super(ApplicationRegistry.getInstance().getParentView());
-		this.importedBookings = aImportedBookings;
+		this.importedBookings = imported;
 		setModal(true);
 		setLayout(new BorderLayout());
 		setLocation(ApplicationRegistry.getInstance().getParentView().getX() + OFFSET,
@@ -52,7 +55,17 @@ public class BookingImportResultDialog extends JDialog implements EntityTablePan
 	}
 
 	private void fillData() {
-		bookingTable.displayEntities(importedBookings);		
+		bookingTable.displayEntities(getAllBookings());		
+	}
+
+	private List<Booking> getAllBookings() {
+		List<Booking> bookings = new ArrayList<>();
+		for (BookingFileImportDto file : importedBookings.getImportedBookingFiles()) {
+			for (Booking booking : file.getImportedBookings()) {
+				bookings.add(booking);
+			}
+		}
+		return bookings;
 	}
 
 	@Override

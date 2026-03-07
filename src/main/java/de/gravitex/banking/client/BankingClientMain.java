@@ -24,7 +24,7 @@ import de.gravitex.banking.client.gui.test.FPS3Rows;
 import de.gravitex.banking.client.gui.test.FPS4Rows;
 import de.gravitex.banking.client.gui.test.FpsMoo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.dto.base.BudgetPlanningDto;
+import de.gravitex.banking_core.dto.BudgetPlanningDto;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
@@ -37,13 +37,12 @@ public class BankingClientMain {
 
 	public static void main(String[] args) {
 
-		/*
-		 * registerActions(); runClient();
-		 */
+		registerActions();
+		runClient();
 
 		// testGridbagFilterPanelLayout();
 
-		testReadBudgetPlanning();
+		// testReadBudgetPlanning();
 	}
 
 	private static void testReadBudgetPlanning() {

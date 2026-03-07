@@ -10,6 +10,7 @@ import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.BookingImportResultDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
 
@@ -28,7 +29,7 @@ public class ImportBookingsForAccountAction extends TableContextAction<Account> 
 
 	@Override
 	protected void executeAction(Account account) {
-		List<Booking> imported = ApplicationRegistry.getInstance().getBankingAccessor().importBookings(account);
+		ImportBookings imported = ApplicationRegistry.getInstance().getBankingAccessor().importBookings(account);
 		new BookingImportResultDialog(imported).setVisible(true);
 	}
 }
