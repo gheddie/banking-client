@@ -37,12 +37,16 @@ public class BankingClientMain {
 
 	public static void main(String[] args) {
 
-		registerActions();
-		runClient();
+		doRunClient();
 
 		// testGridbagFilterPanelLayout();
 
 		// testReadBudgetPlanning();
+	}
+
+	private static void doRunClient() {
+		registerActions();
+		runClient();
 	}
 
 	private static void testReadBudgetPlanning() {
