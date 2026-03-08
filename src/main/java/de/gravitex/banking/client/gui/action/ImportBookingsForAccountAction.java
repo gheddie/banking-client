@@ -1,7 +1,5 @@
 package de.gravitex.banking.client.gui.action;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +10,6 @@ import de.gravitex.banking.client.gui.dialog.BookingImportResultDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.entity.Account;
-import de.gravitex.banking_core.entity.Booking;
 
 public class ImportBookingsForAccountAction extends TableContextAction<Account> {
 	

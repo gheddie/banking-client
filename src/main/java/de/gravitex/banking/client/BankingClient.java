@@ -1,7 +1,6 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.List;
 
