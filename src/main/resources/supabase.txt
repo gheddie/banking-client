@@ -1,0 +1,8 @@
+proj=banking_sb
+pw=bankingSb76@1976
+
+jdbc
+---------------------------------------------------------------------------------------------------------
+host:db.pghawtagrdhrtrtjwwiy.supabase.co
+user:postgres
+pw:bankingSb76@1976
