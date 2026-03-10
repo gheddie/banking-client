@@ -4,12 +4,15 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.AccountInfo;
+import de.gravitex.banking_core.dto.MergeTradingPartners;
+import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
 import de.gravitex.banking_core.entity.BudgetPlanning;
@@ -239,5 +242,11 @@ public class BankingAccessor implements IBankingAccessor {
 			entityRequester.handleRequestException(e);
 			return null;
 		}
+	}
+
+	@Override
+	public HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners) {
+		return remoteHandler.post(HttpRequestBuilder.forEntity(MergeTradingPartners.class), aMergeTradingPartners,
+				TradingPartnersMergeResult.class);
 	}
 }

@@ -7,7 +7,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -16,12 +15,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 
 import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking_core.entity.base.IdEntity;
@@ -138,20 +140,26 @@ public class HttpRemoteHandler {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> List<T> post(HttpRequestBuilder aRequestBuilder) {
+	@SuppressWarnings({ "unused", "unchecked" })
+	public <T> HttpPostResult post(HttpRequestBuilder aRequestBuilder, Object aRequestBody, Class<?> aResultType) {
+		HttpResponse<String> response = null;
 		try {
-			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class,
-					aRequestBuilder.getEntityClass());
+			String requstUrl = aRequestBuilder.buildRequestUrl();
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
-					.method(HttpMethod.POST.name(), BodyPublishers.ofString(""))
-					.uri(URI.create(aRequestBuilder.buildRequestUrl())).build();
-			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+					.method(HttpMethod.POST.name(), BodyPublishers.ofString(new JSONObject(aRequestBody).toString()))
+					.uri(URI.create(requstUrl)).build();
+			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
-			return (List<T>) objectMapper.readValue(body, type);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ArrayList<>();
+			T result = (T) objectMapper.readValue(response.body(), aResultType);
+			return new HttpPostResult(response.statusCode(), null, result);			
+		} catch (JsonMappingException e) {
+			return new HttpPostResult(response.statusCode(), response.body(), null);
+		} catch (JsonProcessingException e) {
+			return new HttpPostResult(response.statusCode(), response.body(), null);
+		} catch (IOException e) {
+			return new HttpPostResult(response.statusCode(), response.body(), null);
+		} catch (InterruptedException e) {
+			return new HttpPostResult(response.statusCode(), response.body(), null);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package de.gravitex.banking.client.gui.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,17 +10,22 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
+import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
 import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
@@ -33,6 +39,8 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 	private EntityTablePanel tradingPartnerTable;
 
 	private JButton ok;
+
+	private JTextField tfTradingKey;
 	
 	public MergeTradingPartnersDialog() {
 		
@@ -56,26 +64,39 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 		});
 		add(ok, BorderLayout.SOUTH);
 		
+		add(getNewTradingKeyPanel(), BorderLayout.NORTH);
+		
 		fillData();
 	}
 	
+	private Component getNewTradingKeyPanel() {
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(new JLabel("Trading-Key"), BorderLayout.WEST);
+		tfTradingKey = new JTextField();
+		panel.add(tfTradingKey, BorderLayout.CENTER);
+		return panel;
+	}
+
 	private void closeDialog() {
 		
 		MergeTradingPartners merge = new MergeTradingPartners();
-		merge.setNewTradingKey("ALLES");			
+		merge.setNewTradingKey(tfTradingKey.getText());			
 		List<TradingPartner> partnersToMerge = new ArrayList<>();
 		for (Object tmp : tradingPartnerTable.getSelectedObjects()) {
 			partnersToMerge.add((TradingPartner) tmp);
 		}
 		merge.setPartnersToMerge(partnersToMerge);
-		
-		try {
-			System.out.println(new ObjectMapper().writeValueAsString(merge));
+		HttpPostResult result = ApplicationRegistry.getInstance().getBankingAccessor().mergeTradingPartners(merge);
+		if (result.hasValidStatusCode()) {
+			TradingPartnersMergeResult mergeResult = (TradingPartnersMergeResult) result.getResponseObject();
+			ApplicationRegistry.getInstance().getInteractionHandler().showMessage("Zusammenfühtung erfolgreich ("+mergeResult.summarize()+")", this);
 			dispose();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		} else {
+			ApplicationRegistry.getInstance().getInteractionHandler().showError(result.getErrorMessage(), this);
+			dispose();
+		}
 	}
 
 	private void fillData() {

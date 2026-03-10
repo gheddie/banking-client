@@ -4,14 +4,15 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
+import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.AccountInfo;
+import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.BookingImport;
 import de.gravitex.banking_core.entity.BudgetPlanning;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
@@ -56,4 +57,5 @@ public interface IBankingAccessor {
 	
 	// misc
 	ImportBookings importBookings(Account account);
+	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
 }
