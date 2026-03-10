@@ -2,10 +2,14 @@ package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -19,6 +23,7 @@ import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
+import de.gravitex.banking.client.gui.dialog.MergeTradingPartnersDialog;
 import de.gravitex.banking.client.gui.tabbedpanel.AccountBalanceTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BudgetPlanningTabbedPanel;
@@ -53,6 +58,8 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 	private Account selectedAccount;
 
+	private JToolBar toolbar;
+
 	public BankingClient() {
 
 		super();
@@ -71,6 +78,11 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	private void makeLayout() {
+		
+		toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+		addToolbarActions();
+		add(toolbar, BorderLayout.NORTH);
 
 		creditInstituteTable = new EntityTablePanel("Institute", this, true, CreditInstitute.class);
 		accountTable = new EntityTablePanel("Konten", this, true, Account.class);
@@ -81,6 +93,17 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		add(mainPane, BorderLayout.CENTER);
 		
 		initTabbedPanels();
+	}
+
+	private void addToolbarActions() {
+		JButton mergeTradingPartners = new JButton("Trading-Partner zusammenführen");
+		mergeTradingPartners.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new MergeTradingPartnersDialog().setVisible(true);
+			}
+		});
+		toolbar.add(mergeTradingPartners);
 	}
 
 	private void initTabbedPanels() {

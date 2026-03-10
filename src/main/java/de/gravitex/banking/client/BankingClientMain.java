@@ -3,14 +3,19 @@ package de.gravitex.banking.client;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTableContextAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
 import de.gravitex.banking.client.gui.action.DeleteTableContextAction;
@@ -25,6 +30,7 @@ import de.gravitex.banking.client.gui.test.FPS4Rows;
 import de.gravitex.banking.client.gui.test.FpsMoo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking_core.dto.BudgetPlanningDto;
+import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.entity.Account;
 import de.gravitex.banking_core.entity.CreditInstitute;
 import de.gravitex.banking_core.entity.PurposeCategory;
@@ -42,6 +48,29 @@ public class BankingClientMain {
 		// testGridbagFilterPanelLayout();
 
 		// testReadBudgetPlanning();
+		
+		// testMergeTradingPartners();
+	}
+
+	private static void testMergeTradingPartners() {
+		
+		List<TradingPartner> allTradingPartners = new BankingAccessor().readTradingPartners(null);
+		List<TradingPartner> toMerge = new ArrayList<>();
+		for (TradingPartner aTradingPartner : allTradingPartners) {
+			if (aTradingPartner.getTradingKey().contains("MCD")) {
+				toMerge.add(aTradingPartner);
+			}
+		}
+		
+		try {
+			MergeTradingPartners merge = new MergeTradingPartners();
+			merge.setNewTradingKey("MCD_CONCATTED");			
+			merge.setPartnersToMerge(toMerge);
+			System.out.println(new ObjectMapper().writeValueAsString(merge));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void doRunClient() {

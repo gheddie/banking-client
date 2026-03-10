@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -29,6 +28,7 @@ import de.gravitex.banking.client.gui.filter.EntityFilterConfig;
 import de.gravitex.banking.client.gui.filter.instance.base.EntityFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.util.ObjectUtil;
+import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.annotation.Creatable;
 import de.gravitex.banking_core.entity.base.NoIdEntity;
 
@@ -62,7 +62,7 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 		this.entityClass = aEntityClass;
 		setLayout(new BorderLayout());
 		table = new EntityTable(aSingleSelection, this);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		// table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(this);
 		add(addNewButton(getCenterComponent()), BorderLayout.CENTER);
 		statusLabel = new JLabel();
@@ -229,5 +229,14 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 	@Override
 	public EntityTablePanelListener getPanelListener() {
 		return tablePanelListener;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<?> getSelectedObjects() {
+		List selected = new ArrayList<>();
+		for (int row : table.getSelectedRows()) {
+			selected.add(entities.get(row));
+		}		
+		return selected;
 	}
 }
