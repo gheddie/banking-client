@@ -31,11 +31,12 @@ import de.gravitex.banking.client.gui.tabbedpanel.PartnerTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.PurposeCategoryTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.Account;
-import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.CreditInstitute;
-import de.gravitex.banking_core.entity.base.IdEntity;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
+import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.CreditInstitute;
+import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
+import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClient extends JFrame implements EntityTablePanelListener, ChangeListener, EntityRequester {
@@ -68,13 +69,23 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 
 		setLayout(new BorderLayout());
 
-		setTitle("Banking (DB:"+ApplicationRegistry.getInstance().getAdminData().getDatasourceName()+")");
+		BookingAdminData adminData = ApplicationRegistry.getInstance().getAdminData();
+		setTitle("Banking (DB:" + adminData.getDatasourceName() + ") {"
+				+ adminData.getDatabaseUrl() + "}");
 		setSize(900, 600);
 		setLocation(200, 200);
 
 		makeLayout();
+		
+		warnForProduction(adminData);
 
 		fill();
+	}
+
+	private void warnForProduction(BookingAdminData adminData) {
+		if (!adminData.getDatabaseUrl().toUpperCase().contains("TEST")) {
+			ApplicationRegistry.getInstance().getInteractionHandler().confirm("Produktiv-System!!!", true, this);
+		}
 	}
 
 	private void makeLayout() {

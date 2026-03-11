@@ -7,19 +7,20 @@ import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking.client.exception.EntityRequestException;
+import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.BudgetPlanning;
+import de.gravitex.banking.entity.CreditInstitute;
+import de.gravitex.banking.entity.PurposeCategory;
+import de.gravitex.banking.entity.RecurringPosition;
+import de.gravitex.banking.entity.StandingOrder;
+import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.AccountInfo;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
-import de.gravitex.banking_core.entity.Account;
-import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.BudgetPlanning;
-import de.gravitex.banking_core.entity.CreditInstitute;
-import de.gravitex.banking_core.entity.PurposeCategory;
-import de.gravitex.banking_core.entity.StandingOrder;
-import de.gravitex.banking_core.entity.TradingPartner;
-import de.gravitex.banking_core.entity.base.IdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingAccessor implements IBankingAccessor {
@@ -135,10 +136,6 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.putEntity(url, account);
 	}
 	
-	public HttpGetResult readPurposeCategorys(EntityRequester entityRequester) {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
-	}
-
 	@Override
 	public HttpGetResult readAccountInfos(EntityRequester entityRequester) {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
@@ -176,5 +173,15 @@ public class BankingAccessor implements IBankingAccessor {
 	public HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners) {
 		return remoteHandler.post(HttpRequestBuilder.forEntity(MergeTradingPartners.class), aMergeTradingPartners,
 				TradingPartnersMergeResult.class);
+	}
+	
+	@Override
+	public HttpGetResult readPurposeCategorys(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
+	}
+
+	@Override
+	public HttpGetResult readRecurringPositions(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(RecurringPosition.class));
 	}
 }

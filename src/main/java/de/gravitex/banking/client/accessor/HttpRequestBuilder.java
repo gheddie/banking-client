@@ -1,7 +1,7 @@
 package de.gravitex.banking.client.accessor;
 
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.dto.base.BankingDto;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
 import de.gravitex.banking_core.util.StringHelper;
 
 public class HttpRequestBuilder {

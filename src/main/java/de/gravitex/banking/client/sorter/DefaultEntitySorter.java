@@ -14,7 +14,7 @@ import de.gravitex.banking.client.sorter.key.DateKeySorter;
 import de.gravitex.banking.client.sorter.key.LocalDateKeySorter;
 import de.gravitex.banking.client.sorter.key.StringKeySorter;
 import de.gravitex.banking.client.sorter.key.base.KeySorter;
-import de.gravitex.banking_core.entity.annotation.PresentMe;
+import de.gravitex.banking.entity.annotation.PresentMe;
 
 public class DefaultEntitySorter implements EntitySorter {
 

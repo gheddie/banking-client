@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import de.gravitex.banking.client.util.ObjectUtil;
-import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.TradingPartner;
+import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.TradingPartner;
 
 public class ObjectUtilTest {
 

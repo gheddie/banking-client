@@ -28,9 +28,9 @@ import de.gravitex.banking.client.gui.filter.EntityFilterConfig;
 import de.gravitex.banking.client.gui.filter.instance.base.EntityFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.util.ObjectUtil;
-import de.gravitex.banking_core.entity.TradingPartner;
-import de.gravitex.banking_core.entity.annotation.Creatable;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
+import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.annotation.Creatable;
+import de.gravitex.banking.entity.base.NoIdEntity;
 
 public class EntityTablePanel extends JPanel implements ListSelectionListener, EntityTableListener, ActionProvider {
 	

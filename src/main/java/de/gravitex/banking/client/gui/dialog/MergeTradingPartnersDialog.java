@@ -24,11 +24,11 @@ import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
-import de.gravitex.banking_core.entity.TradingPartner;
-import de.gravitex.banking_core.entity.base.IdEntity;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public class MergeTradingPartnersDialog extends JDialog implements EntityTablePanelListener {
 

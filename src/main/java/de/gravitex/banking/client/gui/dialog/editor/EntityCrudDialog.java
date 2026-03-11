@@ -17,7 +17,7 @@ import de.gravitex.banking.client.exception.CrudException;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class EntityCrudDialog extends JDialog {
 

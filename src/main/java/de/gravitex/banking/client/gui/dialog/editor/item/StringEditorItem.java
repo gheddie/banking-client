@@ -9,7 +9,7 @@ import javax.swing.event.CaretListener;
 
 import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class StringEditorItem extends EditorItem implements CaretListener {
 

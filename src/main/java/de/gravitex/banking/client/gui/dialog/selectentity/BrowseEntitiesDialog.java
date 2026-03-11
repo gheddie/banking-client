@@ -8,7 +8,7 @@ import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.dialog.BankingDialog;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 
 public abstract class BrowseEntitiesDialog<T extends NoIdEntity, E extends NoIdEntity> extends BankingDialog implements EntityTablePanelListener {
 

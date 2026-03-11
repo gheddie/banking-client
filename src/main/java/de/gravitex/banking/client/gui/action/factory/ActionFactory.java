@@ -7,7 +7,7 @@ import java.util.Map;
 
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 
 public class ActionFactory {
 

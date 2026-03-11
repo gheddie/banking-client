@@ -6,13 +6,13 @@ import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.accessor.util.EntityRequester;
+import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.CreditInstitute;
+import de.gravitex.banking.entity.PurposeCategory;
+import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
-import de.gravitex.banking_core.entity.Account;
-import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.CreditInstitute;
-import de.gravitex.banking_core.entity.PurposeCategory;
-import de.gravitex.banking_core.entity.TradingPartner;
-import de.gravitex.banking_core.entity.base.IdEntity;
 
 public interface IBankingAccessor {
 
@@ -30,6 +30,7 @@ public interface IBankingAccessor {
 	HttpGetResult readAdminData(EntityRequester entityRequester);
 	HttpGetResult readAccounts(EntityRequester entityRequester);
 	HttpGetResult readAccountInfos(EntityRequester entityRequester);
+	HttpGetResult readRecurringPositions(EntityRequester entityRequester);
 	HttpGetResult readBudgetPlannings(EntityRequester entityRequester);
 
 	// patch
@@ -50,5 +51,5 @@ public interface IBankingAccessor {
 	
 	// misc
 	HttpGetResult importBookings(Account account);
-	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
+	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);	
 }

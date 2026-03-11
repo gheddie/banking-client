@@ -12,9 +12,9 @@ import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.dto.AccountInfo;
-import de.gravitex.banking_core.entity.base.IdEntity;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public class AccountBalanceTabbedPanel extends TabbedPanel implements EntityTablePanelListener {
 

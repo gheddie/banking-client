@@ -18,7 +18,7 @@ import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.util.ObjectUtil;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class GenericItemListEditorItem extends EditorItem implements ActionListener {
 	

@@ -7,7 +7,7 @@ import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class EditTableContextAction extends TableContextAction<IdEntity> {
 	

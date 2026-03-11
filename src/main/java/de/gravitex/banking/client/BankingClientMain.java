@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,12 +28,12 @@ import de.gravitex.banking.client.gui.test.FPS3Rows;
 import de.gravitex.banking.client.gui.test.FPS4Rows;
 import de.gravitex.banking.client.gui.test.FpsMoo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.CreditInstitute;
+import de.gravitex.banking.entity.PurposeCategory;
+import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking_core.dto.BudgetPlanningDto;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
-import de.gravitex.banking_core.entity.Account;
-import de.gravitex.banking_core.entity.CreditInstitute;
-import de.gravitex.banking_core.entity.PurposeCategory;
-import de.gravitex.banking_core.entity.TradingPartner;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClientMain {
@@ -43,7 +42,7 @@ public class BankingClientMain {
 
 	public static void main(String[] args) {
 
-		// doRunClient();
+		doRunClient();
 
 		// testGridbagFilterPanelLayout();
 
@@ -51,7 +50,7 @@ public class BankingClientMain {
 		
 		// testMergeTradingPartners();
 		
-		manualTest();
+		// manualTest();
 	}
 
 	private static void manualTest() {
@@ -139,6 +138,7 @@ public class BankingClientMain {
 		actionFactory.registerAction(BookingView.class, CreateBookingOverviewFromBookingTableContextAction.class);
 		actionFactory.registerAction(BookingView.class, CreateBookingOverviewActualMonthTableContextAction.class);
 		actionFactory.registerAction(BookingView.class, EditBookingViewTableContextAction.class);
+		actionFactory.registerAction(BookingView.class, DeleteTableContextAction.class);
 
 		// PurposeCategory
 		actionFactory.registerAction(PurposeCategory.class, DeleteTableContextAction.class);

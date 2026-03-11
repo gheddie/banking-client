@@ -3,7 +3,7 @@ package de.gravitex.banking.client.formatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.gravitex.banking_core.formatter.base.ValueFormatter;
+import de.gravitex.banking.formatter.base.ValueFormatter;
 
 public class ValueFormatterFactory {
 

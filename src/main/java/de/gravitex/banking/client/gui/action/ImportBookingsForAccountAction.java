@@ -8,8 +8,8 @@ import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.BookingImportResultDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.entity.Account;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
-import de.gravitex.banking_core.entity.Account;
 
 public class ImportBookingsForAccountAction extends TableContextAction<Account> {
 	

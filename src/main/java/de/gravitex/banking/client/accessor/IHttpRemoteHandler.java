@@ -5,7 +5,7 @@ import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public interface IHttpRemoteHandler {
 

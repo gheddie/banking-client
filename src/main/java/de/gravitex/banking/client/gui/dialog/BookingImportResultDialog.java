@@ -15,11 +15,11 @@ import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.BookingFileImportDto;
-import de.gravitex.banking_core.entity.Booking;
-import de.gravitex.banking_core.entity.base.IdEntity;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
 
 public class BookingImportResultDialog extends JDialog implements EntityTablePanelListener {
 	

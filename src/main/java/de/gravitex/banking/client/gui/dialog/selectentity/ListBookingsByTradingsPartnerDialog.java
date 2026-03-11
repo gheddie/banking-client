@@ -9,9 +9,9 @@ import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.TradingPartner;
-import de.gravitex.banking_core.entity.base.IdEntity;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
+import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<TradingPartner, BookingView> {

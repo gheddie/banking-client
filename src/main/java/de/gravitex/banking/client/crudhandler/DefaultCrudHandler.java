@@ -9,8 +9,8 @@ import de.gravitex.banking.client.exception.CrudException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.editor.EntityCrudDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.base.IdEntity;
-import de.gravitex.banking_core.entity.base.NoIdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 
 public class DefaultCrudHandler implements CrudHandler {
 	

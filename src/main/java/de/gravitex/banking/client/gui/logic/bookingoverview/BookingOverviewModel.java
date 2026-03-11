@@ -8,9 +8,9 @@ import java.util.Map;
 
 import de.gravitex.banking.client.accessor.IBankingAccessor;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.Account;
+import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.formatter.DateTimeValueFormatter;
 import de.gravitex.banking_core.entity.view.BookingView;
-import de.gravitex.banking_core.formatter.DateTimeValueFormatter;
 import de.gravitex.banking_core.util.StringHelper;
 
 public abstract class BookingOverviewModel {

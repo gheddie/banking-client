@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public abstract class EditorItem {
 	

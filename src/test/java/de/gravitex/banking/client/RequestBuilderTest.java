@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import de.gravitex.banking.client.accessor.HttpRequestBuilder;
-import de.gravitex.banking_core.entity.Booking;
+import de.gravitex.banking.entity.Booking;
 
 public class RequestBuilderTest {
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import de.gravitex.banking.client.gui.tabbedpanel.base.TabbedPanel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.BudgetPlanning;
+import de.gravitex.banking.entity.BudgetPlanning;
 
 public class BudgetPlanningTabbedPanel  extends TabbedPanel {
 

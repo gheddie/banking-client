@@ -21,7 +21,7 @@ import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
-import de.gravitex.banking_core.entity.annotation.PresentMe;
+import de.gravitex.banking.entity.annotation.PresentMe;
 
 public class EntityTable extends JTable {
 

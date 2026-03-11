@@ -4,7 +4,7 @@ import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.exception.ActionException;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking_core.entity.Booking;
+import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class EditBookingViewTableContextAction extends TableContextAction<BookingView> {

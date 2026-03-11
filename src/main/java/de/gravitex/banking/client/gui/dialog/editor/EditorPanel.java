@@ -16,9 +16,9 @@ import de.gravitex.banking.client.gui.dialog.editor.item.base.EditorItem;
 import de.gravitex.banking.client.gui.dialog.editor.item.factory.EditorItemFactory;
 import de.gravitex.banking.client.gui.dialog.editor.util.EditorItemListener;
 import de.gravitex.banking.client.util.ObjectUtil;
-import de.gravitex.banking_core.entity.annotation.EnableEdit;
-import de.gravitex.banking_core.entity.annotation.util.EditType;
-import de.gravitex.banking_core.entity.base.IdEntity;
+import de.gravitex.banking.entity.annotation.EnableEdit;
+import de.gravitex.banking.entity.annotation.util.EditType;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class EditorPanel extends JPanel implements EditorItemListener {
 	
