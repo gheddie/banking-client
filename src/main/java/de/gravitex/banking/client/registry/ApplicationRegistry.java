@@ -44,7 +44,7 @@ public class ApplicationRegistry {
 	private EntityFilterProvider filterProvider;
     
     private ApplicationRegistry() {
-    	adminData = bankingAccessor.readAdminData(null);
+    	adminData = (BookingAdminData) bankingAccessor.readAdminData(null).getEntity();
     	allEntityRetriever = new AllEntityRetriever();
     	actionFactory = new ActionFactory();
     	crudHandler = new DefaultCrudHandler();

@@ -1,8 +1,7 @@
 package de.gravitex.banking.client.accessor;
 
-import java.util.List;
-
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
+import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
@@ -25,78 +24,44 @@ import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingAccessor implements IBankingAccessor {
 
-	private HttpRemoteHandler remoteHandler;
+	private IHttpRemoteHandler remoteHandler;
 
 	public BankingAccessor() {
 		super();
 		remoteHandler = new HttpRemoteHandler();
 	}
 
-	public List<CreditInstitute> readCreditInstitutes(EntityRequester entityRequester) {
+	public HttpGetResult readCreditInstitutes(EntityRequester entityRequester) {
 		checkEntityRequester(entityRequester);
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
 	}
 
-	public List<TradingPartner> readTradingPartners(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartner.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	@SuppressWarnings("unchecked")
+	public HttpGetResult readTradingPartners(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartner.class));
 	}
 
-	public List<BookingView> readBookingViewsByAccount(Account account, EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(
-					HttpRequestBuilder.forEntityList(BookingView.class).byAttribute("account").identified(account.getId()));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readBookingViewsByAccount(Account account, EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(
+				HttpRequestBuilder.forEntityList(BookingView.class).byAttribute("account").identified(account.getId()));
 	}
 
-	public List<BookingView> readBookingViewsByTradingPartner(TradingPartner aTradingPartner, EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingView.class)
-					.byAttribute("tradingpartner").identified(aTradingPartner.getId()));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner, EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingView.class)
+				.byAttribute("tradingpartner").identified(aTradingPartner.getId()));
 	}
 
-	public List<Account> readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class)
-					.byAttribute("creditInstitute").identified(creditInstitute.getId()));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class)
+				.byAttribute("creditInstitute").identified(creditInstitute.getId()));
 	}
 
-	public List<StandingOrder> readStandingOrders(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(StandingOrder.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readStandingOrders(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(StandingOrder.class));
 	}
 
-	public List<Booking> readBookings(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readBookings(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
 	}
 
 	public HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute) {
@@ -109,23 +74,13 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.patchEntity(url, aTradingPartner);
 	}
 
-	public BookingAdminData readAdminData(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readAdminData(EntityRequester entityRequester) {
+		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}
 
 	@Override
-	public List<Account> readAccounts(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readAccounts(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
 	}
 
 	@Override
@@ -141,23 +96,13 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public Account readAccountById(Long accountId, EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readById(HttpRequestBuilder.forEntity(Account.class).identified(accountId));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readAccountById(Long accountId, EntityRequester entityRequester) {
+		return remoteHandler.readById(HttpRequestBuilder.forEntity(Account.class).identified(accountId));
 	}
 
 	@Override
-	public Booking readBookingById(Long bookingId, EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readById(HttpRequestBuilder.forEntity(Booking.class).identified(bookingId));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readBookingById(Long bookingId, EntityRequester entityRequester) {
+		return remoteHandler.readById(HttpRequestBuilder.forEntity(Booking.class).identified(bookingId));
 	}
 
 	@Override
@@ -190,24 +135,13 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.putEntity(url, account);
 	}
 	
-	public List<PurposeCategory> readPurposeCategorys(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readPurposeCategorys(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
 	}
 
 	@Override
-	public List<AccountInfo> readAccountInfos(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
-		} catch (EntityRequestException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+	public HttpGetResult readAccountInfos(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
 	}
 	
 	public HttpPatchResult patchBooking(Booking aBooking) {
@@ -222,12 +156,11 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public ImportBookings importBookings(Account account) {
+	public HttpGetResult importBookings(Account account) {
 		try {
 			HttpRequestBuilder requestBuilder = HttpRequestBuilder.forEntity(ImportBookings.class)
 					.identified(account.getId(), "accountId");
-			ImportBookings bookingImport = remoteHandler.readEntity(requestBuilder, ImportBookings.class);
-			return bookingImport;
+			return remoteHandler.readEntity(requestBuilder, ImportBookings.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -235,13 +168,8 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public List<BudgetPlanning> readBudgetPlannings(EntityRequester entityRequester) {
-		try {
-			return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BudgetPlanning.class));
-		} catch (EntityRequestException e) {
-			entityRequester.handleRequestException(e);
-			return null;
-		}
+	public HttpGetResult readBudgetPlannings(EntityRequester entityRequester) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BudgetPlanning.class));
 	}
 
 	@Override

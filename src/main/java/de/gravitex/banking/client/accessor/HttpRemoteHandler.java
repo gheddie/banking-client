@@ -22,13 +22,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
+import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
-import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking_core.entity.base.IdEntity;
 
-public class HttpRemoteHandler {		
+public class HttpRemoteHandler implements IHttpRemoteHandler {		
 
 	private Logger logger = LoggerFactory.getLogger(HttpRemoteHandler.class);
 
@@ -52,19 +52,6 @@ public class HttpRemoteHandler {
 		return mapper;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T> T readEntity(HttpRequestBuilder aRequestBuilder, Class<?> entityClass) throws EntityRequestException {
-		HttpResponse<String> response = null;
-		try {
-			String requestUrl = aRequestBuilder.buildRequestUrl();
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
-			response = client.send(request, BodyHandlers.ofString());
-			return (T) objectMapper.readValue(response.body(), entityClass);
-		} catch (Exception e) {
-			throw new EntityRequestException(response.body(), e, aRequestBuilder);
-		}
-	}
-
 	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
 		try {
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
@@ -106,21 +93,8 @@ public class HttpRemoteHandler {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T> T readById(HttpRequestBuilder aRequestBuilder) throws EntityRequestException {
-		HttpResponse<String> response = null;
-		try {
-			String requestUrl = aRequestBuilder.buildRequestUrl();
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
-			response = client.send(request, BodyHandlers.ofString());
-			return (T) objectMapper.readValue(response.body(), aRequestBuilder.getEntityClass());
-		} catch (Exception e) {
-			throw new EntityRequestException(response.body(), e, aRequestBuilder);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T> List<T> readEntityList(HttpRequestBuilder aRequestBuilder) throws EntityRequestException {
+	@Override
+	public HttpGetResult readEntityList(HttpRequestBuilder aRequestBuilder) {
 		HttpResponse<String> response = null;
 		try {
 			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class,
@@ -129,19 +103,46 @@ public class HttpRemoteHandler {
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
-			List<T> result = (List<T>) objectMapper.readValue(body, type);
-			return (List<T>) result;			
+			return new HttpGetResult(response.statusCode(), null, objectMapper.readValue(body, type));			
 		} catch (JacksonException e) {
-			throw new EntityRequestException(response.body(), null, aRequestBuilder);
+			return new HttpGetResult(response.statusCode(), response.body(), null);
 		} catch (IOException e) {
-			throw new EntityRequestException(response.body(), null, aRequestBuilder);
+			return new HttpGetResult(response.statusCode(), response.body(), null);
 		} catch (InterruptedException e) {
-			throw new EntityRequestException(response.body(), null, aRequestBuilder);
+			return new HttpGetResult(response.statusCode(), response.body(), null);
 		}
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
-	public <T> HttpPostResult post(HttpRequestBuilder aRequestBuilder, Object aRequestBody, Class<?> aResultType) {
+	@Override
+	public HttpGetResult readEntity(HttpRequestBuilder aRequestBuilder, Class<?> aEntityClass) {
+		HttpResponse<String> response = null;
+		try {
+			String requestUrl = aRequestBuilder.buildRequestUrl();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
+			response = client.send(request, BodyHandlers.ofString());
+			return new HttpGetResult(response.statusCode(), null,
+					objectMapper.readValue(response.body(), aEntityClass));
+		} catch (Exception e) {
+			return new HttpGetResult(response.statusCode(), response.body(), null);
+		}
+	}
+
+	@Override
+	public HttpGetResult readById(HttpRequestBuilder aRequestBuilder) {
+		HttpResponse<String> response = null;
+		try {
+			String requestUrl = aRequestBuilder.buildRequestUrl();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
+			response = client.send(request, BodyHandlers.ofString());
+			return new HttpGetResult(response.statusCode(), null,
+					objectMapper.readValue(response.body(), aRequestBuilder.getEntityClass()));
+		} catch (Exception e) {
+			return new HttpGetResult(response.statusCode(), response.body(), null);
+		}
+	}
+
+	@Override
+	public HttpPostResult post(HttpRequestBuilder aRequestBuilder, Object aRequestBody, Class<?> aResultEntityClass) {
 		HttpResponse<String> response = null;
 		try {
 			String requstUrl = aRequestBuilder.buildRequestUrl();
@@ -149,9 +150,7 @@ public class HttpRemoteHandler {
 					.method(HttpMethod.POST.name(), BodyPublishers.ofString(new JSONObject(aRequestBody).toString()))
 					.uri(URI.create(requstUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
-			String body = response.body();
-			T result = (T) objectMapper.readValue(response.body(), aResultType);
-			return new HttpPostResult(response.statusCode(), null, result);			
+			return new HttpPostResult(response.statusCode(), null, objectMapper.readValue(response.body(), aResultEntityClass));			
 		} catch (JsonMappingException e) {
 			return new HttpPostResult(response.statusCode(), response.body(), null);
 		} catch (JsonProcessingException e) {

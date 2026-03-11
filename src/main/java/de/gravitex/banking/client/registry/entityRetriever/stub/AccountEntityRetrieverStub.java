@@ -8,8 +8,9 @@ import de.gravitex.banking_core.entity.Account;
 
 public class AccountEntityRetrieverStub extends EntityRetrieverStub<Account> {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Account> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readAccounts(null);
+		return (List<Account>) aBankingAccessor.readAccounts(null).getEntityList();
 	}
 }

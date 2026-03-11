@@ -33,10 +33,10 @@ public class BudgetPlanningTabbedPanel  extends TabbedPanel {
 		fillData();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillData() {
-		List<BudgetPlanning> budgetPlannings = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBudgetPlannings(null);
-		int werner = 5;
+		List<BudgetPlanning> budgetPlannings = (List<BudgetPlanning>) ApplicationRegistry.getInstance().getBankingAccessor()
+				.readBudgetPlannings(null).getEntityList();
 	}
 
 	@Override

@@ -26,7 +26,8 @@ public class ImportBookingsForAccountAction extends TableContextAction<Account> 
 
 	@Override
 	protected void executeAction(Account account) {
-		ImportBookings imported = ApplicationRegistry.getInstance().getBankingAccessor().importBookings(account);
+		ImportBookings imported = (ImportBookings) ApplicationRegistry.getInstance().getBankingAccessor()
+				.importBookings(account).getEntity();
 		new BookingImportResultDialog(imported).setVisible(true);
 	}
 }

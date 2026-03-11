@@ -1,0 +1,30 @@
+package de.gravitex.banking.client.accessor.response;
+
+import java.util.List;
+
+import de.gravitex.banking.client.accessor.response.base.HttpResult;
+
+public class HttpGetResult extends HttpResult {
+
+	private List<?> entityList;
+	
+	private Object entity;
+	
+	public HttpGetResult(int aStatusCode, String aErrorMessage, Object aEntity) {
+		super(aStatusCode, aErrorMessage);
+		this.entity = aEntity;
+	}
+	
+	public HttpGetResult(int aStatusCode, String aErrorMessage, List<?> aEntityList) {
+		super(aStatusCode, aErrorMessage);
+		this.entityList = aEntityList;
+	}
+
+	public List<?> getEntityList() {
+		return entityList;
+	}
+	
+	public Object getEntity() {
+		return entity;
+	}
+}

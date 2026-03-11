@@ -8,8 +8,9 @@ import de.gravitex.banking_core.entity.TradingPartner;
 
 public class TradingPartnerEntityRetrieverStub extends EntityRetrieverStub<TradingPartner> {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TradingPartner> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readTradingPartners(null);
+		return (List<TradingPartner>) aBankingAccessor.readTradingPartners(null).getEntityList();
 	}
 }

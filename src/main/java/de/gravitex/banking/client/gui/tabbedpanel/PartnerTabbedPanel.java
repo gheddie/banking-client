@@ -34,9 +34,10 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 		fillData();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillData() {
-		List<TradingPartner> tradingPartners = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readTradingPartners(null);
+		List<TradingPartner> tradingPartners = (List<TradingPartner>) ApplicationRegistry.getInstance()
+				.getBankingAccessor().readTradingPartners(null).getEntityList();
 		logger.info("read " + tradingPartners.size() + " trading partners...");
 		partnerTable.displayEntities(tradingPartners);
 	}
@@ -83,9 +84,11 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
-		return ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners(null);
+		return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
+				.readTradingPartners(null).getEntityList();
 	}
 	
 	@Override

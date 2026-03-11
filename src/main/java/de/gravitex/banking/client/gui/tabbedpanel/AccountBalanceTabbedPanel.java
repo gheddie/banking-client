@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.LayoutManager;
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.gui.EntityTablePanel;
@@ -43,8 +44,8 @@ public class AccountBalanceTabbedPanel extends TabbedPanel implements EntityTabl
 	}
 
 	private void fillData() {
-		List<AccountInfo> accountInfos = ApplicationRegistry.getInstance().getBankingAccessor().readAccountInfos(null);		
-		accountInfoTable.displayEntities(accountInfos);
+		HttpGetResult result = ApplicationRegistry.getInstance().getBankingAccessor().readAccountInfos(null);		
+		accountInfoTable.displayEntities(result.getEntityList());
 	}
 
 	@Override

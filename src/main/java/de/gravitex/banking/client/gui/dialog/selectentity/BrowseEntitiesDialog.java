@@ -2,8 +2,8 @@ package de.gravitex.banking.client.gui.dialog.selectentity;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.exception.BankingException;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
@@ -37,15 +37,15 @@ public abstract class BrowseEntitiesDialog<T extends NoIdEntity, E extends NoIdE
 
 	private void fillEntities() {
 		try {
-			List<E> entties = readSelectableEntities();
-			entityTable.displayEntities(entties);
+			HttpGetResult result = readSelectableEntities();
+			entityTable.displayEntities(result.getEntityList());
 		} catch (BankingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	protected abstract List<E> readSelectableEntities() throws BankingException;
+	protected abstract HttpGetResult readSelectableEntities() throws BankingException;
 
 	public E getSelectedEntity() {
 		return selectedEntity;

@@ -82,7 +82,7 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 	private void closeDialog() {
 		
 		MergeTradingPartners merge = new MergeTradingPartners();
-		merge.setNewTradingKey(tfTradingKey.getText());			
+		merge.setNewTradingKey(tfTradingKey.getText());
 		List<TradingPartner> partnersToMerge = new ArrayList<>();
 		for (Object tmp : tradingPartnerTable.getSelectedObjects()) {
 			partnersToMerge.add((TradingPartner) tmp);
@@ -91,7 +91,8 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 		HttpPostResult result = ApplicationRegistry.getInstance().getBankingAccessor().mergeTradingPartners(merge);
 		if (result.hasValidStatusCode()) {
 			TradingPartnersMergeResult mergeResult = (TradingPartnersMergeResult) result.getResponseObject();
-			ApplicationRegistry.getInstance().getInteractionHandler().showMessage("Zusammenfühtung erfolgreich ("+mergeResult.summarize()+")", this);
+			ApplicationRegistry.getInstance().getInteractionHandler()
+					.showMessage("Zusammenfühtung erfolgreich (" + mergeResult.summarize() + ")", this);
 			dispose();
 		} else {
 			ApplicationRegistry.getInstance().getInteractionHandler().showError(result.getErrorMessage(), this);
@@ -100,8 +101,8 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 	}
 
 	private void fillData() {
-		tradingPartnerTable
-				.displayEntities(ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners(null));
+		tradingPartnerTable.displayEntities(
+				ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners(null).getEntityList());
 	}
 
 	@Override

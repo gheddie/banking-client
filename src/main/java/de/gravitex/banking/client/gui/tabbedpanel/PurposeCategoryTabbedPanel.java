@@ -45,9 +45,10 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 		fillData();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillData() {
-		List<PurposeCategory> purposeCategories = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readPurposeCategorys(null);
+		List<PurposeCategory> purposeCategories = (List<PurposeCategory>) ApplicationRegistry.getInstance()
+				.getBankingAccessor().readPurposeCategorys(null).getEntityList();
 		purposeCategoryTable.displayEntities(purposeCategories);		
 	}
 
@@ -88,8 +89,10 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
-		return ApplicationRegistry.getInstance().getBankingAccessor().readPurposeCategorys(null);
+		return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
+				.readPurposeCategorys(null).getEntityList();
 	}
 }

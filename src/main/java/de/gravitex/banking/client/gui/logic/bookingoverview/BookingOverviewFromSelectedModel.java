@@ -12,10 +12,11 @@ public class BookingOverviewFromSelectedModel extends BookingOverviewModel {
 		super(aReferenceBooking);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List<BookingView> filterBookings() {
-		List<BookingView> aBookingViewsForAccount = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBookingViewsByAccount(getAccount(), null);
+		List<BookingView> aBookingViewsForAccount = (List<BookingView>) ApplicationRegistry.getInstance()
+				.getBankingAccessor().readBookingViewsByAccount(getAccount(), null).getEntityList();
 		List<BookingView> result = new ArrayList<>();
 		for (BookingView aBookingView : aBookingViewsForAccount) {
 			if (aBookingView.getBookingDate().isAfter(getReferenceBooking().getBookingDate())

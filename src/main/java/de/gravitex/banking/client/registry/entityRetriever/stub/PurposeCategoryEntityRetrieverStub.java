@@ -8,8 +8,9 @@ import de.gravitex.banking_core.entity.PurposeCategory;
 
 public class PurposeCategoryEntityRetrieverStub extends EntityRetrieverStub<PurposeCategory> {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<PurposeCategory> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return aBankingAccessor.readPurposeCategorys(null);
+		return (List<PurposeCategory>) aBankingAccessor.readPurposeCategorys(null).getEntityList();
 	}
 }

@@ -3,6 +3,7 @@ package de.gravitex.banking.client.gui.dialog.selectentity;
 import java.awt.Window;
 import java.util.List;
 
+import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.client.exception.BankingException;
@@ -32,7 +33,7 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	}
 
 	@Override
-	protected List<BookingView> readSelectableEntities() throws BankingException {
+	protected HttpGetResult readSelectableEntities() throws BankingException {
 		return ApplicationRegistry.getInstance().getBankingAccessor()
 				.readBookingViewsByTradingPartner(getReferenceObject(), null);
 	}

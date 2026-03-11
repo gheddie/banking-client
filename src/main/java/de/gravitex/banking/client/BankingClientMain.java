@@ -52,19 +52,21 @@ public class BankingClientMain {
 		// testMergeTradingPartners();
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void testMergeTradingPartners() {
 		
-		List<TradingPartner> allTradingPartners = new BankingAccessor().readTradingPartners(null);
+		List<TradingPartner> allTradingPartners = (List<TradingPartner>) new BankingAccessor().readTradingPartners(null)
+				.getEntityList();
 		List<TradingPartner> toMerge = new ArrayList<>();
 		for (TradingPartner aTradingPartner : allTradingPartners) {
 			if (aTradingPartner.getTradingKey().contains("MCD")) {
 				toMerge.add(aTradingPartner);
 			}
 		}
-		
+
 		try {
 			MergeTradingPartners merge = new MergeTradingPartners();
-			merge.setNewTradingKey("MCD_CONCATTED");			
+			merge.setNewTradingKey("MCD_CONCATTED");
 			merge.setPartnersToMerge(toMerge);
 			System.out.println(new ObjectMapper().writeValueAsString(merge));
 		} catch (JsonProcessingException e) {

@@ -123,14 +123,16 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		return panel;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fill() {
-		List<CreditInstitute> creditInstitutes = ApplicationRegistry.getInstance().getBankingAccessor()
-				.readCreditInstitutes(this);
+		List<CreditInstitute> creditInstitutes = (List<CreditInstitute>) ApplicationRegistry.getInstance().getBankingAccessor()
+				.readCreditInstitutes(this).getEntityList();
 		if (creditInstitutes != null) {
 			creditInstituteTable.displayEntities(creditInstitutes);	
 		}		
 	}
 
+	@SuppressWarnings("unchecked")
 	public void onEntitySelected(Object aEntity) {
 
 		selectedEntity = aEntity;
@@ -138,14 +140,14 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		logger.info("onEntitySelected --> " + selectedEntity + " [" + aEntity.getClass().getSimpleName() + "]");
 		if (aEntity instanceof CreditInstitute) {
 			selectedCreditInstitute = (CreditInstitute) aEntity;
-			List<Account> creditInstitutes = ApplicationRegistry.getInstance().getBankingAccessor()
-					.readAccounts((CreditInstitute) aEntity, null);
+			List<Account> creditInstitutes = (List<Account>) ApplicationRegistry.getInstance().getBankingAccessor()
+					.readAccounts((CreditInstitute) aEntity, null).getEntityList();
 			accountTable.displayEntities(creditInstitutes);
 		}
 		if (aEntity instanceof Account) {
 			selectedAccount = (Account) aEntity;
-			List<BookingView> accounts = ApplicationRegistry.getInstance().getBankingAccessor()
-					.readBookingViewsByAccount((Account) aEntity, null);
+			List<BookingView> accounts = (List<BookingView>) ApplicationRegistry.getInstance().getBankingAccessor()
+					.readBookingViewsByAccount((Account) aEntity, null).getEntityList();
 			bookingTable.displayEntities(accounts);
 		}
 	}
@@ -189,17 +191,21 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		if (aEntityClass.equals(CreditInstitute.class)) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().readCreditInstitutes(null);
+			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
+					.readCreditInstitutes(null).getEntityList();
 		}
 		if (aEntityClass.equals(Account.class)) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().readAccounts(selectedCreditInstitute, null);
+			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
+					.readAccounts(selectedCreditInstitute, null).getEntityList();
 		}
 		if (aEntityClass.equals(BookingView.class)) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().readBookingViewsByAccount(selectedAccount, null);
-		}		
+			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
+					.readBookingViewsByAccount(selectedAccount, null).getEntityList();
+		}
 		return null;
 	}
 
