@@ -43,13 +43,24 @@ public class BankingClientMain {
 
 	public static void main(String[] args) {
 
-		doRunClient();
+		// doRunClient();
 
 		// testGridbagFilterPanelLayout();
 
 		// testReadBudgetPlanning();
 		
 		// testMergeTradingPartners();
+		
+		manualTest();
+	}
+
+	private static void manualTest() {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			System.out.println(mapper.writeValueAsString(new Account()));			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
