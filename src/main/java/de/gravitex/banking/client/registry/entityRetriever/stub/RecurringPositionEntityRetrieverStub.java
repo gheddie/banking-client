@@ -4,13 +4,12 @@ import java.util.List;
 
 import de.gravitex.banking.client.accessor.IBankingAccessor;
 import de.gravitex.banking.client.registry.entityRetriever.stub.base.EntityRetrieverStub;
-import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.RecurringPosition;
 
 public class RecurringPositionEntityRetrieverStub extends EntityRetrieverStub<RecurringPosition> {
 
 	@Override
 	public List<RecurringPosition> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return (List<RecurringPosition>) aBankingAccessor.readRecurringPositions(null).getEntityList();
+		return (List<RecurringPosition>) aBankingAccessor.readRecurringPositions().getEntityList();
 	}
 }

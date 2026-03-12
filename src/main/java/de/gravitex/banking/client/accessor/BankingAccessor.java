@@ -5,8 +5,6 @@ import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
-import de.gravitex.banking.client.accessor.util.EntityRequester;
-import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.BudgetPlanning;
@@ -32,36 +30,34 @@ public class BankingAccessor implements IBankingAccessor {
 		remoteHandler = new HttpRemoteHandler();
 	}
 
-	public HttpGetResult readCreditInstitutes(EntityRequester entityRequester) {
-		checkEntityRequester(entityRequester);
+	public HttpGetResult readCreditInstitutes() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
 	}
 
-	@SuppressWarnings("unchecked")
-	public HttpGetResult readTradingPartners(EntityRequester entityRequester) {
+	public HttpGetResult readTradingPartners() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartner.class));
 	}
 
-	public HttpGetResult readBookingViewsByAccount(Account account, EntityRequester entityRequester) {
+	public HttpGetResult readBookingViewsByAccount(Account account) {
 		return remoteHandler.readEntityList(
 				HttpRequestBuilder.forEntityList(BookingView.class).byAttribute("account").identified(account.getId()));
 	}
 
-	public HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner, EntityRequester entityRequester) {
+	public HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner) {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingView.class)
 				.byAttribute("tradingpartner").identified(aTradingPartner.getId()));
 	}
 
-	public HttpGetResult readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester) {
+	public HttpGetResult readAccounts(CreditInstitute creditInstitute) {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class)
 				.byAttribute("creditInstitute").identified(creditInstitute.getId()));
 	}
 
-	public HttpGetResult readStandingOrders(EntityRequester entityRequester) {
+	public HttpGetResult readStandingOrders() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(StandingOrder.class));
 	}
 
-	public HttpGetResult readBookings(EntityRequester entityRequester) {
+	public HttpGetResult readBookings() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
 	}
 
@@ -75,12 +71,12 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.patchEntity(url, aTradingPartner);
 	}
 
-	public HttpGetResult readAdminData(EntityRequester entityRequester) {
+	public HttpGetResult readAdminData() {
 		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}
 
 	@Override
-	public HttpGetResult readAccounts(EntityRequester entityRequester) {
+	public HttpGetResult readAccounts() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
 	}
 
@@ -97,12 +93,12 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpGetResult readAccountById(Long accountId, EntityRequester entityRequester) {
+	public HttpGetResult readAccountById(Long accountId) {
 		return remoteHandler.readById(HttpRequestBuilder.forEntity(Account.class).identified(accountId));
 	}
 
 	@Override
-	public HttpGetResult readBookingById(Long bookingId, EntityRequester entityRequester) {
+	public HttpGetResult readBookingById(Long bookingId) {
 		return remoteHandler.readById(HttpRequestBuilder.forEntity(Booking.class).identified(bookingId));
 	}
 
@@ -118,12 +114,6 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.putEntity(url, aCreditInstitute);		
 	}
 	
-	private void checkEntityRequester(EntityRequester entityRequester) {
-		if (entityRequester == null) {
-			throw new IllegalArgumentException("entity requester must not be NULL!!!");
-		}
-	}
-	
 	@Override
 	public HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory) {
 		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
@@ -131,13 +121,7 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpPutResult putAccount(Account account) {
-		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, account);
-	}
-	
-	@Override
-	public HttpGetResult readAccountInfos(EntityRequester entityRequester) {
+	public HttpGetResult readAccountInfos() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
 	}
 	
@@ -165,7 +149,7 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpGetResult readBudgetPlannings(EntityRequester entityRequester) {
+	public HttpGetResult readBudgetPlannings() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BudgetPlanning.class));
 	}
 
@@ -176,12 +160,24 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 	
 	@Override
-	public HttpGetResult readPurposeCategorys(EntityRequester entityRequester) {
+	public HttpGetResult readPurposeCategorys() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
 	}
 
 	@Override
-	public HttpGetResult readRecurringPositions(EntityRequester entityRequester) {
+	public HttpGetResult readRecurringPositions() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(RecurringPosition.class));
+	}
+	
+	@Override
+	public HttpPutResult putAccount(Account account) {
+		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
+		return remoteHandler.putEntity(url, account);
+	}
+
+	@Override
+	public HttpPutResult putRecurringPosition(RecurringPosition aRecurringPosition) {
+		String url = HttpRequestBuilder.forEntity(RecurringPosition.class).buildRequestUrl();
+		return remoteHandler.putEntity(url, aRecurringPosition);
 	}
 }

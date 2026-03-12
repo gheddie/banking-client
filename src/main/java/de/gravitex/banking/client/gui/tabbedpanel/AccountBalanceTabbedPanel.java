@@ -44,7 +44,7 @@ public class AccountBalanceTabbedPanel extends TabbedPanel implements EntityTabl
 	}
 
 	private void fillData() {
-		HttpGetResult result = ApplicationRegistry.getInstance().getBankingAccessor().readAccountInfos(null);		
+		HttpGetResult result = ApplicationRegistry.getInstance().getBankingAccessor().readAccountInfos();		
 		accountInfoTable.displayEntities(result.getEntityList());
 	}
 

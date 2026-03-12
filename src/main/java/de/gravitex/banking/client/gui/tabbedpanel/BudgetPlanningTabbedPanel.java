@@ -36,7 +36,7 @@ public class BudgetPlanningTabbedPanel  extends TabbedPanel {
 	@SuppressWarnings("unchecked")
 	private void fillData() {
 		List<BudgetPlanning> budgetPlannings = (List<BudgetPlanning>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBudgetPlannings(null).getEntityList();
+				.readBudgetPlannings().getEntityList();
 	}
 
 	@Override

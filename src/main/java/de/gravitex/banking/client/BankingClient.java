@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
-import de.gravitex.banking.client.accessor.util.EntityRequester;
-import de.gravitex.banking.client.exception.EntityRequestException;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
@@ -39,7 +37,7 @@ import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.entity.view.BookingView;
 
-public class BankingClient extends JFrame implements EntityTablePanelListener, ChangeListener, EntityRequester {
+public class BankingClient extends JFrame implements EntityTablePanelListener, ChangeListener {
 	
 	private Logger logger = LoggerFactory.getLogger(BankingClient.class);
 
@@ -137,7 +135,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	@SuppressWarnings("unchecked")
 	private void fill() {
 		List<CreditInstitute> creditInstitutes = (List<CreditInstitute>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readCreditInstitutes(this).getEntityList();
+				.readCreditInstitutes().getEntityList();
 		if (creditInstitutes != null) {
 			creditInstituteTable.displayEntities(creditInstitutes);	
 		}		
@@ -152,13 +150,13 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		if (aEntity instanceof CreditInstitute) {
 			selectedCreditInstitute = (CreditInstitute) aEntity;
 			List<Account> creditInstitutes = (List<Account>) ApplicationRegistry.getInstance().getBankingAccessor()
-					.readAccounts((CreditInstitute) aEntity, null).getEntityList();
+					.readAccounts((CreditInstitute) aEntity).getEntityList();
 			accountTable.displayEntities(creditInstitutes);
 		}
 		if (aEntity instanceof Account) {
 			selectedAccount = (Account) aEntity;
 			List<BookingView> accounts = (List<BookingView>) ApplicationRegistry.getInstance().getBankingAccessor()
-					.readBookingViewsByAccount((Account) aEntity, null).getEntityList();
+					.readBookingViewsByAccount((Account) aEntity).getEntityList();
 			bookingTable.displayEntities(accounts);
 		}
 	}
@@ -207,15 +205,15 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		if (aEntityClass.equals(CreditInstitute.class)) {
 			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
-					.readCreditInstitutes(null).getEntityList();
+					.readCreditInstitutes().getEntityList();
 		}
 		if (aEntityClass.equals(Account.class)) {
 			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
-					.readAccounts(selectedCreditInstitute, null).getEntityList();
+					.readAccounts(selectedCreditInstitute).getEntityList();
 		}
 		if (aEntityClass.equals(BookingView.class)) {
 			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
-					.readBookingViewsByAccount(selectedAccount, null).getEntityList();
+					.readBookingViewsByAccount(selectedAccount).getEntityList();
 		}
 		return null;
 	}
@@ -229,10 +227,5 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 			return ApplicationRegistry.getInstance().getBankingAccessor().putAccount((Account) entity);	
 		}		
 		return null;
-	}
-
-	@Override
-	public void handleRequestException(EntityRequestException aEntityRequestException) {
-		ApplicationRegistry.getInstance().getInteractionHandler().showError(aEntityRequestException.buildMessage(), this);
 	}
 }

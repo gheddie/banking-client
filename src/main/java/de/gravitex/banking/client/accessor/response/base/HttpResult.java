@@ -1,27 +1,31 @@
 package de.gravitex.banking.client.accessor.response.base;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import de.gravitex.banking.client.accessor.request.HttpRequestType;
+import de.gravitex.banking.client.accessor.response.util.HttpResultListener;
 import de.gravitex.banking_core.util.StringHelper;
 
 public abstract class HttpResult {
 
 	protected static final int UNDEFINED_RESPONSE_CODE = -1;
 
-	private static final String DEFAULT_ERROR_MESSAGE = "Fehler";
-	
 	private int statusCode;
 
 	private String errorMessage;
+
+	private String requestUrl;
 	
-	public HttpResult(int aStatusCode, String aErrorMessage) {
+	public HttpResult(int aStatusCode, String aErrorMessage, String aRequestUrl) {
 		super();
 		this.statusCode = aStatusCode;
 		this.errorMessage = aErrorMessage;
+		this.requestUrl = aRequestUrl;
 	}
 	
-	public HttpResult() {
-		this(UNDEFINED_RESPONSE_CODE, null);
-	}
-
 	public int getStatusCode() {
 		return statusCode;
 	}
@@ -31,9 +35,40 @@ public abstract class HttpResult {
 	}
 
 	public String getErrorMessage() {
-		if (!StringHelper.isBlank(errorMessage)) {
-			return errorMessage;	
+		return errorMessage;
+	}
+	
+	public String getRequestUrl() {
+		return requestUrl;
+	}
+
+	public abstract HttpRequestType getRequestType();
+
+	public abstract void cacheRequestResult(HttpResultListener aHttpResultListener, String aVariableName);
+
+	public abstract String formatResponseContext();
+	
+	@Override
+	public String toString() {
+		return requestUrl;
+	}
+	
+	protected String formatSingleObject(Object aObject) {
+		if (aObject == null) {
+			return "";
 		}
-		return DEFAULT_ERROR_MESSAGE;
+		return "Objekt vom Typ {" + aObject.getClass().getSimpleName() + "}";
+	}
+	
+	protected String formatObjectList(List<?> aEntityList) {
+		if (aEntityList == null || aEntityList.isEmpty()) {
+			return "";
+		}
+		Set<String> classes = new HashSet<>();
+		for (Object entity : aEntityList) {			
+			classes.add(entity.getClass().getSimpleName());
+		}
+		return "Liste mit {" + aEntityList.size() + "} Einträgen ["
+				+ StringHelper.seperateList(classes.toArray(new String[classes.size()]), ",") + "]";
 	}
 }

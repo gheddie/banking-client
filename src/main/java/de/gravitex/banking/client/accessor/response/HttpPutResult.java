@@ -1,14 +1,34 @@
 package de.gravitex.banking.client.accessor.response;
 
+import de.gravitex.banking.client.accessor.request.HttpRequestType;
 import de.gravitex.banking.client.accessor.response.base.HttpResult;
+import de.gravitex.banking.client.accessor.response.util.HttpResultListener;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class HttpPutResult extends HttpResult {
 
-	public HttpPutResult(int aStatusCode, String aErrorMessage) {
-		super(aStatusCode, aErrorMessage);
+	private IdEntity responseObject;
+
+	public HttpPutResult(int aStatusCode, String aErrorMessage, String aRequestUrl, IdEntity aResponseObject) {
+		super(aStatusCode, aErrorMessage, aRequestUrl);
+		this.responseObject = aResponseObject;
 	}
 	
-	public HttpPutResult() {
-		super();
+	@Override
+	public HttpRequestType getRequestType() {
+		return HttpRequestType.PUT;
+	}
+	
+	@Override
+	public void cacheRequestResult(HttpResultListener aHttpResultListener, String aVariableName) {
+		aHttpResultListener.acceptObjectResult(responseObject, aVariableName);
+	}
+	
+	@Override
+	public String formatResponseContext() {
+		if (responseObject == null) {
+			return null;
+		}
+		return formatSingleObject(responseObject);
 	}
 }

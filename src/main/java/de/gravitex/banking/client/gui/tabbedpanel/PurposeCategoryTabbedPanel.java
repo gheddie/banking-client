@@ -48,7 +48,7 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 	@SuppressWarnings("unchecked")
 	private void fillData() {
 		List<PurposeCategory> purposeCategories = (List<PurposeCategory>) ApplicationRegistry.getInstance()
-				.getBankingAccessor().readPurposeCategorys(null).getEntityList();
+				.getBankingAccessor().readPurposeCategorys().getEntityList();
 		purposeCategoryTable.displayEntities(purposeCategories);		
 	}
 
@@ -93,6 +93,6 @@ public class PurposeCategoryTabbedPanel extends TabbedPanel implements EntityTab
 	@Override
 	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readPurposeCategorys(null).getEntityList();
+				.readPurposeCategorys().getEntityList();
 	}
 }

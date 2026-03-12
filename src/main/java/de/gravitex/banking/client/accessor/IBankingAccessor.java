@@ -5,11 +5,11 @@ import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
-import de.gravitex.banking.client.accessor.util.EntityRequester;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
+import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
@@ -17,21 +17,21 @@ import de.gravitex.banking_core.dto.MergeTradingPartners;
 public interface IBankingAccessor {
 
 	// read
-	HttpGetResult readAccountById(Long accountId, EntityRequester entityRequester);
-	HttpGetResult readBookingById(Long bookingId, EntityRequester entityRequester);
-	HttpGetResult readCreditInstitutes(EntityRequester entityRequester);	
-	HttpGetResult readAccounts(CreditInstitute creditInstitute, EntityRequester entityRequester);	
-	HttpGetResult readTradingPartners(EntityRequester entityRequester);	
-	HttpGetResult readBookingViewsByAccount(Account account, EntityRequester entityRequester);
-	HttpGetResult readPurposeCategorys(EntityRequester entityRequester);
-	HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner, EntityRequester entityRequester);
-	HttpGetResult readStandingOrders(EntityRequester entityRequester);
-	HttpGetResult readBookings(EntityRequester entityRequester);
-	HttpGetResult readAdminData(EntityRequester entityRequester);
-	HttpGetResult readAccounts(EntityRequester entityRequester);
-	HttpGetResult readAccountInfos(EntityRequester entityRequester);
-	HttpGetResult readRecurringPositions(EntityRequester entityRequester);
-	HttpGetResult readBudgetPlannings(EntityRequester entityRequester);
+	HttpGetResult readAccountById(Long accountId);
+	HttpGetResult readBookingById(Long bookingId);
+	HttpGetResult readCreditInstitutes();	
+	HttpGetResult readAccounts(CreditInstitute creditInstitute);	
+	HttpGetResult readTradingPartners();	
+	HttpGetResult readBookingViewsByAccount(Account account);
+	HttpGetResult readPurposeCategorys();
+	HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner);
+	HttpGetResult readStandingOrders();
+	HttpGetResult readBookings();
+	HttpGetResult readAdminData();
+	HttpGetResult readAccounts();
+	HttpGetResult readAccountInfos();
+	HttpGetResult readRecurringPositions();
+	HttpGetResult readBudgetPlannings();
 
 	// patch
 	HttpPatchResult patchBooking(Booking aBooking);
@@ -45,6 +45,7 @@ public interface IBankingAccessor {
 	HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory);
 	HttpPutResult putCreditInstitute(CreditInstitute aCreditInstitute);
 	HttpPutResult putAccount(Account entity);
+	HttpPutResult putRecurringPosition(RecurringPosition aRecurringPosition);
 
 	// delete
 	HttpDeleteResult deleteEntity(IdEntity aEntity);

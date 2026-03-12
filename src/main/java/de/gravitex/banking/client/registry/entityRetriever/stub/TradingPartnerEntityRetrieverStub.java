@@ -11,6 +11,6 @@ public class TradingPartnerEntityRetrieverStub extends EntityRetrieverStub<Tradi
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<TradingPartner> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return (List<TradingPartner>) aBankingAccessor.readTradingPartners(null).getEntityList();
+		return (List<TradingPartner>) aBankingAccessor.readTradingPartners().getEntityList();
 	}
 }

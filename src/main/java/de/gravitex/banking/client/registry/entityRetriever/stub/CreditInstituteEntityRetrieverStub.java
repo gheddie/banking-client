@@ -11,6 +11,6 @@ public class CreditInstituteEntityRetrieverStub extends EntityRetrieverStub<Cred
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CreditInstitute> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return (List<CreditInstitute>) aBankingAccessor.readCreditInstitutes(this).getEntityList();
+		return (List<CreditInstitute>) aBankingAccessor.readCreditInstitutes().getEntityList();
 	}
 }

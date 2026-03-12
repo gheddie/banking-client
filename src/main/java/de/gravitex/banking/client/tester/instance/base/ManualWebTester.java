@@ -1,0 +1,158 @@
+package de.gravitex.banking.client.tester.instance.base;
+
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import de.gravitex.banking.client.accessor.BankingAccessor;
+import de.gravitex.banking.client.accessor.IBankingAccessor;
+import de.gravitex.banking.client.accessor.response.base.HttpResult;
+import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.client.registry.db.info.base.DatabaseTypeInfo;
+import de.gravitex.banking.client.tester.exception.ManualWebTesterException;
+import de.gravitex.banking.client.tester.matcher.ContainedStringExceptionMatcher;
+import de.gravitex.banking.client.tester.matcher.base.ExceptionMatcher;
+import de.gravitex.banking.client.tester.reporterstub.GuiWebTestReporter;
+import de.gravitex.banking.client.tester.reporterstub.base.WebTestReporterStub;
+import de.gravitex.banking.client.tester.util.WebTesterObjectCache;
+import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.util.StringHelper;
+
+public abstract class ManualWebTester {
+
+	private IBankingAccessor bankingAccessor;
+
+	private BookingAdminData adminData;
+
+	private DatabaseTypeInfo databaseInfo;
+
+	private WebTesterObjectCache objectCache = new WebTesterObjectCache();
+
+	private WebTestReporterStub webTestReporter;
+
+	public ManualWebTester() {
+		super();
+		webTestReporter = initTestReporter();
+		this.bankingAccessor = new BankingAccessor();
+	}
+
+	private WebTestReporterStub initTestReporter() {
+		
+		// return new ConsoleWebTestReporter();
+		return new GuiWebTestReporter();
+	}
+
+	public ManualWebTester connect() {
+
+		adminData = (BookingAdminData) bankingAccessor.readAdminData().getEntity();
+		databaseInfo = ApplicationRegistry.getInstance().getDatabaseAdministrator()
+				.getDatabaseInfoForDriverClass(adminData.getDatabaseDriverClass());
+		if (!databaseInfo.shouldRunTests()) {
+			throw new ManualWebTesterException(
+					"unsuitable db type for running tests {" + databaseInfo.getTypeDescription() + "}!!!");
+		}
+		return this;
+	}
+
+	public abstract ManualWebTester runTests();
+
+	private void evaluateRequestResult(HttpResult aHttpResult, boolean aShouldSuceed, String aVariableName,
+			ExceptionMatcher aExceptionMatcher) {
+		
+		if (aShouldSuceed && (aExceptionMatcher != null)) {
+			throw new ManualWebTesterException(
+					"exception matcher must not be provided on expecting a positive request result {"
+							+ aHttpResult.getRequestUrl() + "}!!!");
+		}
+		if (aShouldSuceed) {
+			if (!aHttpResult.hasValidStatusCode()) {
+				throw new ManualWebTesterException(
+						"request [" + aHttpResult.getRequestType() + "] for url {" + aHttpResult.getRequestUrl()
+								+ "} should have suceeded, but it failed --> " + aHttpResult.getErrorMessage());
+			}
+		} else {
+			if (aHttpResult.hasValidStatusCode()) {
+				throw new ManualWebTesterException(
+						"request [" + aHttpResult.getRequestType() + "] for url {" + aHttpResult.getRequestUrl()
+								+ "} should have failed, but it suceeded --> " + aHttpResult.getErrorMessage());
+			}
+		}
+		if (aHttpResult.hasValidStatusCode()) {
+			if (!StringHelper.isBlank(aVariableName)) {
+				aHttpResult.cacheRequestResult(objectCache, aVariableName);
+			}
+		} else {
+			if (aExceptionMatcher != null) {
+				if (!aExceptionMatcher.matchesException(aHttpResult.getErrorMessage())) {
+					throw new ManualWebTesterException("expected error message {" + aExceptionMatcher.getExceptionPart()
+							+ "} does match {" + aHttpResult.getErrorMessage() + "}!!!");
+				}
+			}
+		}
+
+		evaluateStatusCode(aHttpResult, aShouldSuceed);
+
+		webTestReporter.acceptSuccess(aHttpResult, aShouldSuceed);
+	}
+
+	private void evaluateStatusCode(HttpResult aHttpResult, boolean aShouldSuceed) {
+		if (aHttpResult.hasValidStatusCode()) {
+			if (!aShouldSuceed) {
+				throw new ManualWebTesterException(null);
+			}
+		} else {
+			if (aShouldSuceed) {
+				throw new ManualWebTesterException(null);
+			}
+		}
+	}
+
+	protected IBankingAccessor getBankingAccessor() {
+		return bankingAccessor;
+	}
+
+	protected WebTesterObjectCache getObjectCache() {
+		return objectCache;
+	}
+
+	protected ExceptionMatcher errorMessageContains(String aContainedString) {
+		return new ContainedStringExceptionMatcher(aContainedString);
+	}
+
+	public void proclaimSuccess() {
+		JOptionPane.showMessageDialog(null, "Alle Tests erfolgreich!!!");
+		webTestReporter.onTestSucceed();
+	}
+
+	private void acceptHttpResult(HttpResult aHttpResult, boolean aShouldSuceed, String aVariableName,
+			ExceptionMatcher aExceptionMatcher) {
+		evaluateRequestResult(aHttpResult, aShouldSuceed, aVariableName, aExceptionMatcher);
+	}
+
+	protected void expectSuccess(HttpResult aHttpResult) {
+		expectSuccess(aHttpResult, null);
+	}
+
+	protected void expectSuccess(HttpResult aHttpResult, String aVariableName) {
+		acceptHttpResult(aHttpResult, true, aVariableName, null);
+	}
+	
+	protected void expectFailure(HttpResult aHttpResult) {
+		expectFailure(aHttpResult, null);
+	}
+
+	protected void expectFailure(HttpResult aHttpResult, ExceptionMatcher aExceptionMatcher) {
+		acceptHttpResult(aHttpResult, false, null, aExceptionMatcher);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void describeCachedObject(String aVariableName) {
+		Object object = getObjectCache().getObject(aVariableName);
+		if (object instanceof List) {
+			List<Object> list = (List) object;
+			System.out.println(aVariableName + " is list with {" + list.size() + "} entries...");
+		} else {
+			System.out.println(aVariableName + " is object of class {" + object.getClass().getSimpleName() + "}...");
+		}
+	}
+}

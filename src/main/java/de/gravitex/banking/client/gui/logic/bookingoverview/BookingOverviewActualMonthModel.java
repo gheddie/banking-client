@@ -22,7 +22,7 @@ public class BookingOverviewActualMonthModel extends BookingOverviewModel {
 	@Override
 	protected List<BookingView> filterBookings() {		
 		List<BookingView> bookingViews = (List<BookingView>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBookingViewsByAccount(getAccount(), null).getEntityList();
+				.readBookingViewsByAccount(getAccount()).getEntityList();
 		makeRange();
 		List<BookingView> result = new ArrayList<>();
 		for (BookingView aBookingView : bookingViews) {
