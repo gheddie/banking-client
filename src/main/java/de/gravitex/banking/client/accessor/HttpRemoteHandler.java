@@ -63,7 +63,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 					.uri(URI.create(aUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
-			IdEntity responseObject = objectMapper.readValue(body, aEntity.getClass());
+			Object responseObject = mapResponseEntity(aEntity.getClass(), body);
 			return new HttpDeleteResult(response.statusCode(), null, aUrl, responseObject);
 		} catch (Exception e) {
 			return new HttpDeleteResult(response.statusCode(), response.body(), aUrl, null);
@@ -76,7 +76,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
 					.uri(URI.create(aUrl)).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-			IdEntity responseObject = objectMapper.readValue(response.body(), aEntity.getClass());
+			Object responseObject = mapResponseEntity(aEntity.getClass(), response.body());
 			return new HttpPatchResult(response.statusCode(), null, aUrl, responseObject);
 		} catch (Exception e) {
 			return new HttpPatchResult(0, e.getMessage(), aUrl, null);
@@ -93,7 +93,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 					.uri(URI.create(aUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
-			IdEntity responseObject = objectMapper.readValue(body, aEntity.getClass());
+			Object responseObject = mapResponseEntity(aEntity.getClass(), body);
 			return new HttpPutResult(response.statusCode(), null, aUrl, responseObject);
 		} catch (Exception e) {
 			return new HttpPutResult(response.statusCode(), response.body(), aUrl, null);
@@ -104,13 +104,11 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 	public HttpGetResult readEntityList(HttpRequestBuilder aRequestBuilder) {
 		HttpResponse<String> response = null;
 		try {
-			JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class,
-					aRequestBuilder.getEntityClass());
 			String requestUrl = aRequestBuilder.buildRequestUrl();
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
-			return new HttpGetResult(response.statusCode(), null, objectMapper.readValue(body, type),
+			return new HttpGetResult(response.statusCode(), null, mapResponseEntityList(body, aRequestBuilder.getEntityClass()),
 					aRequestBuilder.buildRequestUrl());
 		} catch (JacksonException e) {
 			return new HttpGetResult(response.statusCode(), response.body(), null, aRequestBuilder.buildRequestUrl());
@@ -128,7 +126,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			String requestUrl = aRequestBuilder.buildRequestUrl();
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
-			return new HttpGetResult(response.statusCode(), null, objectMapper.readValue(response.body(), aEntityClass),
+			return new HttpGetResult(response.statusCode(), null, mapResponseEntity(aEntityClass, response.body()),
 					aRequestBuilder.buildRequestUrl());
 		} catch (JsonMappingException e) {
 			return new HttpGetResult(response.statusCode(), response.body(), null, aRequestBuilder.buildRequestUrl());
@@ -152,7 +150,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			return new HttpGetResult(response.statusCode(), null,
-					objectMapper.readValue(response.body(), aRequestBuilder.getEntityClass()),
+					mapResponseEntity(aRequestBuilder.getEntityClass(), response.body()),
 					aRequestBuilder.buildRequestUrl());
 		} catch (Exception e) {
 			return new HttpGetResult(response.statusCode(), response.body(), null, aRequestBuilder.buildRequestUrl());
@@ -169,7 +167,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 					.uri(URI.create(requstUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			return new HttpPostResult(response.statusCode(), null,
-					objectMapper.readValue(response.body(), aResultEntityClass), aRequestBuilder.buildRequestUrl());
+					mapResponseEntity(aResultEntityClass, response.body()), aRequestBuilder.buildRequestUrl());
 		} catch (JsonMappingException e) {
 			return new HttpPostResult(response.statusCode(), response.body(), null, aRequestBuilder.buildRequestUrl());
 		} catch (JsonProcessingException e) {
@@ -179,6 +177,19 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 		} catch (InterruptedException e) {
 			return new HttpPostResult(response.statusCode(), response.body(), null, aRequestBuilder.buildRequestUrl());
 		}
+	}
+	
+	private Object mapResponseEntity(Class<?> entityClass, String body)
+			throws JsonProcessingException, JsonMappingException {
+		
+		return objectMapper.readValue(body, entityClass);
+	}
+	
+	private List<?> mapResponseEntityList(String body, Class<?> aEntityClass)
+			throws JsonProcessingException, JsonMappingException {
+		
+		return objectMapper.readValue(body, objectMapper.getTypeFactory().constructParametricType(List.class,
+				aEntityClass));
 	}
 
 	private void handleInvalidBackendConnection(ConnectException aConnectException,

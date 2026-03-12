@@ -68,7 +68,7 @@ public abstract class HttpResult {
 		for (Object entity : aEntityList) {			
 			classes.add(entity.getClass().getSimpleName());
 		}
-		return "Liste mit {" + aEntityList.size() + "} Einträgen ["
+		return "Liste mit {" + aEntityList.size() + "} Einträgen [Typen: "
 				+ StringHelper.seperateList(classes.toArray(new String[classes.size()]), ",") + "]";
 	}
 }

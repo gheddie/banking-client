@@ -3,13 +3,12 @@ package de.gravitex.banking.client.accessor.response;
 import de.gravitex.banking.client.accessor.request.HttpRequestType;
 import de.gravitex.banking.client.accessor.response.base.HttpResult;
 import de.gravitex.banking.client.accessor.response.util.HttpResultListener;
-import de.gravitex.banking.entity.base.IdEntity;
 
 public class HttpPutResult extends HttpResult {
 
-	private IdEntity responseObject;
+	private Object responseObject;
 
-	public HttpPutResult(int aStatusCode, String aErrorMessage, String aRequestUrl, IdEntity aResponseObject) {
+	public HttpPutResult(int aStatusCode, String aErrorMessage, String aRequestUrl, Object aResponseObject) {
 		super(aStatusCode, aErrorMessage, aRequestUrl);
 		this.responseObject = aResponseObject;
 	}
