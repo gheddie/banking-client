@@ -62,13 +62,11 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	public HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute) {
-		String url = HttpRequestBuilder.forEntity(CreditInstitute.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, aCreditInstitute);
+		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(CreditInstitute.class), aCreditInstitute);
 	}
 
 	public HttpPatchResult patchTradingPartner(TradingPartner aTradingPartner) {
-		String url = HttpRequestBuilder.forEntity(TradingPartner.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, aTradingPartner);
+		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(TradingPartner.class), aTradingPartner);
 	}
 
 	public HttpGetResult readAdminData() {
@@ -82,14 +80,13 @@ public class BankingAccessor implements IBankingAccessor {
 
 	@Override
 	public HttpPatchResult patchAccount(Account account) {
-		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, account);
+		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(Account.class), account);
 	}
 
 	@Override
 	public HttpDeleteResult deleteEntity(IdEntity aEntity) {
-		String aUrl = HttpRequestBuilder.forEntity(aEntity.getClass()).identified(aEntity.getId()).buildRequestUrl();
-		return remoteHandler.deleteEntity(aUrl, aEntity);
+		return remoteHandler.deleteEntity(HttpRequestBuilder.forEntity(aEntity.getClass()).identified(aEntity.getId()),
+				aEntity);
 	}
 
 	@Override
@@ -104,48 +101,38 @@ public class BankingAccessor implements IBankingAccessor {
 
 	@Override
 	public HttpPutResult putTradingPartner(TradingPartner aTradingPartner) {
-		String url = HttpRequestBuilder.forEntity(TradingPartner.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, aTradingPartner);
+		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(TradingPartner.class), aTradingPartner);
 	}
 
 	@Override
 	public HttpPutResult putCreditInstitute(CreditInstitute aCreditInstitute) {
-		String url = HttpRequestBuilder.forEntity(CreditInstitute.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, aCreditInstitute);		
+		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(CreditInstitute.class), aCreditInstitute);
 	}
-	
+
 	@Override
 	public HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory) {
-		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, aPurposeCategory);		
+		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(PurposeCategory.class), aPurposeCategory);
 	}
 
 	@Override
 	public HttpGetResult readAccountInfos() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
 	}
-	
+
 	public HttpPatchResult patchBooking(Booking aBooking) {
-		String url = HttpRequestBuilder.forEntity(Booking.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, aBooking);
+		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(Booking.class), aBooking);
 	}
 
 	@Override
 	public HttpPatchResult patchPurposeCategory(PurposeCategory aPurposeCategory) {
-		String url = HttpRequestBuilder.forEntity(PurposeCategory.class).buildRequestUrl();
-		return remoteHandler.patchEntity(url, aPurposeCategory);
+		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(PurposeCategory.class), aPurposeCategory);
 	}
 
 	@Override
 	public HttpGetResult importBookings(Account account) {
-		try {
-			HttpRequestBuilder requestBuilder = HttpRequestBuilder.forEntity(ImportBookings.class)
-					.identified(account.getId(), "accountId");
-			return remoteHandler.readEntity(requestBuilder, ImportBookings.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return remoteHandler.readEntity(
+				HttpRequestBuilder.forEntity(ImportBookings.class).identified(account.getId(), "accountId"),
+				ImportBookings.class);
 	}
 
 	@Override
@@ -158,7 +145,7 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.post(HttpRequestBuilder.forEntity(MergeTradingPartners.class), aMergeTradingPartners,
 				TradingPartnersMergeResult.class);
 	}
-	
+
 	@Override
 	public HttpGetResult readPurposeCategorys() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
@@ -168,16 +155,14 @@ public class BankingAccessor implements IBankingAccessor {
 	public HttpGetResult readRecurringPositions() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(RecurringPosition.class));
 	}
-	
+
 	@Override
 	public HttpPutResult putAccount(Account account) {
-		String url = HttpRequestBuilder.forEntity(Account.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, account);
+		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(Account.class), account);
 	}
 
 	@Override
 	public HttpPutResult putRecurringPosition(RecurringPosition aRecurringPosition) {
-		String url = HttpRequestBuilder.forEntity(RecurringPosition.class).buildRequestUrl();
-		return remoteHandler.putEntity(url, aRecurringPosition);
+		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(RecurringPosition.class), aRecurringPosition);
 	}
 }

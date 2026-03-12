@@ -54,49 +54,51 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 		return mapper;
 	}
 
-	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
+	public HttpDeleteResult deleteEntity(HttpRequestBuilder aRequestBuilder, IdEntity aEntity) {
 		HttpResponse<String> response = null;
+		String aRequestUrl = aRequestBuilder.buildRequestUrl();
 		try {
 			String payload = String.valueOf(aEntity.getId());
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
 					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(payload))
-					.uri(URI.create(aUrl)).build();
+					.uri(URI.create(aRequestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
 			Object responseObject = mapResponseEntity(aEntity.getClass(), body);
-			return new HttpDeleteResult(response.statusCode(), null, aUrl, responseObject);
+			return new HttpDeleteResult(response.statusCode(), null, aRequestUrl, responseObject);
 		} catch (Exception e) {
-			return new HttpDeleteResult(response.statusCode(), response.body(), aUrl, null);
+			return new HttpDeleteResult(response.statusCode(), response.body(), aRequestUrl, null);
 		}
 	}
 
-	public HttpPatchResult patchEntity(String aUrl, IdEntity aEntity) {
+	public HttpPatchResult patchEntity(HttpRequestBuilder aRequestBuilder, IdEntity aEntity) {
+		String aRequestUrl = aRequestBuilder.buildRequestUrl();
 		try {
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
 					.method(HttpMethod.PATCH.name(), BodyPublishers.ofString(new JSONObject(aEntity).toString()))
-					.uri(URI.create(aUrl)).build();
+					.uri(URI.create(aRequestUrl)).build();
 			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 			Object responseObject = mapResponseEntity(aEntity.getClass(), response.body());
-			return new HttpPatchResult(response.statusCode(), null, aUrl, responseObject);
+			return new HttpPatchResult(response.statusCode(), null, aRequestUrl, responseObject);
 		} catch (Exception e) {
-			return new HttpPatchResult(0, e.getMessage(), aUrl, null);
+			return new HttpPatchResult(0, e.getMessage(), aRequestUrl, null);
 		}
 	}
 
-	public HttpPutResult putEntity(String aUrl, IdEntity aEntity) {
+	public HttpPutResult putEntity(HttpRequestBuilder aRequestBuilder, IdEntity aEntity) {
 		HttpResponse<String> response = null;
+		String aRequestUrl = aRequestBuilder.buildRequestUrl();
 		try {
-
 			String payload = new JSONObject(aEntity).toString();
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
 					.method(HttpMethod.PUT.name(), BodyPublishers.ofString(payload))
-					.uri(URI.create(aUrl)).build();
+					.uri(URI.create(aRequestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
 			Object responseObject = mapResponseEntity(aEntity.getClass(), body);
-			return new HttpPutResult(response.statusCode(), null, aUrl, responseObject);
+			return new HttpPutResult(response.statusCode(), null, aRequestUrl, responseObject);
 		} catch (Exception e) {
-			return new HttpPutResult(response.statusCode(), response.body(), aUrl, null);
+			return new HttpPutResult(response.statusCode(), response.body(), aRequestUrl, null);
 		}
 	}
 

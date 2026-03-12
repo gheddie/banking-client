@@ -9,9 +9,9 @@ import de.gravitex.banking.entity.base.IdEntity;
 
 public interface IHttpRemoteHandler {
 
-	HttpPatchResult patchEntity(String aUrl, IdEntity aEntity);
+	HttpPatchResult patchEntity(HttpRequestBuilder aRequestBuilder, IdEntity aEntity);
 
-	HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity);
+	HttpDeleteResult deleteEntity(HttpRequestBuilder aRequestBuilder, IdEntity aEntity);
 
 	HttpGetResult readEntity(HttpRequestBuilder requestBuilder, Class<?> aEntityClass);
 
@@ -20,7 +20,7 @@ public interface IHttpRemoteHandler {
 	HttpPostResult post(HttpRequestBuilder forEntity, Object aRequestBody,
 			Class<?> aResultEntityClass);
 
-	HttpPutResult putEntity(String url, IdEntity aEntity);
+	HttpPutResult putEntity(HttpRequestBuilder aRequestBuilder, IdEntity aEntity);
 
 	HttpGetResult readById(HttpRequestBuilder aRequestBuilder);
 }
