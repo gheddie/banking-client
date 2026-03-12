@@ -55,17 +55,18 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 	}
 
 	public HttpDeleteResult deleteEntity(String aUrl, IdEntity aEntity) {
+		HttpResponse<String> response = null;
 		try {
 			String payload = String.valueOf(aEntity.getId());
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
 					.method(HttpMethod.DELETE.name(), BodyPublishers.ofString(payload))
 					.uri(URI.create(aUrl)).build();
-			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			response = client.send(request, BodyHandlers.ofString());
 			String body = response.body();
-			return new HttpDeleteResult(response.statusCode(), body, aUrl);
+			IdEntity responseObject = objectMapper.readValue(body, aEntity.getClass());
+			return new HttpDeleteResult(response.statusCode(), null, aUrl, responseObject);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new HttpDeleteResult(0, e.getMessage(), aUrl);
+			return new HttpDeleteResult(response.statusCode(), response.body(), aUrl, null);
 		}
 	}
 

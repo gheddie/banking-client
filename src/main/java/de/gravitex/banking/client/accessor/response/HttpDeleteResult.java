@@ -3,11 +3,15 @@ package de.gravitex.banking.client.accessor.response;
 import de.gravitex.banking.client.accessor.request.HttpRequestType;
 import de.gravitex.banking.client.accessor.response.base.HttpResult;
 import de.gravitex.banking.client.accessor.response.util.HttpResultListener;
+import de.gravitex.banking.entity.base.IdEntity;
 
 public class HttpDeleteResult extends HttpResult {
 
-	public HttpDeleteResult(int aStatusCode, String aErrorMessage, String aRequestUrl) {
+	private IdEntity responseObject;
+
+	public HttpDeleteResult(int aStatusCode, String aErrorMessage, String aRequestUrl, IdEntity aResponseObject) {
 		super(aStatusCode, aErrorMessage, aRequestUrl);
+		this.responseObject = aResponseObject;
 	}
 
 	@Override
@@ -22,6 +26,9 @@ public class HttpDeleteResult extends HttpResult {
 
 	@Override
 	public String formatResponseContext() {
-		return "[keine Antwort]";
+		if (responseObject == null) {
+			return "";	
+		}
+		return formatSingleObject(responseObject);
 	}
 }
