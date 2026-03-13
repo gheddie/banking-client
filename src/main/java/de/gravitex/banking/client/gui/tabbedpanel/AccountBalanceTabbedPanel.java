@@ -59,7 +59,7 @@ public class AccountBalanceTabbedPanel extends TabbedPanel implements EntityTabl
 	}
 
 	@Override
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 		// TODO Auto-generated method stub
 	}
 

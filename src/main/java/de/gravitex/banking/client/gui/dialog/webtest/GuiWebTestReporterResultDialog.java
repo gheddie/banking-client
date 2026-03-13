@@ -28,6 +28,7 @@ public class GuiWebTestReporterResultDialog extends JDialog implements EntityTab
 		setModal(true);
 		setSize(900, 600);
 		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		resultWrapperTable = new EntityTablePanel("Resultate", this, false, HttpResultWrapper.class);
 		add(resultWrapperTable, BorderLayout.CENTER);
 		resultWrapperTable.displayEntities(httpResultWrappers);
@@ -39,7 +40,7 @@ public class GuiWebTestReporterResultDialog extends JDialog implements EntityTab
 	}
 
 	@Override
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 		// TODO Auto-generated method stub
 	}
 

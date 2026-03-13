@@ -2,8 +2,6 @@ package de.gravitex.banking.client.tester.instance.base;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
 import de.gravitex.banking.client.accessor.response.base.HttpResult;
@@ -14,11 +12,24 @@ import de.gravitex.banking.client.tester.matcher.ContainedStringExceptionMatcher
 import de.gravitex.banking.client.tester.matcher.base.ExceptionMatcher;
 import de.gravitex.banking.client.tester.reporterstub.GuiWebTestReporter;
 import de.gravitex.banking.client.tester.reporterstub.base.WebTestReporterStub;
+import de.gravitex.banking.client.tester.util.EntitiesRemover;
+import de.gravitex.banking.client.tester.util.WebTester;
 import de.gravitex.banking.client.tester.util.WebTesterObjectCache;
+import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.BookingImport;
+import de.gravitex.banking.entity.BookingImportItem;
+import de.gravitex.banking.entity.BudgetPlanning;
+import de.gravitex.banking.entity.BudgetPlanningItem;
+import de.gravitex.banking.entity.CreditInstitute;
+import de.gravitex.banking.entity.PurposeCategory;
+import de.gravitex.banking.entity.RecurringPosition;
+import de.gravitex.banking.entity.StandingOrder;
+import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.util.StringHelper;
 
-public abstract class ManualWebTester {
+public abstract class ManualWebTester implements WebTester {
 
 	private IBankingAccessor bankingAccessor;
 
@@ -107,7 +118,7 @@ public abstract class ManualWebTester {
 		}
 	}
 
-	protected IBankingAccessor getBankingAccessor() {
+	public IBankingAccessor getBankingAccessor() {
 		return bankingAccessor;
 	}
 
@@ -120,7 +131,7 @@ public abstract class ManualWebTester {
 	}
 
 	public void proclaimSuccess() {
-		JOptionPane.showMessageDialog(null, "Alle Tests erfolgreich!!!");
+		// JOptionPane.showMessageDialog(null, "Alle Tests erfolgreich!!!");
 		webTestReporter.onTestSucceed();
 	}
 
@@ -129,19 +140,19 @@ public abstract class ManualWebTester {
 		evaluateRequestResult(aHttpResult, aShouldSuceed, aVariableName, aExceptionMatcher);
 	}
 
-	protected void expectSuccess(HttpResult aHttpResult) {
+	public void expectSuccess(HttpResult aHttpResult) {
 		expectSuccess(aHttpResult, null);
 	}
 
-	protected void expectSuccess(HttpResult aHttpResult, String aVariableName) {
+	public void expectSuccess(HttpResult aHttpResult, String aVariableName) {
 		acceptHttpResult(aHttpResult, true, aVariableName, null);
 	}
 	
-	protected void expectFailure(HttpResult aHttpResult) {
+	public void expectFailure(HttpResult aHttpResult) {
 		expectFailure(aHttpResult, null);
 	}
 
-	protected void expectFailure(HttpResult aHttpResult, ExceptionMatcher aExceptionMatcher) {
+	public void expectFailure(HttpResult aHttpResult, ExceptionMatcher aExceptionMatcher) {
 		acceptHttpResult(aHttpResult, false, null, aExceptionMatcher);
 	}
 
@@ -154,5 +165,32 @@ public abstract class ManualWebTester {
 		} else {
 			System.out.println(aVariableName + " is object of class {" + object.getClass().getSimpleName() + "}...");
 		}
+	}
+	
+	protected void removeEntities() {
+		new EntitiesRemover(this)
+			.withEntityClass(BookingImportItem.class)
+			.withEntityClass(BookingImport.class)
+			.withEntityClass(Booking.class)
+			.withEntityClass(Account.class)
+			.withEntityClass(BudgetPlanning.class)
+			.withEntityClass(BudgetPlanningItem.class)
+			.withEntityClass(CreditInstitute.class)
+			.withEntityClass(PurposeCategory.class)
+			.withEntityClass(StandingOrder.class)
+			.withEntityClass(TradingPartner.class)
+			.withEntityClass(RecurringPosition.class)
+			.remove();
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected TradingPartner getTradingPartner(String aTradingKey) {
+		List<TradingPartner> aTradingPartners = (List<TradingPartner>) getBankingAccessor().readTradingPartners().getEntityList();
+		for (TradingPartner aTradingPartner : aTradingPartners) {
+			if (aTradingPartner.getTradingKey().equals(aTradingKey)) {
+				return aTradingPartner;		
+			}
+		}
+		throw new ManualWebTesterException("trading partner not found for trading key {" + aTradingKey + "}!!!");
 	}
 }

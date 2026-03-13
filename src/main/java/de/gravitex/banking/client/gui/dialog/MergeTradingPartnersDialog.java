@@ -14,9 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
@@ -111,7 +108,7 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 	}
 
 	@Override
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 		// TODO Auto-generated method stub
 	}
 

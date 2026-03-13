@@ -182,7 +182,7 @@ public class EntityTablePanel extends JPanel implements ListSelectionListener, E
 	}
 
 	public void handleDoubeClick(int selectedRow) {
-		tablePanelListener.onEntityDoubeClicked(entities.get(selectedRow));
+		tablePanelListener.onEntityDoubleClicked(entities.get(selectedRow));
 	}
 	
 	public void acceptEntities(List<?> entities) {

@@ -5,6 +5,11 @@ import java.util.Arrays;
 
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTableContextAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
@@ -30,11 +35,33 @@ public class BankingClientMain {
 	private static final String LOOK_AND_FEEL = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 
 	public static void main(String[] args) {
-
-		registerActions();
-		runClient();
+		
+		doRunClient();
 
 		// testGridbagFilterPanelLayout();
+		
+		/*
+		BookingProgress bp = new BookingProgress();
+		bp.setStartDate(LocalDate.of(2000, 1, 1));
+		bp.setEndDate(LocalDate.of(2030, 12, 31));
+		bp.setTradingPartners((List<TradingPartner>) new BankingAccessor().readTradingPartners().getEntityList());
+		writeJsonObject(bp);
+		*/
+	}
+
+	private static void writeJsonObject(Object object) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.registerModule(new JavaTimeModule());
+			System.out.println(objectMapper.writeValueAsString(object));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void doRunClient() {
+		registerActions();
+		runClient();
 	}
 
 	private static void registerActions() {

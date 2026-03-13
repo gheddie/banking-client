@@ -28,7 +28,7 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 		selectedBooking = (BookingView) aEntity;
 	}
 
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 		
 	}
 

@@ -1,15 +1,14 @@
 package de.gravitex.banking.client.tester.instance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
-import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.enumerated.ImportType;
-import de.gravitex.banking.enumerated.RecurringInterval;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 
 public class CreateSomeEntitiesManualWebTester extends ManualWebTester {
@@ -24,9 +23,10 @@ public class CreateSomeEntitiesManualWebTester extends ManualWebTester {
 
 	private static final String CREDIT_INSTITUTE_DELETABLE = "CREDIT_INSTITUTE_DELETABLE";
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ManualWebTester runTests() {
+		
+		removeEntities();
 
 		CreditInstitute creditInstitute = new CreditInstitute();
 		creditInstitute.setImportType(ImportType.CSV_VB);
@@ -58,7 +58,7 @@ public class CreateSomeEntitiesManualWebTester extends ManualWebTester {
 
 		describeCachedObject(READ_BOOKINGS);
 
-		cachedAccount.setName("Paul");
+		cachedAccount.setName("Giro-Konto Stefan");
 		expectSuccess(getBankingAccessor().patchAccount(cachedAccount));
 
 		// Kredit-Institut kann nicht gelöscht werden
@@ -69,14 +69,40 @@ public class CreateSomeEntitiesManualWebTester extends ManualWebTester {
 		purposeCategory.setPurposeKey("Einkauf");
 		expectSuccess(getBankingAccessor().putPurposeCategory(purposeCategory));
 
-		MergeTradingPartners mergeTradingPartners = new MergeTradingPartners();
-		mergeTradingPartners.setNewTradingKey("Neu");
-		mergeTradingPartners
-				.setPartnersToMerge((List<TradingPartner>) getBankingAccessor().readTradingPartners().getEntityList());
-		expectSuccess(getBankingAccessor().mergeTradingPartners(mergeTradingPartners));
+		mergeTradingPartners("DONALD", "McDonalds (aggregiert)");
+		mergeTradingPartners("SANDERS", "Sanders (aggregiert)");
+		mergeTradingPartners("REWE", "Rewe (aggregiert)");
 		
 		expectSuccess(getBankingAccessor().deleteEntity(getObjectCache().getEntity(CREDIT_INSTITUTE_DELETABLE)));
+		
+		/*
+		RecurringPosition recurringPosition = new RecurringPosition();
+		recurringPosition.setIncoming(true);
+		recurringPosition.setRecurringInterval(RecurringInterval.MONTHLY);
+		expectSuccess(getBankingAccessor().putRecurringPosition(recurringPosition));
+		*/
 
 		return this;
+	}
+
+	private void mergeTradingPartners(String aTradingKeySnippet, String newTradingKey) {
+		
+		MergeTradingPartners mergeTradingPartners = new MergeTradingPartners();
+		mergeTradingPartners.setNewTradingKey(newTradingKey);
+		mergeTradingPartners.setPartnersToMerge(getPartnersToConcat(aTradingKeySnippet));
+		expectSuccess(getBankingAccessor().mergeTradingPartners(mergeTradingPartners));
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<TradingPartner> getPartnersToConcat(String aTradingKeySnippet) {
+		List<TradingPartner> partners = (List<TradingPartner>) getBankingAccessor().readTradingPartners()
+				.getEntityList();
+		List<TradingPartner> result = new ArrayList<>();
+		for (TradingPartner aTradingPartner : partners) {
+			if (aTradingPartner.getTradingKey().contains(aTradingKeySnippet)) {
+				result.add(aTradingPartner);
+			}
+		}
+		return result;
 	}
 }

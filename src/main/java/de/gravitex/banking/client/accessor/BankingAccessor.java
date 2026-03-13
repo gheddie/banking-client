@@ -1,5 +1,8 @@
 package de.gravitex.banking.client.accessor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
@@ -17,6 +20,7 @@ import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
 import de.gravitex.banking_core.dto.AccountInfo;
+import de.gravitex.banking_core.dto.BookingProgress;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
 import de.gravitex.banking_core.entity.view.BookingView;
@@ -141,12 +145,6 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners) {
-		return remoteHandler.post(HttpRequestBuilder.forEntity(MergeTradingPartners.class), aMergeTradingPartners,
-				TradingPartnersMergeResult.class);
-	}
-
-	@Override
 	public HttpGetResult readPurposeCategorys() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
 	}
@@ -164,5 +162,26 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpPutResult putRecurringPosition(RecurringPosition aRecurringPosition) {
 		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(RecurringPosition.class), aRecurringPosition);
+	}
+
+	@Override
+	public HttpGetResult findAllEntities(Class<? extends IdEntity> aEntityClass) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(aEntityClass));
+	}
+	
+	@Override
+	public HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners) {
+		return remoteHandler.post(HttpRequestBuilder.forEntity(MergeTradingPartners.class), aMergeTradingPartners,
+				TradingPartnersMergeResult.class);
+	}
+
+	@Override
+	public HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners) {
+		BookingProgress aBookingProgressRequestBody = new BookingProgress();
+		aBookingProgressRequestBody.setStartDate(from);
+		aBookingProgressRequestBody.setEndDate(to);
+		aBookingProgressRequestBody.setTradingPartners(aTradingPartners);
+		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingProgress.class), aBookingProgressRequestBody,
+				BookingProgress.class);
 	}
 }

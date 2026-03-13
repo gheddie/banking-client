@@ -63,7 +63,7 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 
 	}
 
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 		new ListBookingsByTradingsPartnerDialog(selectedTradingPartner,
 				ApplicationRegistry.getInstance().getParentView());
 	}

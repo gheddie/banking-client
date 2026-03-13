@@ -12,7 +12,7 @@ public interface EntityTablePanelListener {
 
 	void onEntitySelected(Object aEntity);
 
-	void onEntityDoubeClicked(Object aEntity);
+	void onEntityDoubleClicked(Object aEntity);
 
 	Object getSelectedObject();
 

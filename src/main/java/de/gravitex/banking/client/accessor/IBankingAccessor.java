@@ -1,10 +1,14 @@
 package de.gravitex.banking.client.accessor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
+import de.gravitex.banking.client.accessor.response.base.HttpResult;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.CreditInstitute;
@@ -47,10 +51,12 @@ public interface IBankingAccessor {
 	HttpPutResult putAccount(Account entity);
 	HttpPutResult putRecurringPosition(RecurringPosition aRecurringPosition);
 
-	// delete
-	HttpDeleteResult deleteEntity(IdEntity aEntity);
-	
 	// misc
 	HttpGetResult importBookings(Account account);
-	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);	
+	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
+	HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners);
+	
+	// generic crud
+	HttpGetResult findAllEntities(Class<? extends IdEntity> aEntityClass);
+	HttpDeleteResult deleteEntity(IdEntity aEntity);
 }

@@ -74,7 +74,7 @@ public class BookingImportResultDialog extends JDialog implements EntityTablePan
 	}
 
 	@Override
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 
 	}
 

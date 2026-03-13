@@ -22,6 +22,7 @@ import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.dialog.MergeTradingPartnersDialog;
+import de.gravitex.banking.client.gui.dialog.ShowTradingPartnersHistoryDialog;
 import de.gravitex.banking.client.gui.tabbedpanel.AccountBalanceTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BookingTabbedPanel;
 import de.gravitex.banking.client.gui.tabbedpanel.BudgetPlanningTabbedPanel;
@@ -105,6 +106,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	private void addToolbarActions() {
+		
 		JButton mergeTradingPartners = new JButton("Trading-Partner zusammenführen");
 		mergeTradingPartners.addActionListener(new ActionListener() {
 			@Override
@@ -113,6 +115,15 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 			}
 		});
 		toolbar.add(mergeTradingPartners);
+		
+		JButton showTradingPartnerHierarchy = new JButton("Trading-Partner (Historie)");
+		showTradingPartnerHierarchy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ShowTradingPartnersHistoryDialog().setVisible(true);
+			}
+		});
+		toolbar.add(showTradingPartnerHierarchy);
 	}
 
 	private void initTabbedPanels() {
@@ -166,7 +177,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		tabbedPanel.onPanelActivated(selectedEntity);
 	}
 
-	public void onEntityDoubeClicked(Object aEntity) {
+	public void onEntityDoubleClicked(Object aEntity) {
 
 	}
 
