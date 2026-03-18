@@ -63,4 +63,9 @@ public class HttpGetResult extends HttpResult {
 	public HttpActionType getActionType() {
 		return HttpActionType.CRUD;
 	}
+	
+	@Override
+	public int getActualResponseLength() {
+		return entityList.size();
+	}
 }

@@ -59,4 +59,16 @@ public class HttpResultWrapper {
 	public static HttpResultWrapper forData(HttpResult aHttpResult, boolean aShouldSuceed) {
 		return new HttpResultWrapper(aHttpResult, aShouldSuceed);
 	}
+	
+	public StreamTraffic getUpstreamBytes() {
+		return upstreamBytes;
+	}
+	
+	public StreamTraffic getDownstreamBytes() {
+		return downstreamBytes;
+	}
+	
+	public HttpResult getHttpResult() {
+		return httpResult;
+	}
 }

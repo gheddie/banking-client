@@ -6,15 +6,16 @@ import de.gravitex.banking.client.accessor.BankingAccessor;
 import de.gravitex.banking.client.accessor.IBankingAccessor;
 import de.gravitex.banking.client.accessor.response.base.HttpResult;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking.client.registry.db.info.base.DatabaseTypeInfo;
 import de.gravitex.banking.client.tester.exception.ManualWebTesterException;
-import de.gravitex.banking.client.tester.matcher.ContainedStringExceptionMatcher;
-import de.gravitex.banking.client.tester.matcher.base.ExceptionMatcher;
+import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
+import de.gravitex.banking.client.tester.matcher.exception.ContainedStringExceptionMatcher;
+import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher;
 import de.gravitex.banking.client.tester.reporterstub.GuiWebTestReporter;
 import de.gravitex.banking.client.tester.reporterstub.base.WebTestReporterStub;
 import de.gravitex.banking.client.tester.util.EntitiesRemover;
 import de.gravitex.banking.client.tester.util.WebTester;
 import de.gravitex.banking.client.tester.util.WebTesterObjectCache;
+import de.gravitex.banking.client.tester.validation.ValueValidator;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.BookingImport;
@@ -28,6 +29,7 @@ import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.util.StringHelper;
+import de.gravitex.banking_core.util.db.info.base.DatabaseTypeInfo;
 
 public abstract class ManualWebTester implements WebTester {
 
@@ -40,6 +42,8 @@ public abstract class ManualWebTester implements WebTester {
 	private WebTesterObjectCache objectCache = new WebTesterObjectCache();
 
 	private WebTestReporterStub webTestReporter;
+
+	private ValueValidator validator = new ValueValidator();
 
 	public ManualWebTester() {
 		super();
@@ -68,7 +72,7 @@ public abstract class ManualWebTester implements WebTester {
 	public abstract ManualWebTester runTests();
 
 	private void evaluateRequestResult(HttpResult aHttpResult, boolean aShouldSuceed, String aVariableName,
-			ExceptionMatcher aExceptionMatcher) {
+			ExceptionMatcher aExceptionMatcher, ResponseLengthValidator aResponseLengthValidator) {
 		
 		if (aShouldSuceed && (aExceptionMatcher != null)) {
 			throw new ManualWebTesterException(
@@ -91,6 +95,9 @@ public abstract class ManualWebTester implements WebTester {
 		if (aHttpResult.hasValidStatusCode()) {
 			if (!StringHelper.isBlank(aVariableName)) {
 				aHttpResult.cacheRequestResult(objectCache, aVariableName);
+				if (aResponseLengthValidator != null) {
+					aResponseLengthValidator.acceptResponseLength(aHttpResult.getActualResponseLength());
+				}
 			}
 		} else {
 			if (aExceptionMatcher != null) {
@@ -136,16 +143,19 @@ public abstract class ManualWebTester implements WebTester {
 	}
 
 	private void acceptHttpResult(HttpResult aHttpResult, boolean aShouldSuceed, String aVariableName,
-			ExceptionMatcher aExceptionMatcher) {
-		evaluateRequestResult(aHttpResult, aShouldSuceed, aVariableName, aExceptionMatcher);
+			ExceptionMatcher aExceptionMatcher, ResponseLengthValidator aResponseLengthValidator) {
+		evaluateRequestResult(aHttpResult, aShouldSuceed, aVariableName, aExceptionMatcher, aResponseLengthValidator);
 	}
 
+	/*
 	public void expectSuccess(HttpResult aHttpResult) {
 		expectSuccess(aHttpResult, null);
 	}
+	*/
 
-	public void expectSuccess(HttpResult aHttpResult, String aVariableName) {
-		acceptHttpResult(aHttpResult, true, aVariableName, null);
+	public void expectSuccess(HttpResult aHttpResult, String aVariableName,
+			ResponseLengthValidator aResponseLengthValidator) {
+		acceptHttpResult(aHttpResult, true, aVariableName, null, aResponseLengthValidator);
 	}
 	
 	public void expectFailure(HttpResult aHttpResult) {
@@ -153,7 +163,7 @@ public abstract class ManualWebTester implements WebTester {
 	}
 
 	public void expectFailure(HttpResult aHttpResult, ExceptionMatcher aExceptionMatcher) {
-		acceptHttpResult(aHttpResult, false, null, aExceptionMatcher);
+		acceptHttpResult(aHttpResult, false, null, aExceptionMatcher, null);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -168,6 +178,7 @@ public abstract class ManualWebTester implements WebTester {
 	}
 	
 	protected void removeEntities() {
+		
 		new EntitiesRemover(this)
 			.withEntityClass(BookingImportItem.class)
 			.withEntityClass(BookingImport.class)
@@ -192,5 +203,9 @@ public abstract class ManualWebTester implements WebTester {
 			}
 		}
 		throw new ManualWebTesterException("trading partner not found for trading key {" + aTradingKey + "}!!!");
+	}
+	
+	protected ValueValidator getValidator() {
+		return validator;
 	}
 }

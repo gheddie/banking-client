@@ -7,11 +7,10 @@ import java.util.Map;
 
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
-import de.gravitex.banking.entity.base.NoIdEntity;
 
 public class ActionFactory {
 
-	private Map<Class<? extends NoIdEntity>, List<Class<? extends TableContextAction<?>>>> actionMap = new HashMap<>();
+	private Map<Class<?>, List<Class<? extends TableContextAction<?>>>> actionMap = new HashMap<>();
 
 	public List<TableContextAction<?>> getContextActions(ActionProvider actionProvider,
 			Class<?> actionObjectClass) {
@@ -37,7 +36,7 @@ public class ActionFactory {
 		}
 	}
 
-	public void registerAction(Class<? extends NoIdEntity> aEntityClass,
+	public void registerAction(Class<?> aEntityClass,
 			Class<? extends TableContextAction<?>> actionClass) {
 		if (actionMap.get(aEntityClass) == null) {
 			actionMap.put(aEntityClass, new ArrayList<>());

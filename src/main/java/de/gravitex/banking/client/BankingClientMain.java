@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import de.gravitex.banking.client.gui.action.CopyPayloadUpstreamAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTableContextAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
 import de.gravitex.banking.client.gui.action.DeleteTableContextAction;
@@ -24,6 +25,7 @@ import de.gravitex.banking.client.gui.test.FPS3Rows;
 import de.gravitex.banking.client.gui.test.FPS4Rows;
 import de.gravitex.banking.client.gui.test.FpsMoo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.client.tester.reporterstub.util.HttpResultWrapper;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
@@ -77,6 +79,7 @@ public class BankingClientMain {
 
 		// TradingPartner
 		actionFactory.registerAction(TradingPartner.class, EditTableContextAction.class);
+		actionFactory.registerAction(TradingPartner.class, DeleteTableContextAction.class);
 
 		// BookingView
 		actionFactory.registerAction(BookingView.class, CreateBookingOverviewFromBookingTableContextAction.class);
@@ -87,6 +90,8 @@ public class BankingClientMain {
 		// PurposeCategory
 		actionFactory.registerAction(PurposeCategory.class, DeleteTableContextAction.class);
 		actionFactory.registerAction(PurposeCategory.class, EditTableContextAction.class);
+		
+		// actionFactory.registerAction(HttpResultWrapper.class, CopyPayloadAction.class);
 	}
 
 	private static void runClient() {

@@ -1,4 +1,4 @@
-package de.gravitex.banking.client.tester.matcher.base;
+package de.gravitex.banking.client.tester.matcher.exception.base;
 
 public abstract class ExceptionMatcher {
 

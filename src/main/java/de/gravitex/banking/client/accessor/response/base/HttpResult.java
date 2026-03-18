@@ -100,4 +100,6 @@ public abstract class HttpResult {
 	public StreamTraffic getDownstreamBytes() {
 		return downstreamBytes;
 	}
+
+	public abstract int getActualResponseLength();
 }

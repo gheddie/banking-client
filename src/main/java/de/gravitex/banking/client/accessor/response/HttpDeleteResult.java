@@ -39,4 +39,10 @@ public class HttpDeleteResult extends HttpResult {
 	public HttpActionType getActionType() {
 		return HttpActionType.CRUD;
 	}
+
+	@Override
+	public int getActualResponseLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

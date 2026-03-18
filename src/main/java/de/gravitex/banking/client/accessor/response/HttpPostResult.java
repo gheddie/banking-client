@@ -43,4 +43,10 @@ public class HttpPostResult extends HttpResult {
 	public HttpActionType getActionType() {
 		return HttpActionType.ACTION;
 	}
+	
+	@Override
+	public int getActualResponseLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

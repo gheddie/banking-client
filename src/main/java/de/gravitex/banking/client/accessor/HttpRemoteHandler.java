@@ -67,7 +67,7 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 					new StreamTraffic(payload), new StreamTraffic(response.body()));
 		} catch (Exception e) {
 			return new HttpDeleteResult(response.statusCode(), response.body(), aRequestUrl, null, null,
-					new StreamTraffic(), new StreamTraffic());
+					new StreamTraffic(""), new StreamTraffic(""));
 		}
 	}
 
@@ -82,10 +82,10 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			response = client.send(request, BodyHandlers.ofString());
 			Object responseObject = mapResponseEntity(aEntity.getClass(), response.body());
 			return new HttpPatchResult(response.statusCode(), null, aRequestUrl, responseObject, duration.finish(),
-					new StreamTraffic(), new StreamTraffic());
+					new StreamTraffic(""), new StreamTraffic(""));
 		} catch (Exception e) {
 			return new HttpPatchResult(response.statusCode(), response.body(), aRequestUrl, null, duration.finish(),
-					new StreamTraffic(), new StreamTraffic());
+					new StreamTraffic(""), new StreamTraffic(""));
 		}
 	}
 
@@ -102,10 +102,10 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			String body = response.body();
 			Object responseObject = mapResponseEntity(aEntity.getClass(), body);
 			return new HttpPutResult(response.statusCode(), null, aRequestUrl, responseObject, duration.finish(),
-					new StreamTraffic(), new StreamTraffic());
+					new StreamTraffic(""), new StreamTraffic(""));
 		} catch (Exception e) {
 			return new HttpPutResult(response.statusCode(), response.body(), aRequestUrl, null, duration.finish(),
-					new StreamTraffic(), new StreamTraffic());
+					new StreamTraffic(""), new StreamTraffic(""));
 		}
 	}
 
@@ -120,10 +120,10 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			String body = response.body();
 			return new HttpGetResult(response.statusCode(), null,
 					mapResponseEntityList(body, aRequestBuilder.getEntityClass()), aRequestBuilder.buildRequestUrl(),
-					duration.finish(), new StreamTraffic(), new StreamTraffic());
+					duration.finish(), new StreamTraffic(""), new StreamTraffic(""));
 		} catch (Exception e) {
-			return new HttpGetResult(0, response.body(), null, requestUrl, duration.finish(), new StreamTraffic(),
-					new StreamTraffic());
+			return new HttpGetResult(0, response.body(), null, requestUrl, duration.finish(), new StreamTraffic(""),
+					new StreamTraffic(""));
 		}
 	}
 
@@ -136,10 +136,10 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).build();
 			response = client.send(request, BodyHandlers.ofString());
 			return new HttpGetResult(response.statusCode(), null, mapResponseEntity(aEntityClass, response.body()),
-					aRequestBuilder.buildRequestUrl(), duration.finish(), new StreamTraffic(), new StreamTraffic());
+					aRequestBuilder.buildRequestUrl(), duration.finish(), new StreamTraffic(""), new StreamTraffic(""));
 		} catch (Exception e) {
 			return new HttpGetResult(response.statusCode(), response.body(), null, requestUrl, duration.finish(),
-					new StreamTraffic(), new StreamTraffic());
+					new StreamTraffic(""), new StreamTraffic(""));
 		}
 	}
 
@@ -153,10 +153,11 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 			response = client.send(request, BodyHandlers.ofString());
 			return new HttpGetResult(response.statusCode(), null,
 					mapResponseEntity(aRequestBuilder.getEntityClass(), response.body()),
-					aRequestBuilder.buildRequestUrl(), duration.finish(), new StreamTraffic(), new StreamTraffic(response.body()));
+					aRequestBuilder.buildRequestUrl(), duration.finish(), new StreamTraffic(""),
+					new StreamTraffic(response.body()));
 		} catch (Exception e) {
 			return new HttpGetResult(response.statusCode(), response.body(), null, requestUrl, duration.finish(),
-					new StreamTraffic(), new StreamTraffic(response.body()));
+					new StreamTraffic(""), new StreamTraffic(response.body()));
 		}
 	}
 
@@ -168,8 +169,8 @@ public class HttpRemoteHandler implements IHttpRemoteHandler {
 		String requestPayload = new JSONObject(aRequestBody).toString();
 		try {
 			HttpRequest request = HttpRequest.newBuilder().header(CONTENT_TYPE_ATTRIBUTE, JSON_CONTEXT_TYPE)
-					.method(HttpMethod.POST.name(), BodyPublishers.ofString(requestPayload))
-					.uri(URI.create(requestUrl)).build();
+					.method(HttpMethod.POST.name(), BodyPublishers.ofString(requestPayload)).uri(URI.create(requestUrl))
+					.build();
 			response = client.send(request, BodyHandlers.ofString());
 			return new HttpPostResult(response.statusCode(), null,
 					mapResponseEntity(aResultEntityClass, response.body()), aRequestBuilder.buildRequestUrl(),

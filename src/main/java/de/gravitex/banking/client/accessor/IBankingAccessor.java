@@ -8,7 +8,6 @@ import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
-import de.gravitex.banking.client.accessor.response.base.HttpResult;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.CreditInstitute;
@@ -36,6 +35,7 @@ public interface IBankingAccessor {
 	HttpGetResult readAccountInfos();
 	HttpGetResult readRecurringPositions();
 	HttpGetResult readBudgetPlannings();
+	HttpGetResult readBookingImports();
 
 	// patch
 	HttpPatchResult patchBooking(Booking aBooking);
@@ -55,8 +55,10 @@ public interface IBankingAccessor {
 	HttpGetResult importBookings(Account account);
 	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
 	HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners);
+	HttpGetResult readUnprocessedBookingImports(Account account);
+	HttpGetResult importBookingFile(Account account, String aBookingFileName);
 	
 	// generic crud
 	HttpGetResult findAllEntities(Class<? extends IdEntity> aEntityClass);
-	HttpDeleteResult deleteEntity(IdEntity aEntity);
+	HttpDeleteResult deleteEntity(IdEntity aEntity);	
 }

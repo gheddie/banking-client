@@ -2,6 +2,7 @@ package de.gravitex.banking.client.gui.tabbedpanel;
 
 import java.awt.BorderLayout;
 import java.awt.LayoutManager;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -39,7 +40,17 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 		List<TradingPartner> tradingPartners = (List<TradingPartner>) ApplicationRegistry.getInstance()
 				.getBankingAccessor().readTradingPartners().getEntityList();
 		logger.info("read " + tradingPartners.size() + " trading partners...");
-		partnerTable.displayEntities(tradingPartners);
+		partnerTable.displayEntities(filterTopLevel(tradingPartners));
+	}
+
+	private List<TradingPartner> filterTopLevel(List<TradingPartner> aTradingPartners) {
+		List<TradingPartner> result = new ArrayList<>();
+		for (TradingPartner aTradingPartner : aTradingPartners) {
+			if (aTradingPartner.getParentTradingPartner() == null) {
+				result.add(aTradingPartner);
+			}
+		}
+		return result;
 	}
 
 	@Override

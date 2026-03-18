@@ -10,6 +10,7 @@ import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
+import de.gravitex.banking.entity.BookingImport;
 import de.gravitex.banking.entity.BudgetPlanning;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
@@ -19,7 +20,10 @@ import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
 import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
+import de.gravitex.banking_core.controller.bookingimport.ImportFileBookings;
+import de.gravitex.banking_core.controller.bookingimport.UnprocessedBookingImport;
 import de.gravitex.banking_core.dto.AccountInfo;
+import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.BookingProgress;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
@@ -183,5 +187,20 @@ public class BankingAccessor implements IBankingAccessor {
 		aBookingProgressRequestBody.setTradingPartners(aTradingPartners);
 		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingProgress.class), aBookingProgressRequestBody,
 				BookingProgress.class);
+	}
+
+	@Override
+	public HttpGetResult readUnprocessedBookingImports(Account account) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(UnprocessedBookingImport.class).identified(account.getId(), "accountId"));
+	}
+
+	@Override
+	public HttpGetResult importBookingFile(Account account, String aBookingFileName) {
+		return remoteHandler.readEntity(HttpRequestBuilder.forDto(ImportFileBookings.class).identified(account.getId(), "accountId").withPathVariable("fileName", aBookingFileName), BookingImportSummary.class);
+	}
+
+	@Override
+	public HttpGetResult readBookingImports() {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingImport.class));
 	}
 }

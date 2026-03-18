@@ -1,7 +1,6 @@
 package de.gravitex.banking.client.registry;
 
 import java.awt.Window;
-import java.net.ConnectException;
 import java.util.List;
 
 import de.gravitex.banking.client.accessor.BankingAccessor;
@@ -14,12 +13,12 @@ import de.gravitex.banking.client.gui.action.factory.ActionFactory;
 import de.gravitex.banking.client.gui.filter.EntityFilterProvider;
 import de.gravitex.banking.client.interaction.GuiInteractionHandler;
 import de.gravitex.banking.client.interaction.InteractionHandler;
-import de.gravitex.banking.client.registry.db.DatabaseAdministrator;
 import de.gravitex.banking.client.registry.entityRetriever.AllEntityRetriever;
 import de.gravitex.banking.client.sorter.DefaultEntitySorter;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
 import de.gravitex.banking.formatter.base.ValueFormatter;
 import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.util.db.DatabaseAdministrator;
 
 public class ApplicationRegistry {
 

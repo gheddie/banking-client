@@ -24,19 +24,20 @@ public class EntitiesRemover {
 	}
 
 	private void removeEntityList(Class<? extends IdEntity> aEntityClass) {
+		System.out.println("@@@ removing entities of class {"+aEntityClass.getSimpleName()+"}...");
 		List<?> allEntities = webTester.getBankingAccessor().findAllEntities(aEntityClass).getEntityList();
 		if (allEntities != null && !allEntities.isEmpty()) {
 			System.out.println("found {" + allEntities.size() + "} entities to remove of class {"
 					+ aEntityClass.getSimpleName() + "}...");
 			for (Object aEntitiy : allEntities) {
-				webTester.expectSuccess(removeEntity((IdEntity) aEntitiy));			
+				webTester.expectSuccess(removeEntity((IdEntity) aEntitiy), null, null);			
 			}	
 		}
 	}
 
 	private HttpDeleteResult removeEntity(IdEntity aEntitiy) {
 		HttpDeleteResult deleteEntityResult = webTester.getBankingAccessor().deleteEntity(aEntitiy);
-		System.out.println(deleteEntityResult + " --> " + deleteEntityResult.getStatusCode());
+		// System.out.println(deleteEntityResult + " --> " + deleteEntityResult.getStatusCode());
 		return deleteEntityResult;		
 	}
 

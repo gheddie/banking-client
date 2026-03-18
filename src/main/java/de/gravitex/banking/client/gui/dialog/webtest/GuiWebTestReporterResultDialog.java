@@ -22,6 +22,8 @@ public class GuiWebTestReporterResultDialog extends JDialog implements EntityTab
 
 	private EntityTablePanel resultWrapperTable;
 
+	private HttpResultWrapper selectedWrapper;
+
 	public GuiWebTestReporterResultDialog(List<HttpResultWrapper> aHttpResultWrappers) {
 		super();
 		this.httpResultWrappers = aHttpResultWrappers;
@@ -36,7 +38,7 @@ public class GuiWebTestReporterResultDialog extends JDialog implements EntityTab
 
 	@Override
 	public void onEntitySelected(Object aEntity) {
-		// TODO Auto-generated method stub
+		this.selectedWrapper = (HttpResultWrapper) aEntity;
 	}
 
 	@Override
@@ -46,8 +48,7 @@ public class GuiWebTestReporterResultDialog extends JDialog implements EntityTab
 
 	@Override
 	public Object getSelectedObject() {
-		// TODO Auto-generated method stub
-		return null;
+		return selectedWrapper;
 	}
 
 	@Override

@@ -14,13 +14,19 @@ public class WebTesterObjectCache implements HttpResultListener {
 
 	@Override
 	public void acceptListResult(List<?> aEntityList, String aVariableName) {
-		evualuateVariableName(aVariableName);
+
+		// from now on --> overwrite the cached value!
+		// evualuateVariableName(aVariableName);
+		
 		objectMap.put(aVariableName, aEntityList);
 	}
 
 	@Override
 	public void acceptObjectResult(Object antity, String aVariableName) {
-		evualuateVariableName(aVariableName);
+		
+		// from now on --> overwrite the cached value!
+		// evualuateVariableName(aVariableName);
+		
 		objectMap.put(aVariableName, antity);
 	}
 

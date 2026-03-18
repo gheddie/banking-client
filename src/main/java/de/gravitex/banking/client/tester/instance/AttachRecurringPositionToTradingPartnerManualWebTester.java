@@ -28,19 +28,19 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Manu
 		creditInstitute.setImportType(ImportType.CSV_VB);
 		creditInstitute.setBic("GENODEF1WBU");
 		creditInstitute.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putCreditInstitute(creditInstitute), CREDIT_INSTITUTE);
+		expectSuccess(getBankingAccessor().putCreditInstitute(creditInstitute), CREDIT_INSTITUTE, null);
 
 		Account account = new Account();
 		account.setCreditInstitute((CreditInstitute) getObjectCache().getEntity(CREDIT_INSTITUTE));
 		account.setIdentifier("GIRO_PRIVAT");
 		account.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putAccount(account), ACCOUNT);
+		expectSuccess(getBankingAccessor().putAccount(account), ACCOUNT, null);
 
-		expectSuccess(getBankingAccessor().readCreditInstitutes());
+		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 
-		expectSuccess(getBankingAccessor().importBookings(cachedAccount), IMPORTED_BOOKINGS);
+		expectSuccess(getBankingAccessor().importBookings(cachedAccount), IMPORTED_BOOKINGS, null);
 
 		attachRecurringPosition("STERNICO GMBH", true);
 		// attachRecurringPosition("Reno F120 Vechelde", false);
@@ -49,7 +49,7 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Manu
 		tradingPartners.add(getTradingPartner("STERNICO GMBH"));
 		tradingPartners.add(getTradingPartner("KARL-HEINZ SCHULZ"));
 		tradingPartners.add(getTradingPartner("ILSE SCHULZ"));
-		expectSuccess(getBankingAccessor().createBookingProgress(null, null, tradingPartners));
+		expectSuccess(getBankingAccessor().createBookingProgress(null, null, tradingPartners), null, null);
 
 		return this;
 	}
@@ -63,7 +63,7 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Manu
 		RecurringPosition rpos = recurringPositions.get(0);
 		aTradingPartner.setRecurringPosition(rpos);
 		if (aExpectSuccess) {
-			expectSuccess(getBankingAccessor().patchTradingPartner(aTradingPartner));	
+			expectSuccess(getBankingAccessor().patchTradingPartner(aTradingPartner), null, null);	
 		} else {
 			expectFailure(getBankingAccessor().patchTradingPartner(aTradingPartner));
 		}

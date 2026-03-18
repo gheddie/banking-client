@@ -12,10 +12,15 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 
 import de.gravitex.banking.client.gui.GuiUtil;
+import de.gravitex.banking.client.gui.dialog.model.EntityHierarchyTreeModel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
+import de.gravitex.banking.client.util.hierarchy.HierarchyBuilder;
+import de.gravitex.banking.client.util.hierarchy.HierarchyPath;
 import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.util.HierarchyItem;
 
 public class ShowTradingPartnersHistoryDialog extends JDialog {
 
@@ -58,18 +63,30 @@ public class ShowTradingPartnersHistoryDialog extends JDialog {
 
 	private void fillData() {
 		tradingPartnersHierarchyTree.setModel(buildTreeModel());
-		buildTreeModel();
 	}
 
 	@SuppressWarnings("unchecked")
 	private TreeModel buildTreeModel() {
-		List<TradingPartner> tradingPartners = (List<TradingPartner>) ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners().getEntityList();
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+
+		List<TradingPartner> tradingPartners = (List<TradingPartner>) ApplicationRegistry.getInstance()
+				.getBankingAccessor().readTradingPartners().getEntityList();
+
+		HierarchyBuilder builder = new HierarchyBuilder();
 		for (TradingPartner aTradingPartner : tradingPartners) {
-			if (aTradingPartner.getParentTradingPartner() == null) {
-				root.add(new DefaultMutableTreeNode(aTradingPartner));
-			}
+			builder.withItem(aTradingPartner);
 		}
-		return new DefaultTreeModel(root);
+		
+		DefaultTreeModel model = builder.buildHierarchy().buildTreeModel();
+
+		/*
+		System.out.println("---------------------------------------------------------------------");
+		for (HierarchyPath aPath : hierarchy.getPathsSorted()) {			
+			System.out.println(aPath);
+		}
+		
+		System.out.println("---------------------------------------------------------------------");
+		*/
+				
+		return model;
 	}
 }

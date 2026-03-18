@@ -1,6 +1,6 @@
-package de.gravitex.banking.client.tester.matcher;
+package de.gravitex.banking.client.tester.matcher.exception;
 
-import de.gravitex.banking.client.tester.matcher.base.ExceptionMatcher;
+import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher;
 
 public class ContainedStringExceptionMatcher extends ExceptionMatcher {
 
