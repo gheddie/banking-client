@@ -6,7 +6,7 @@ import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 public class ManualWebTesterExecutor {
 
 	public void runForInstance(Class<? extends ManualWebTester> executorClass) {
-		makeExecutorInstance(executorClass).connect().runTests().proclaimSuccess();
+		makeExecutorInstance(executorClass).connect().removeEntities().enableTrace().runTests().proclaimSuccess();
 	}
 
 	private ManualWebTester makeExecutorInstance(Class<? extends ManualWebTester> executorClass) {

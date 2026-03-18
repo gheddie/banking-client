@@ -18,6 +18,7 @@ import de.gravitex.banking.client.gui.action.DeleteTableContextAction;
 import de.gravitex.banking.client.gui.action.EditBookingViewTableContextAction;
 import de.gravitex.banking.client.gui.action.EditTableContextAction;
 import de.gravitex.banking.client.gui.action.ImportBookingsForAccountAction;
+import de.gravitex.banking.client.gui.action.ShowBookingCurrentTableContextAction;
 import de.gravitex.banking.client.gui.action.factory.ActionFactory;
 import de.gravitex.banking.client.gui.test.FPS1Rows;
 import de.gravitex.banking.client.gui.test.FPS2Rows;
@@ -80,6 +81,7 @@ public class BankingClientMain {
 		// TradingPartner
 		actionFactory.registerAction(TradingPartner.class, EditTableContextAction.class);
 		actionFactory.registerAction(TradingPartner.class, DeleteTableContextAction.class);
+		actionFactory.registerAction(TradingPartner.class, ShowBookingCurrentTableContextAction.class);
 
 		// BookingView
 		actionFactory.registerAction(BookingView.class, CreateBookingOverviewFromBookingTableContextAction.class);

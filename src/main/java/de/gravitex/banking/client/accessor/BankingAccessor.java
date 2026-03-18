@@ -18,15 +18,15 @@ import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
-import de.gravitex.banking_core.controller.admin.BookingAdminData;
-import de.gravitex.banking_core.controller.bookingimport.ImportBookings;
-import de.gravitex.banking_core.controller.bookingimport.ImportFileBookings;
-import de.gravitex.banking_core.controller.bookingimport.UnprocessedBookingImport;
 import de.gravitex.banking_core.dto.AccountInfo;
+import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.BookingProgress;
+import de.gravitex.banking_core.dto.ImportBookings;
+import de.gravitex.banking_core.dto.ImportFileBookings;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
+import de.gravitex.banking_core.dto.UnprocessedBookingImport;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingAccessor implements IBankingAccessor {

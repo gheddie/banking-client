@@ -11,8 +11,8 @@ import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.selectentity.GenericEntitySelectionDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.entity.Account;
-import de.gravitex.banking_core.controller.bookingimport.UnprocessedBookingImport;
 import de.gravitex.banking_core.dto.BookingImportSummary;
+import de.gravitex.banking_core.dto.UnprocessedBookingImport;
 
 public class ImportBookingsForAccountAction extends TableContextAction<Account> {
 
@@ -20,11 +20,6 @@ public class ImportBookingsForAccountAction extends TableContextAction<Account> 
 
 	public ImportBookingsForAccountAction(ActionProvider tActionProvider) {
 		super("Buchungen importieren", tActionProvider);
-	}
-
-	@Override
-	protected void checkContextObject(Object aContextObject) throws ActionException {
-
 	}
 
 	@SuppressWarnings("unchecked")

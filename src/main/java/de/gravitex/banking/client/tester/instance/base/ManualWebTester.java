@@ -24,10 +24,9 @@ import de.gravitex.banking.entity.BudgetPlanning;
 import de.gravitex.banking.entity.BudgetPlanningItem;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
-import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
-import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.util.StringHelper;
 import de.gravitex.banking_core.util.db.info.base.DatabaseTypeInfo;
 
@@ -45,6 +44,8 @@ public abstract class ManualWebTester implements WebTester {
 
 	private ValueValidator validator = new ValueValidator();
 
+	private boolean traceEnabled = false;
+
 	public ManualWebTester() {
 		super();
 		webTestReporter = initTestReporter();
@@ -52,8 +53,6 @@ public abstract class ManualWebTester implements WebTester {
 	}
 
 	private WebTestReporterStub initTestReporter() {
-		
-		// return new ConsoleWebTestReporter();
 		return new GuiWebTestReporter();
 	}
 
@@ -110,7 +109,7 @@ public abstract class ManualWebTester implements WebTester {
 
 		evaluateStatusCode(aHttpResult, aShouldSuceed);
 
-		webTestReporter.acceptSuccess(aHttpResult, aShouldSuceed);
+		webTestReporter.acceptSuccess(aHttpResult, aShouldSuceed, traceEnabled);
 	}
 
 	private void evaluateStatusCode(HttpResult aHttpResult, boolean aShouldSuceed) {
@@ -138,20 +137,13 @@ public abstract class ManualWebTester implements WebTester {
 	}
 
 	public void proclaimSuccess() {
-		// JOptionPane.showMessageDialog(null, "Alle Tests erfolgreich!!!");
-		webTestReporter.onTestSucceed();
+		webTestReporter.onTestSucceed(this);
 	}
 
 	private void acceptHttpResult(HttpResult aHttpResult, boolean aShouldSuceed, String aVariableName,
 			ExceptionMatcher aExceptionMatcher, ResponseLengthValidator aResponseLengthValidator) {
 		evaluateRequestResult(aHttpResult, aShouldSuceed, aVariableName, aExceptionMatcher, aResponseLengthValidator);
 	}
-
-	/*
-	public void expectSuccess(HttpResult aHttpResult) {
-		expectSuccess(aHttpResult, null);
-	}
-	*/
 
 	public void expectSuccess(HttpResult aHttpResult, String aVariableName,
 			ResponseLengthValidator aResponseLengthValidator) {
@@ -177,7 +169,7 @@ public abstract class ManualWebTester implements WebTester {
 		}
 	}
 	
-	protected void removeEntities() {
+	public ManualWebTester removeEntities() {
 		
 		new EntitiesRemover(this)
 			.withEntityClass(BookingImportItem.class)
@@ -187,25 +179,20 @@ public abstract class ManualWebTester implements WebTester {
 			.withEntityClass(BudgetPlanning.class)
 			.withEntityClass(BudgetPlanningItem.class)
 			.withEntityClass(CreditInstitute.class)
+			.withEntityClass(TradingPartner.class)
 			.withEntityClass(PurposeCategory.class)
 			.withEntityClass(StandingOrder.class)
-			.withEntityClass(TradingPartner.class)
-			.withEntityClass(RecurringPosition.class)
 			.remove();
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected TradingPartner getTradingPartner(String aTradingKey) {
-		List<TradingPartner> aTradingPartners = (List<TradingPartner>) getBankingAccessor().readTradingPartners().getEntityList();
-		for (TradingPartner aTradingPartner : aTradingPartners) {
-			if (aTradingPartner.getTradingKey().equals(aTradingKey)) {
-				return aTradingPartner;		
-			}
-		}
-		throw new ManualWebTesterException("trading partner not found for trading key {" + aTradingKey + "}!!!");
+		
+		return this;
 	}
 	
 	protected ValueValidator getValidator() {
 		return validator;
+	}
+
+	public ManualWebTester enableTrace() {
+		traceEnabled = true;
+		return this;
 	}
 }

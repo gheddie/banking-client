@@ -17,7 +17,7 @@ import de.gravitex.banking.client.registry.entityRetriever.AllEntityRetriever;
 import de.gravitex.banking.client.sorter.DefaultEntitySorter;
 import de.gravitex.banking.client.sorter.base.EntitySorter;
 import de.gravitex.banking.formatter.base.ValueFormatter;
-import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.util.db.DatabaseAdministrator;
 
 public class ApplicationRegistry {

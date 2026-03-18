@@ -35,7 +35,7 @@ import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking.entity.base.NoIdEntity;
-import de.gravitex.banking_core.controller.admin.BookingAdminData;
+import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClient extends JFrame implements EntityTablePanelListener, ChangeListener {

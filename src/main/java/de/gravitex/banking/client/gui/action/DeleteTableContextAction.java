@@ -14,11 +14,6 @@ public class DeleteTableContextAction extends TableContextAction<IdEntity> {
 	}
 
 	@Override
-	protected void checkContextObject(Object aContextObject) throws ActionException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected void executeAction(IdEntity contextObject) {		
 		if (ApplicationRegistry.getInstance().getInteractionHandler()
 				.yesNo("Entität [" + contextObject.getClass().getSimpleName() + "] löschen?", false, null)) {

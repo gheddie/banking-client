@@ -1,28 +1,20 @@
 package de.gravitex.banking.client.tester.instance;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.gravitex.banking.client.accessor.response.HttpGetResult;
+import de.gravitex.banking.client.tester.instance.base.BankingLogicManualWebTester;
 import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
-import de.gravitex.banking.entity.RecurringPosition;
-import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.enumerated.ImportType;
+import de.gravitex.banking.enumerated.RecurringInterval;
 
-public class AttachRecurringPositionToTradingPartnerManualWebTester extends ManualWebTester {
+public class AttachRecurringPositionToTradingPartnerManualWebTester extends BankingLogicManualWebTester {
 
 	private static final String CREDIT_INSTITUTE = "CREDIT_INSTITUTE";
 
 	private static final String ACCOUNT = "ACCOUNT";
 
-	private static final String IMPORTED_BOOKINGS = "IMPORTED_BOOKINGS";
-
 	@Override
 	public ManualWebTester runTests() {
-
-		// removeEntities();
 
 		CreditInstitute creditInstitute = new CreditInstitute();
 		creditInstitute.setImportType(ImportType.CSV_VB);
@@ -39,33 +31,13 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Manu
 		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
-
-		expectSuccess(getBankingAccessor().importBookings(cachedAccount), IMPORTED_BOOKINGS, null);
-
-		attachRecurringPosition("STERNICO GMBH", true);
-		// attachRecurringPosition("Reno F120 Vechelde", false);
 		
-		List<TradingPartner> tradingPartners = new ArrayList<>();
-		tradingPartners.add(getTradingPartner("STERNICO GMBH"));
-		tradingPartners.add(getTradingPartner("KARL-HEINZ SCHULZ"));
-		tradingPartners.add(getTradingPartner("ILSE SCHULZ"));
-		expectSuccess(getBankingAccessor().createBookingProgress(null, null, tradingPartners), null, null);
+		importBookings(cachedAccount, "Gehaltsbuchungen.csv", 4, 5);
+		importBookings(cachedAccount, "Einkaufsbuchungen.csv", 6, 5);
+		
+		attachRecurringPosition("Sternico GmbH", RecurringInterval.MONTHLY, true, true, null);
+		attachRecurringPosition("Edeka Wendeburg", RecurringInterval.MONTHLY, false, false, errorMessageContains("cannot attach recurring position"));		
 
 		return this;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void attachRecurringPosition(String aTradingKey, boolean aExpectSuccess) {
-
-		List<RecurringPosition> recurringPositions = (List<RecurringPosition>) getBankingAccessor()
-				.readRecurringPositions().getEntityList();
-		TradingPartner aTradingPartner = getTradingPartner("STERNICO GMBH");
-		RecurringPosition rpos = recurringPositions.get(0);
-		aTradingPartner.setRecurringPosition(rpos);
-		if (aExpectSuccess) {
-			expectSuccess(getBankingAccessor().patchTradingPartner(aTradingPartner), null, null);	
-		} else {
-			expectFailure(getBankingAccessor().patchTradingPartner(aTradingPartner));
-		}
 	}
 }

@@ -12,11 +12,6 @@ public class CopyPayloadUpstreamAction extends TableContextAction<HttpResultWrap
 	}
 
 	@Override
-	protected void checkContextObject(Object aContextObject) throws ActionException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected void executeAction(HttpResultWrapper aHttpResultWrapper) {
 		System.out.println("up [" + aHttpResultWrapper.getHttpResult().getRequestUrl() + "] --> "
 				+ aHttpResultWrapper.getUpstreamBytes().getPayload());

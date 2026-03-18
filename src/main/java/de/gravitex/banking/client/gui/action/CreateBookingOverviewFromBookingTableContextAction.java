@@ -21,11 +21,6 @@ public class CreateBookingOverviewFromBookingTableContextAction extends TableCon
 	}
 
 	@Override
-	protected void checkContextObject(Object aContextObject) throws ActionException {
-
-	}
-
-	@Override
 	protected void executeAction(BookingView contextObject) {
 		logger.info("creating booking overview for account {" + contextObject.getAccountId() + "} from ["
 				+ contextObject.getBookingDate() + "]");

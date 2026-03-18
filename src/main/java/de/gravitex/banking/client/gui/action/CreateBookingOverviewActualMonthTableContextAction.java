@@ -16,11 +16,6 @@ public class CreateBookingOverviewActualMonthTableContextAction extends TableCon
 	}
 
 	@Override
-	protected void checkContextObject(Object aContextObject) throws ActionException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected void executeAction(BookingView contextObject) {
 		referenceBooking = contextObject;
 		createOverview();

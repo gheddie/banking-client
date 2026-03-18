@@ -7,6 +7,7 @@ import java.util.Set;
 
 import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.tester.exception.ManualWebTesterException;
+import de.gravitex.banking.client.tester.instance.base.BankingLogicManualWebTester;
 import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
 import de.gravitex.banking.entity.Account;
@@ -14,11 +15,11 @@ import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.enumerated.ImportType;
-import de.gravitex.banking_core.controller.bookingimport.UnprocessedBookingImport;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
+import de.gravitex.banking_core.dto.UnprocessedBookingImport;
 
-public class ImportBookingFilesManualWebTester extends ManualWebTester {
+public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTester {
 
 	private static final String CREDIT_INSTITUTE = "CREDIT_INSTITUTE";
 
@@ -37,8 +38,6 @@ public class ImportBookingFilesManualWebTester extends ManualWebTester {
 	@Override
 	public ManualWebTester runTests() {
 		
-		// removeEntities();
-
 		CreditInstitute creditInstitute = new CreditInstitute();
 		creditInstitute.setImportType(ImportType.CSV_VB);
 		creditInstitute.setBic("GENODEF1WBU");
@@ -61,40 +60,19 @@ public class ImportBookingFilesManualWebTester extends ManualWebTester {
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 		
-		importBookings(cachedAccount, "TestUmsaetze1.csv", 6);
+		importBookings(cachedAccount, "TestUmsaetze1.csv", 6, 5);
 		
 		// 3 new bookings expected...
-		importBookings(cachedAccount, "TestUmsaetze2.csv", 3);
+		importBookings(cachedAccount, "TestUmsaetze2.csv", 3, 5);
 		
 		// (again) 3 new bookings expected...
-		importBookings(cachedAccount, "TestUmsaetze3.csv", 3);
+		importBookings(cachedAccount, "TestUmsaetze3.csv", 3, 5);
 		
 		// 3 booking import must be present...
 		expectSuccess(getBankingAccessor().readBookingImports(), null,
 				ResponseLengthValidator.forExpectedResponseSize(3));
 
 		return this;
-	}
-
-	@SuppressWarnings("unchecked")
-	private void importBookings(Account account, String aBookingFileName, int aExpectedImportCount) {			
-		
-		expectSuccess(getBankingAccessor().readUnprocessedBookingImports(account), UNPROCESSED_BOOKING_IMPORTS,
-				ResponseLengthValidator.forExpectedResponseSize(3));
-		List<UnprocessedBookingImport> unprocessedBookingImports = (List<UnprocessedBookingImport>) getObjectCache()
-				.getObject(UNPROCESSED_BOOKING_IMPORTS);
-		Set<String> unprocessedFileNames = new HashSet<>();
-		for (UnprocessedBookingImport aUnprocessedBookingImport : unprocessedBookingImports) {
-			unprocessedFileNames.add(aUnprocessedBookingImport.getBookingFileName());
-		}
-		if (!unprocessedFileNames.contains(aBookingFileName)) {
-			throw new ManualWebTesterException("unporcessed booking file {" + aBookingFileName
-					+ "} not present for account {" + account.getName() + "}!!!");
-		}
-		HttpGetResult importBookingFile = getBankingAccessor().importBookingFile(account, aBookingFileName);		
-		BookingImportSummary summary = (BookingImportSummary) importBookingFile.getEntity();
-		getValidator().validate(aExpectedImportCount, summary.getImportedBookings().size());
-		expectSuccess(importBookingFile, null, null);
 	}
 
 	private void mergeTradingPartners(String aTradingKeySnippet, String newTradingKey) {

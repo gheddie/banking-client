@@ -3,9 +3,10 @@ package de.gravitex.banking.client.tester;
 import de.gravitex.banking.client.gui.action.CopyPayloadDownstreamAction;
 import de.gravitex.banking.client.gui.action.CopyPayloadUpstreamAction;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking.client.tester.executor.ManualWebTesterExecutor;
+import de.gravitex.banking.client.tester.instance.AttachRecurringPositionToTradingPartnerManualWebTester;
 import de.gravitex.banking.client.tester.instance.ImportBookingFilesManualWebTester;
 import de.gravitex.banking.client.tester.reporterstub.util.HttpResultWrapper;
+import de.gravitex.banking.client.tester.util.ManualWebTestListWrapper;
 
 public class WebTesterMain {
 
@@ -15,8 +16,8 @@ public class WebTesterMain {
 				CopyPayloadUpstreamAction.class);
 		ApplicationRegistry.getInstance().getActionFactory().registerAction(HttpResultWrapper.class,
 				CopyPayloadDownstreamAction.class);
-
-		new ManualWebTesterExecutor().runForInstance(ImportBookingFilesManualWebTester.class);
-		// new ManualWebTesterExecutor().runForInstance(AttachRecurringPositionToTradingPartnerManualWebTester.class);
+		
+		new ManualWebTestListWrapper().withTestClass(ImportBookingFilesManualWebTester.class)
+				.withTestClass(AttachRecurringPositionToTradingPartnerManualWebTester.class).runTests();
 	}
 }

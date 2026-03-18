@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.gravitex.banking.entity.base.NoIdEntity;
-import de.gravitex.banking_core.controller.bookingimport.ImportFileBookings;
+import de.gravitex.banking_core.dto.ImportFileBookings;
 import de.gravitex.banking_core.dto.base.BankingDto;
 import de.gravitex.banking_core.util.StringHelper;
 

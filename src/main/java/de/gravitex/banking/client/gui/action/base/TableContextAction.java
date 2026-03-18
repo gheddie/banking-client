@@ -33,7 +33,9 @@ public abstract class TableContextAction<T> implements ActionListener {
 		}
 	}
 
-	protected abstract void checkContextObject(Object aContextObject) throws ActionException;
+	protected void checkContextObject(Object aContextObject) throws ActionException {
+		// nothing to do in base implementation
+	}
 
 	protected abstract void executeAction(T contextObject);
 	

@@ -14,11 +14,6 @@ public class EditBookingViewTableContextAction extends TableContextAction<Bookin
 	}
 
 	@Override
-	protected void checkContextObject(Object aContextObject) throws ActionException {
-		ensureContextObject(aContextObject);
-	}
-
-	@Override
 	protected void executeAction(BookingView aBookingView) {
 		ApplicationRegistry.getInstance().getCrudHandler().editEntity(getBooking(aBookingView), getActionProvider());
 	}
