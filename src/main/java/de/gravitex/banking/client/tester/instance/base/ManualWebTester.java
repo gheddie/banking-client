@@ -26,6 +26,7 @@ import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.TradingPartnerBookingHistory;
 import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.util.StringHelper;
 import de.gravitex.banking_core.util.db.info.base.DatabaseTypeInfo;
@@ -171,15 +172,16 @@ public abstract class ManualWebTester implements WebTester {
 	
 	public ManualWebTester removeEntities() {
 		
-		new EntitiesRemover(this)
+		new EntitiesRemover(this)			
 			.withEntityClass(BookingImportItem.class)
-			.withEntityClass(BookingImport.class)
+			.withEntityClass(BookingImport.class)			
+			.withEntityClass(TradingPartnerBookingHistory.class)
 			.withEntityClass(Booking.class)
 			.withEntityClass(Account.class)
 			.withEntityClass(BudgetPlanning.class)
 			.withEntityClass(BudgetPlanningItem.class)
 			.withEntityClass(CreditInstitute.class)
-			.withEntityClass(TradingPartner.class)
+			.withEntityClass(TradingPartner.class)			
 			.withEntityClass(PurposeCategory.class)
 			.withEntityClass(StandingOrder.class)
 			.remove();

@@ -1,5 +1,6 @@
 package de.gravitex.banking.client.tester.instance.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.TradingPartnerBookingHistory;
 import de.gravitex.banking.enumerated.RecurringInterval;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.UnprocessedBookingImport;
@@ -86,5 +88,25 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 			return tmp + "@1";	
 		}
 		return tmp + "@0";
+	}
+	
+	protected List<TradingPartner> getTradingPartners(String... aTradingPartnerKeys) {
+		List<TradingPartner> list = new ArrayList<>();
+		for (String aTradingPartnerKey : aTradingPartnerKeys) {
+			list.add(getTradingPartner(aTradingPartnerKey));
+		}
+		return list;
+	}
+	
+	protected Map<String, List<TradingPartnerBookingHistory>> mapTradingPartnerBookingHistoriesByTradingKey(
+			List<TradingPartnerBookingHistory> aHistories) {
+		Map<String, List<TradingPartnerBookingHistory>> map = new HashMap<>();
+		for (TradingPartnerBookingHistory aHistory : aHistories) {
+			if (map.get(aHistory.getTradingPartner().getTradingKey()) == null) {
+				map.put(aHistory.getTradingPartner().getTradingKey(), new ArrayList<>());
+			}
+			map.get(aHistory.getTradingPartner().getTradingKey()).add(aHistory);
+		}
+		return map;
 	}
 }

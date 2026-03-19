@@ -14,4 +14,10 @@ public class ValueValidator {
 					+ ", actual value= " + actualValue + "}!!!", aHint);
 		}
 	}
+
+	public void notNull(Object aValue) {
+		if (aValue == null) {
+			throw new ManualWebTesterValidationException("given object must NOT be NULL!!!", null);
+		}
+	}
 }

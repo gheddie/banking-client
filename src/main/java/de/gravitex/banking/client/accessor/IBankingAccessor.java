@@ -36,6 +36,7 @@ public interface IBankingAccessor {
 	HttpGetResult readRecurringPositions();
 	HttpGetResult readBudgetPlannings();
 	HttpGetResult readBookingImports();
+	HttpGetResult readTradingPartnerBookingHistories();
 
 	// patch
 	HttpPatchResult patchBooking(Booking aBooking);

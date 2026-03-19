@@ -17,6 +17,7 @@ import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking.entity.TradingPartnerBookingHistory;
 import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.dto.AccountInfo;
 import de.gravitex.banking_core.dto.BookingAdminData;
@@ -36,10 +37,6 @@ public class BankingAccessor implements IBankingAccessor {
 	public BankingAccessor() {
 		super();
 		remoteHandler = new HttpRemoteHandler();
-	}
-
-	public HttpGetResult readCreditInstitutes() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
 	}
 
 	public HttpGetResult readTradingPartners() {
@@ -202,5 +199,14 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpGetResult readBookingImports() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingImport.class));
+	}
+	
+	public HttpGetResult readCreditInstitutes() {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
+	}
+
+	@Override
+	public HttpGetResult readTradingPartnerBookingHistories() {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartnerBookingHistory.class));
 	}
 }
