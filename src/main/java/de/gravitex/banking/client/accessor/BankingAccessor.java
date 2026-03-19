@@ -14,6 +14,7 @@ import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.BookingOverview;
 import de.gravitex.banking_core.dto.BookingProgress;
@@ -37,43 +38,10 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartner.class));
 	}
 
-	public HttpGetResult readBookingViewsByAccount(Account account) {
-		return remoteHandler.readEntityList(
-				HttpRequestBuilder.forEntityList(BookingView.class).byAttribute("account").identified(account.getId()));
-	}
-
-	public HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner) {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingView.class)
-				.byAttribute("tradingpartner").identified(aTradingPartner.getId()));
-	}
-
-	public HttpGetResult readAccounts(CreditInstitute creditInstitute) {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class)
-				.byAttribute("creditInstitute").identified(creditInstitute.getId()));
-	}
-
-	public HttpGetResult readStandingOrders() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(StandingOrder.class));
-	}
-
-	public HttpGetResult readBookings() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
-	}
-
 	@Override
 	public HttpDeleteResult deleteEntity(IdEntity aEntity) {
 		return remoteHandler.deleteEntity(HttpRequestBuilder.forEntity(aEntity.getClass()).identified(aEntity.getId()),
 				aEntity);
-	}
-
-	@Override
-	public HttpGetResult readAccountById(Long accountId) {
-		return remoteHandler.readById(HttpRequestBuilder.forEntity(Account.class).identified(accountId));
-	}
-
-	@Override
-	public HttpGetResult readBookingById(Long bookingId) {
-		return remoteHandler.readById(HttpRequestBuilder.forEntity(Booking.class).identified(bookingId));
 	}
 
 	@Override
@@ -119,10 +87,6 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntity(HttpRequestBuilder.forDto(ImportFileBookings.class).identified(account.getId(), "accountId").withPathVariable("fileName", aBookingFileName), BookingImportSummary.class);
 	}
 
-	public HttpGetResult readCreditInstitutes() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
-	}
-
 	@Override
 	public HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to) {
 		BookingOverview requestBody = new BookingOverview();
@@ -146,5 +110,17 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpGetResult readEntity(Class<?> aEntityClass) {
 		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(aEntityClass), aEntityClass);
+	}
+	
+	@Override
+	public HttpGetResult readEntityById(Long aEntityId, Class<?> aEntityClass) {
+		return remoteHandler.readById(HttpRequestBuilder.forEntity(aEntityClass).identified(aEntityId));
+	}
+
+	@Override
+	public HttpGetResult readEntityListByReference(Class<? extends NoIdEntity> aResultClass, IdEntity aReference,
+			String aReferringAttribute) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(aResultClass)		
+				.byAttribute(aReferringAttribute).identified(aReference.getId()));
 	}
 }

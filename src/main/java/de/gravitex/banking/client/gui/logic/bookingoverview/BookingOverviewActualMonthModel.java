@@ -20,9 +20,9 @@ public class BookingOverviewActualMonthModel extends BookingOverviewModel {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected List<BookingView> filterBookings() {		
+	protected List<BookingView> filterBookings() {
 		List<BookingView> bookingViews = (List<BookingView>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBookingViewsByAccount(getAccount()).getEntityList();
+				.readEntityListByReference(BookingView.class, getAccount(), "account").getEntityList();		
 		makeRange();
 		List<BookingView> result = new ArrayList<>();
 		for (BookingView aBookingView : bookingViews) {

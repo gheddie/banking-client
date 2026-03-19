@@ -9,20 +9,13 @@ import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.entity.Account;
-import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
+import de.gravitex.banking.entity.base.NoIdEntity;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
 
 public interface IBankingAccessor {
 	
-	// read (special)
-	HttpGetResult readAccountById(Long accountId);
-	HttpGetResult readBookingById(Long bookingId);
-	HttpGetResult readAccounts(CreditInstitute creditInstitute);
-	HttpGetResult readBookingViewsByAccount(Account account);
-	HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner);
-
 	// generic crud
 	HttpGetResult findAllEntities(Class<? extends IdEntity> aEntityClass);
 	HttpDeleteResult deleteEntity(IdEntity aEntity);
@@ -30,6 +23,8 @@ public interface IBankingAccessor {
 	HttpPatchResult patchEntity(IdEntity aEntity);
 	HttpGetResult readEntityList(Class<?> aEntityClass);
 	HttpGetResult readEntity(Class<?> aEntityClass);
+	HttpGetResult readEntityById(Long aEntityId, Class<?> aEntityClass);
+	public HttpGetResult readEntityListByReference(Class<? extends NoIdEntity> aResultClass, IdEntity aReference, String aReferringAttribute);
 
 	// misc
 	HttpGetResult importBookings(Account account);

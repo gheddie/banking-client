@@ -11,6 +11,6 @@ public class AccountEntityRetrieverStub extends EntityRetrieverStub<Account> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Account> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return (List<Account>) aBankingAccessor.readAccounts(null).getEntityList();
+		return (List<Account>) aBankingAccessor.readEntityList(Account.class).getEntityList();
 	}
 }

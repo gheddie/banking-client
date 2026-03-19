@@ -35,7 +35,7 @@ public abstract class BookingOverviewModel {
 
 	private void readEntities() {
 		IBankingAccessor accessor = ApplicationRegistry.getInstance().getBankingAccessor();
-		account = (Account) accessor.readAccountById(referenceBooking.getAccountId()).getEntity();
+		account = (Account) accessor.readEntityById(referenceBooking.getAccountId(), Account.class).getEntity();
 	}
 
 	public List<BookingOverviewEntry> generateEntries() {

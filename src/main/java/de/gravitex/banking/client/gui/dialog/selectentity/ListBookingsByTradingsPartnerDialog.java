@@ -35,7 +35,7 @@ public class ListBookingsByTradingsPartnerDialog extends BrowseEntitiesDialog<Tr
 	@Override
 	protected HttpGetResult readSelectableEntities() throws BankingException {
 		return ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBookingViewsByTradingPartner(getReferenceObject());
+				.readEntityListByReference(BookingView.class, getReferenceObject(), "tradingpartner");		
 	}
 
 	@Override

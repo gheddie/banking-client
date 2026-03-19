@@ -18,9 +18,8 @@ public class ShowBookingCurrentTableContextAction extends TableContextAction<Tra
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void executeAction(TradingPartner aTradingPartner) {
-
 		List<BookingView> views = (List<BookingView>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readBookingViewsByTradingPartner(aTradingPartner).getEntityList();
+				.readEntityListByReference(BookingView.class, aTradingPartner, "account").getEntityList();		
 		new ShowBookingCurrentDialog(aTradingPartner, views, ApplicationRegistry.getInstance().getParentView())
 				.setVisible(true);
 	}
