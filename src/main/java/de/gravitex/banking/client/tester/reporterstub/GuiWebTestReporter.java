@@ -23,6 +23,7 @@ public class GuiWebTestReporter extends WebTestReporterStub {
 
 	@Override
 	public void onTestSucceed(ManualWebTester aManualWebTester) {
-		new GuiWebTestReporterResultDialog(wrappers, aManualWebTester).setVisible(true);
+		
+		// new GuiWebTestReporterResultDialog(wrappers, aManualWebTester).setVisible(true);
 	}
 }

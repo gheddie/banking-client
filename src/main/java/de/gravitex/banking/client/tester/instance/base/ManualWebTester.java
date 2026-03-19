@@ -13,6 +13,7 @@ import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher
 import de.gravitex.banking.client.tester.reporterstub.GuiWebTestReporter;
 import de.gravitex.banking.client.tester.reporterstub.base.WebTestReporterStub;
 import de.gravitex.banking.client.tester.util.EntitiesRemover;
+import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.client.tester.util.WebTester;
 import de.gravitex.banking.client.tester.util.WebTesterObjectCache;
 import de.gravitex.banking.client.tester.validation.ValueValidator;
@@ -47,9 +48,19 @@ public abstract class ManualWebTester implements WebTester {
 
 	private boolean traceEnabled = false;
 
-	public ManualWebTester() {
+	private WebTestWatcher webTestWatcher;
+
+	private boolean active;
+
+	public ManualWebTester(WebTestWatcher aWebTestWatcher, boolean isActive) {
+		
 		super();
+		
 		webTestReporter = initTestReporter();
+		webTestWatcher = aWebTestWatcher;
+		
+		this.active = isActive;
+		
 		this.bankingAccessor = new BankingAccessor();
 	}
 
@@ -95,10 +106,10 @@ public abstract class ManualWebTester implements WebTester {
 		if (aHttpResult.hasValidStatusCode()) {
 			if (!StringHelper.isBlank(aVariableName)) {
 				aHttpResult.cacheRequestResult(objectCache, aVariableName);
-				if (aResponseLengthValidator != null) {
-					aResponseLengthValidator.acceptResponseLength(aHttpResult.getActualResponseLength());
-				}
 			}
+			if (aResponseLengthValidator != null) {
+				aResponseLengthValidator.acceptResponseLength(aHttpResult.getActualResponseLength());
+			}			
 		} else {
 			if (aExceptionMatcher != null) {
 				if (!aExceptionMatcher.matchesException(aHttpResult.getErrorMessage())) {
@@ -111,6 +122,7 @@ public abstract class ManualWebTester implements WebTester {
 		evaluateStatusCode(aHttpResult, aShouldSuceed);
 
 		webTestReporter.acceptSuccess(aHttpResult, aShouldSuceed, traceEnabled);
+		webTestWatcher.acceptSuccess(aHttpResult, aShouldSuceed, traceEnabled, this);
 	}
 
 	private void evaluateStatusCode(HttpResult aHttpResult, boolean aShouldSuceed) {
@@ -139,6 +151,7 @@ public abstract class ManualWebTester implements WebTester {
 
 	public void proclaimSuccess() {
 		webTestReporter.onTestSucceed(this);
+		webTestWatcher.onTestSucceed(this);
 	}
 
 	private void acceptHttpResult(HttpResult aHttpResult, boolean aShouldSuceed, String aVariableName,

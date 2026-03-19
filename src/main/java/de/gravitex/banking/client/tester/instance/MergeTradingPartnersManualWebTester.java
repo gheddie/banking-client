@@ -1,7 +1,5 @@
 package de.gravitex.banking.client.tester.instance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +7,7 @@ import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.tester.instance.base.BankingLogicManualWebTester;
 import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
+import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.TradingPartnerBookingHistory;
@@ -20,6 +19,10 @@ public class MergeTradingPartnersManualWebTester extends BankingLogicManualWebTe
 	private static final String CREDIT_INSTITUTE = "CREDIT_INSTITUTE";
 
 	private static final String ACCOUNT = "ACCOUNT";
+	
+	public MergeTradingPartnersManualWebTester(WebTestWatcher aWebTestWatcher, boolean isActive) {
+		super(aWebTestWatcher, isActive);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -11,6 +11,7 @@ import de.gravitex.banking.client.accessor.response.HttpGetResult;
 import de.gravitex.banking.client.tester.exception.ManualWebTesterException;
 import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
 import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher;
+import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.TradingPartner;
@@ -22,6 +23,10 @@ import de.gravitex.banking_core.dto.UnprocessedBookingImport;
 public abstract class BankingLogicManualWebTester extends ManualWebTester {
 
 	private static final String UNPROCESSED_BOOKING_IMPORTS = "UNPROCESSED_BOOKING_IMPORTS";
+	
+	public BankingLogicManualWebTester(WebTestWatcher aWebTestWatcher, boolean isActive) {
+		super(aWebTestWatcher, isActive);
+	}
 
 	@SuppressWarnings("unchecked")
 	protected void importBookings(Account account, String aBookingFileName, int aExpectedImportCount, int aExpectedUnprocessedCount) {			

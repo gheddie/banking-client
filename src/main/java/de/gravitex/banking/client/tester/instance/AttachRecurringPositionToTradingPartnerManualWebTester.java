@@ -2,6 +2,7 @@ package de.gravitex.banking.client.tester.instance;
 
 import de.gravitex.banking.client.tester.instance.base.BankingLogicManualWebTester;
 import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
+import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.enumerated.ImportType;
@@ -12,6 +13,10 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Bank
 	private static final String CREDIT_INSTITUTE = "CREDIT_INSTITUTE";
 
 	private static final String ACCOUNT = "ACCOUNT";
+	
+	public AttachRecurringPositionToTradingPartnerManualWebTester(WebTestWatcher aWebTestWatcher, boolean isActive) {
+		super(aWebTestWatcher, isActive);
+	}
 
 	@Override
 	public ManualWebTester runTests() {

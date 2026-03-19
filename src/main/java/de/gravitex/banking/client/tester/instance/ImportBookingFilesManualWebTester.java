@@ -10,6 +10,7 @@ import de.gravitex.banking.client.tester.exception.ManualWebTesterException;
 import de.gravitex.banking.client.tester.instance.base.BankingLogicManualWebTester;
 import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
+import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
@@ -34,6 +35,10 @@ public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTest
 	private static final String UNPROCESSED_BOOKING_IMPORTS = "UNPROCESSED_BOOKING_IMPORTS";
 
 	private static final String BOOKING_SUMMARY = "BOOKING_SUMMARY";
+	
+	public ImportBookingFilesManualWebTester(WebTestWatcher aWebTestWatcher, boolean isActive) {
+		super(aWebTestWatcher, isActive);
+	}
 
 	@Override
 	public ManualWebTester runTests() {
