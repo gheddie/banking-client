@@ -10,17 +10,10 @@ import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.Booking;
-import de.gravitex.banking.entity.BookingImport;
-import de.gravitex.banking.entity.BudgetPlanning;
 import de.gravitex.banking.entity.CreditInstitute;
-import de.gravitex.banking.entity.PurposeCategory;
-import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
-import de.gravitex.banking.entity.TradingPartnerBookingHistory;
 import de.gravitex.banking.entity.base.IdEntity;
-import de.gravitex.banking_core.dto.AccountInfo;
-import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.BookingOverview;
 import de.gravitex.banking_core.dto.BookingProgress;
@@ -67,15 +60,6 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
 	}
 
-	public HttpGetResult readAdminData() {
-		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
-	}
-
-	@Override
-	public HttpGetResult readAccounts() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
-	}
-
 	@Override
 	public HttpDeleteResult deleteEntity(IdEntity aEntity) {
 		return remoteHandler.deleteEntity(HttpRequestBuilder.forEntity(aEntity.getClass()).identified(aEntity.getId()),
@@ -98,30 +82,10 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpGetResult readAccountInfos() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
-	}
-
-	@Override
 	public HttpGetResult importBookings(Account account) {
 		return remoteHandler.readEntity(
 				HttpRequestBuilder.forEntity(ImportBookings.class).identified(account.getId(), "accountId"),
 				ImportBookings.class);
-	}
-
-	@Override
-	public HttpGetResult readBudgetPlannings() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BudgetPlanning.class));
-	}
-
-	@Override
-	public HttpGetResult readPurposeCategorys() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(PurposeCategory.class));
-	}
-
-	@Override
-	public HttpGetResult readRecurringPositions() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(RecurringPosition.class));
 	}
 
 	@Override
@@ -155,18 +119,8 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntity(HttpRequestBuilder.forDto(ImportFileBookings.class).identified(account.getId(), "accountId").withPathVariable("fileName", aBookingFileName), BookingImportSummary.class);
 	}
 
-	@Override
-	public HttpGetResult readBookingImports() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(BookingImport.class));
-	}
-	
 	public HttpGetResult readCreditInstitutes() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(CreditInstitute.class));
-	}
-
-	@Override
-	public HttpGetResult readTradingPartnerBookingHistories() {
-		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartnerBookingHistory.class));
 	}
 
 	@Override
@@ -182,5 +136,15 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpPatchResult patchEntity(IdEntity aEntity) {
 		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(aEntity.getClass()), aEntity);
+	}
+	
+	@Override
+	public HttpGetResult readEntityList(Class<?> aEntityClass) {
+		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(aEntityClass));
+	}
+
+	@Override
+	public HttpGetResult readEntity(Class<?> aEntityClass) {
+		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(aEntityClass), aEntityClass);
 	}
 }

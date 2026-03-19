@@ -98,8 +98,8 @@ public class MergeTradingPartnersDialog extends JDialog implements EntityTablePa
 	}
 
 	private void fillData() {
-		tradingPartnerTable.displayEntities(
-				ApplicationRegistry.getInstance().getBankingAccessor().readTradingPartners().getEntityList());
+		tradingPartnerTable.displayEntities(ApplicationRegistry.getInstance().getBankingAccessor()
+				.readEntityList(TradingPartner.class).getEntityList());
 	}
 
 	@Override

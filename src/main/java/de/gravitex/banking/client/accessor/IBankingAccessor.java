@@ -23,25 +23,13 @@ public interface IBankingAccessor {
 	HttpGetResult readBookingViewsByAccount(Account account);
 	HttpGetResult readBookingViewsByTradingPartner(TradingPartner aTradingPartner);
 
-	// read (simple crud)
-	HttpGetResult readCreditInstitutes();			
-	HttpGetResult readTradingPartners();		
-	HttpGetResult readPurposeCategorys();	
-	HttpGetResult readStandingOrders();
-	HttpGetResult readBookings();
-	HttpGetResult readAdminData();
-	HttpGetResult readAccounts();
-	HttpGetResult readAccountInfos();
-	HttpGetResult readRecurringPositions();
-	HttpGetResult readBudgetPlannings();
-	HttpGetResult readBookingImports();
-	HttpGetResult readTradingPartnerBookingHistories();
-
 	// generic crud
 	HttpGetResult findAllEntities(Class<? extends IdEntity> aEntityClass);
 	HttpDeleteResult deleteEntity(IdEntity aEntity);
 	HttpPutResult putEntity(IdEntity aEntity);
 	HttpPatchResult patchEntity(IdEntity aEntity);
+	HttpGetResult readEntityList(Class<?> aEntityClass);
+	HttpGetResult readEntity(Class<?> aEntityClass);
 
 	// misc
 	HttpGetResult importBookings(Account account);
@@ -49,5 +37,5 @@ public interface IBankingAccessor {
 	HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners);
 	HttpGetResult readUnprocessedBookingImports(Account account);
 	HttpGetResult importBookingFile(Account account, String aBookingFileName);
-	HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to);	
+	HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to);
 }

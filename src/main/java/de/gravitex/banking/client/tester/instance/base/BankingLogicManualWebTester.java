@@ -85,7 +85,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	
 	@SuppressWarnings("unchecked")
 	protected TradingPartner getTradingPartner(String aTradingKey) {
-		List<TradingPartner> aTradingPartners = (List<TradingPartner>) getBankingAccessor().readTradingPartners().getEntityList();
+		List<TradingPartner> aTradingPartners = (List<TradingPartner>) getBankingAccessor().readEntityList(TradingPartner.class).getEntityList();
 		for (TradingPartner aTradingPartner : aTradingPartners) {
 			if (aTradingPartner.getTradingKey().equals(aTradingKey)) {
 				return aTradingPartner;		
@@ -98,7 +98,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	protected void attachRecurringPosition(String aTradingKey, RecurringInterval aRecurringInterval, boolean aIncoming, boolean aExpectSuccess, ExceptionMatcher aExceptionMatcher) {
 
 		List<RecurringPosition> recurringPositions = (List<RecurringPosition>) getBankingAccessor()
-				.readRecurringPositions().getEntityList();
+				.readEntityList(RecurringPosition.class).getEntityList();
 		Map<String, RecurringPosition> recurringPositionMap = new HashMap<>();
 		for (RecurringPosition aRecurringPosition : recurringPositions) {
 			recurringPositionMap.put(makeRecurringPositionKey(aRecurringPosition), aRecurringPosition);

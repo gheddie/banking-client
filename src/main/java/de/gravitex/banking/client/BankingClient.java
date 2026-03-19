@@ -146,7 +146,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	@SuppressWarnings("unchecked")
 	private void fill() {
 		List<CreditInstitute> creditInstitutes = (List<CreditInstitute>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readCreditInstitutes().getEntityList();
+				.readEntityList(CreditInstitute.class).getEntityList();
 		if (creditInstitutes != null) {
 			creditInstituteTable.displayEntities(creditInstitutes);	
 		}		
@@ -216,7 +216,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	public List<? extends NoIdEntity> reloadEntities(Class<?> aEntityClass) {
 		if (aEntityClass.equals(CreditInstitute.class)) {
 			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()
-					.readCreditInstitutes().getEntityList();
+					.readEntityList(CreditInstitute.class).getEntityList();
 		}
 		if (aEntityClass.equals(Account.class)) {
 			return (List<? extends NoIdEntity>) ApplicationRegistry.getInstance().getBankingAccessor()

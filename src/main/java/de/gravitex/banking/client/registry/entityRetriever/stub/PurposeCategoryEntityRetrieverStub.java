@@ -11,6 +11,6 @@ public class PurposeCategoryEntityRetrieverStub extends EntityRetrieverStub<Purp
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PurposeCategory> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return (List<PurposeCategory>) aBankingAccessor.readPurposeCategorys().getEntityList();
+		return (List<PurposeCategory>) aBankingAccessor.readEntityList(PurposeCategory.class).getEntityList();
 	}
 }

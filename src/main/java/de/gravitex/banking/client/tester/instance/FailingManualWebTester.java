@@ -24,7 +24,7 @@ public class FailingManualWebTester extends BankingLogicManualWebTester {
 		creditInstitute.setName("Giro-Konto");
 		expectSuccess(getBankingAccessor().putEntity(creditInstitute), CREDIT_INSTITUTE, null);
 		
-		expectSuccess(getBankingAccessor().readCreditInstitutes(), null,
+		expectSuccess(getBankingAccessor().readEntityList(CreditInstitute.class), null,
 				ResponseLengthValidator.forExpectedResponseSize(99));
 		
 		return this;

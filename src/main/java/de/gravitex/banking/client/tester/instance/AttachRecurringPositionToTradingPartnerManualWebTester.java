@@ -33,7 +33,7 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Bank
 		account.setName("Giro-Konto");
 		expectSuccess(getBankingAccessor().putEntity(account), ACCOUNT, null);
 
-		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
+		expectSuccess(getBankingAccessor().readEntityList(CreditInstitute.class), null, null);
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 		

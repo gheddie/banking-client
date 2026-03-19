@@ -12,6 +12,7 @@ import de.gravitex.banking.client.tester.instance.base.ManualWebTester;
 import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
 import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.BookingImport;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.TradingPartner;
@@ -61,7 +62,7 @@ public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTest
 		account.setName("Giro-Konto");
 		expectSuccess(getBankingAccessor().putEntity(account), ACCOUNT, null);
 		
-		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
+		expectSuccess(getBankingAccessor().readEntityList(CreditInstitute.class), null, null);
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 		
@@ -74,7 +75,7 @@ public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTest
 		importBookings(cachedAccount, "TestUmsaetze3.csv", 3);
 		
 		// 3 booking import must be present...
-		expectSuccess(getBankingAccessor().readBookingImports(), null,
+		expectSuccess(getBankingAccessor().readEntityList(BookingImport.class), null,
 				ResponseLengthValidator.forExpectedResponseSize(3));
 
 		return this;
@@ -90,7 +91,7 @@ public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTest
 
 	@SuppressWarnings("unchecked")
 	private List<TradingPartner> getPartnersToConcat(String aTradingKeySnippet) {
-		List<TradingPartner> partners = (List<TradingPartner>) getBankingAccessor().readTradingPartners()
+		List<TradingPartner> partners = (List<TradingPartner>) getBankingAccessor().readEntityList(TradingPartner.class)
 				.getEntityList();
 		List<TradingPartner> result = new ArrayList<>();
 		for (TradingPartner aTradingPartner : partners) {

@@ -4,8 +4,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.gravitex.banking.entity.base.NoIdEntity;
-import de.gravitex.banking_core.dto.ImportFileBookings;
 import de.gravitex.banking_core.dto.base.BankingDto;
 import de.gravitex.banking_core.util.StringHelper;
 
@@ -96,7 +94,7 @@ public class HttpRequestBuilder {
 		return new HttpRequestBuilder(aEntityClass, false);
 	}
 
-	public static HttpRequestBuilder forEntityList(Class<? extends NoIdEntity> aEntityClass) {
+	public static HttpRequestBuilder forEntityList(Class<?> aEntityClass) {
 		return new HttpRequestBuilder(aEntityClass, true);
 	}
 

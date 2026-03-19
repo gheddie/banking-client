@@ -8,8 +8,9 @@ import de.gravitex.banking.entity.RecurringPosition;
 
 public class RecurringPositionEntityRetrieverStub extends EntityRetrieverStub<RecurringPosition> {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<RecurringPosition> fetchEntities(IBankingAccessor aBankingAccessor) {
-		return (List<RecurringPosition>) aBankingAccessor.readRecurringPositions().getEntityList();
+		return (List<RecurringPosition>) aBankingAccessor.readEntityList(RecurringPosition.class).getEntityList();
 	}
 }

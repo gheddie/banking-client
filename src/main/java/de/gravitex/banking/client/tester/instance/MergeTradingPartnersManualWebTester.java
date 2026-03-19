@@ -40,7 +40,7 @@ public class MergeTradingPartnersManualWebTester extends BankingLogicManualWebTe
 		account.setName("Giro-Konto");
 		expectSuccess(getBankingAccessor().putEntity(account), ACCOUNT, null);
 
-		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
+		expectSuccess(getBankingAccessor().readEntityList(CreditInstitute.class), null, null);
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 
@@ -53,7 +53,7 @@ public class MergeTradingPartnersManualWebTester extends BankingLogicManualWebTe
 		expectSuccess(getBankingAccessor().mergeTradingPartners(merge), null, null);
 
 		HttpGetResult readTradingPartnerBookingHistoriesResult = getBankingAccessor()
-				.readTradingPartnerBookingHistories();
+				.readEntityList(TradingPartnerBookingHistory.class);
 		expectSuccess(readTradingPartnerBookingHistoriesResult, null,
 				ResponseLengthValidator.forExpectedResponseSize(10));
 

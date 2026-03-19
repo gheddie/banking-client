@@ -47,7 +47,7 @@ public class ApplicationRegistry {
 	private DatabaseAdministrator databaseAdministrator;
     
     private ApplicationRegistry() {
-    	adminData = (BookingAdminData) bankingAccessor.readAdminData().getEntity();
+    	adminData = (BookingAdminData) bankingAccessor.readEntity(BookingAdminData.class).getEntity();
     	allEntityRetriever = new AllEntityRetriever();
     	actionFactory = new ActionFactory();
     	crudHandler = new DefaultCrudHandler();

@@ -70,7 +70,7 @@ public abstract class ManualWebTester implements WebTester {
 
 	public ManualWebTester connect() {
 
-		adminData = (BookingAdminData) bankingAccessor.readAdminData().getEntity();
+		adminData = (BookingAdminData) bankingAccessor.readEntity(BookingAdminData.class).getEntity();
 		databaseInfo = ApplicationRegistry.getInstance().getDatabaseAdministrator()
 				.getDatabaseInfoForDriverClass(adminData.getDatabaseDriverClass());
 		if (!databaseInfo.shouldRunTests()) {

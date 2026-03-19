@@ -69,7 +69,7 @@ public class ShowTradingPartnersHistoryDialog extends JDialog {
 	private TreeModel buildTreeModel() {
 
 		List<TradingPartner> tradingPartners = (List<TradingPartner>) ApplicationRegistry.getInstance()
-				.getBankingAccessor().readTradingPartners().getEntityList();
+				.getBankingAccessor().readEntityList(TradingPartner.class).getEntityList();
 
 		HierarchyBuilder builder = new HierarchyBuilder();
 		for (TradingPartner aTradingPartner : tradingPartners) {
