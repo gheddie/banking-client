@@ -22,6 +22,7 @@ import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking_core.dto.AccountInfo;
 import de.gravitex.banking_core.dto.BookingAdminData;
 import de.gravitex.banking_core.dto.BookingImportSummary;
+import de.gravitex.banking_core.dto.BookingOverview;
 import de.gravitex.banking_core.dto.BookingProgress;
 import de.gravitex.banking_core.dto.ImportBookings;
 import de.gravitex.banking_core.dto.ImportFileBookings;
@@ -208,5 +209,15 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpGetResult readTradingPartnerBookingHistories() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(TradingPartnerBookingHistory.class));
+	}
+
+	@Override
+	public HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to) {
+		BookingOverview requestBody = new BookingOverview();
+		requestBody.setAccount(account);
+		requestBody.setFromDate(from);
+		requestBody.setUntilDate(to);
+		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingOverview.class), requestBody,
+				BookingOverview.class);
 	}
 }

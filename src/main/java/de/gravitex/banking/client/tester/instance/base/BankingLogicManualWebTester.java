@@ -13,6 +13,7 @@ import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
 import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher;
 import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.TradingPartnerBookingHistory;
@@ -24,15 +25,48 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 
 	private static final String UNPROCESSED_BOOKING_IMPORTS = "UNPROCESSED_BOOKING_IMPORTS";
 	
+	private static final int EXPECTED_UNPROCESSED_COUNT = 6;
+	
+	private static final Set<String> DEFAULT_PURPOSE_CATEGORIES = new HashSet<>();
+	static {
+		DEFAULT_PURPOSE_CATEGORIES.add("Altersvorsorge");
+		DEFAULT_PURPOSE_CATEGORIES.add("Apotheke");
+		DEFAULT_PURPOSE_CATEGORIES.add("Band");
+		DEFAULT_PURPOSE_CATEGORIES.add("Einkauf");
+		DEFAULT_PURPOSE_CATEGORIES.add("Eltern");
+		DEFAULT_PURPOSE_CATEGORIES.add("Essen gehen");
+		DEFAULT_PURPOSE_CATEGORIES.add("Fahrrad");
+		DEFAULT_PURPOSE_CATEGORIES.add("Fast Food");
+		DEFAULT_PURPOSE_CATEGORIES.add("Fitness");
+		DEFAULT_PURPOSE_CATEGORIES.add("Gehalt");
+		DEFAULT_PURPOSE_CATEGORIES.add("Google Play");
+		DEFAULT_PURPOSE_CATEGORIES.add("Kinder");
+		DEFAULT_PURPOSE_CATEGORIES.add("Klamotten");
+		DEFAULT_PURPOSE_CATEGORIES.add("Miete");
+		DEFAULT_PURPOSE_CATEGORIES.add("Parken");
+		DEFAULT_PURPOSE_CATEGORIES.add("Paypal");
+		DEFAULT_PURPOSE_CATEGORIES.add("Rauchen");
+		DEFAULT_PURPOSE_CATEGORIES.add("Rundfunk");
+		DEFAULT_PURPOSE_CATEGORIES.add("Sonstiges");
+		DEFAULT_PURPOSE_CATEGORIES.add("Sparkasse");
+		DEFAULT_PURPOSE_CATEGORIES.add("Spenden");
+		DEFAULT_PURPOSE_CATEGORIES.add("Tanken");
+		DEFAULT_PURPOSE_CATEGORIES.add("Technik");
+		DEFAULT_PURPOSE_CATEGORIES.add("Telefonie/Internet");
+		DEFAULT_PURPOSE_CATEGORIES.add("Unterhalt");
+		DEFAULT_PURPOSE_CATEGORIES.add("Versicherung");
+		DEFAULT_PURPOSE_CATEGORIES.add("Urlaub");
+	}
+	
 	public BankingLogicManualWebTester(WebTestWatcher aWebTestWatcher, boolean isActive) {
 		super(aWebTestWatcher, isActive);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void importBookings(Account account, String aBookingFileName, int aExpectedImportCount, int aExpectedUnprocessedCount) {			
+	protected void importBookings(Account account, String aBookingFileName, int aExpectedImportCount) {			
 		
 		expectSuccess(getBankingAccessor().readUnprocessedBookingImports(account), UNPROCESSED_BOOKING_IMPORTS,
-				ResponseLengthValidator.forExpectedResponseSize(aExpectedUnprocessedCount));
+				ResponseLengthValidator.forExpectedResponseSize(EXPECTED_UNPROCESSED_COUNT));
 		List<UnprocessedBookingImport> unprocessedBookingImports = (List<UnprocessedBookingImport>) getObjectCache()
 				.getObject(UNPROCESSED_BOOKING_IMPORTS);
 		Set<String> unprocessedFileNames = new HashSet<>();
@@ -113,5 +147,19 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 			map.get(aHistory.getTradingPartner().getTradingKey()).add(aHistory);
 		}
 		return map;
+	}
+	
+	protected void createPurposeCategory(String aPurposeKey) {		
+		PurposeCategory purposeCategory = new PurposeCategory();
+		purposeCategory.setPurposeKey(aPurposeKey);
+		expectSuccess(getBankingAccessor().putPurposeCategory(purposeCategory), null, null);		
+	}
+	
+	protected void createDefaultPurposeCategories() {
+		disableTrace();
+		for (String aPurposeKey : DEFAULT_PURPOSE_CATEGORIES) {
+			createPurposeCategory(aPurposeKey);
+		}
+		enableTrace();
 	}
 }

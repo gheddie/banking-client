@@ -58,6 +58,7 @@ public interface IBankingAccessor {
 	HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners);
 	HttpGetResult readUnprocessedBookingImports(Account account);
 	HttpGetResult importBookingFile(Account account, String aBookingFileName);
+	HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to);	
 	
 	// generic crud
 	HttpGetResult findAllEntities(Class<? extends IdEntity> aEntityClass);

@@ -104,7 +104,7 @@ public class HttpRequestBuilder {
 		return new HttpRequestBuilder(aDtoClass, true);
 	}
 
-	public static HttpRequestBuilder forDto(Class<ImportFileBookings> aDtoClass) {
+	public static HttpRequestBuilder forDto(Class<? extends BankingDto> aDtoClass) {
 		return new HttpRequestBuilder(aDtoClass, false);
 	}
 

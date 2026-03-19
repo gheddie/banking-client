@@ -28,7 +28,7 @@ public class HttpPostResult extends HttpResult {
 
 	@Override
 	public void cacheRequestResult(HttpResultListener aHttpResultListener, String aVariableName) {
-		// TODO Auto-generated method stub
+		aHttpResultListener.acceptObjectResult(responseObject, aVariableName);
 	}
 
 	@Override

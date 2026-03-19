@@ -44,8 +44,8 @@ public class MergeTradingPartnersManualWebTester extends BankingLogicManualWebTe
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 
-		importBookings(cachedAccount, "Gehaltsbuchungen.csv", 4, 5);
-		importBookings(cachedAccount, "Einkaufsbuchungen.csv", 6, 5);
+		importBookings(cachedAccount, "Gehaltsbuchungen.csv", 4);
+		importBookings(cachedAccount, "Einkaufsbuchungen.csv", 6);
 
 		MergeTradingPartners merge = new MergeTradingPartners();
 		merge.setNewTradingKey("123");

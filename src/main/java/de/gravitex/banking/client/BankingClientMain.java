@@ -1,6 +1,7 @@
 package de.gravitex.banking.client;
 
 import java.awt.BorderLayout;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import javax.swing.JDialog;
@@ -31,6 +32,7 @@ import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.TradingPartner;
+import de.gravitex.banking_core.dto.BookingOverview;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClientMain {
@@ -49,6 +51,16 @@ public class BankingClientMain {
 		bp.setEndDate(LocalDate.of(2030, 12, 31));
 		bp.setTradingPartners((List<TradingPartner>) new BankingAccessor().readTradingPartners().getEntityList());
 		writeJsonObject(bp);
+		*/
+		
+		/*
+		BookingOverview overview = new BookingOverview();
+		overview.setFromDate(LocalDate.of(2000, 1, 1));
+		overview.setUntilDate(LocalDate.of(2030, 12, 31));
+		Account account = new Account();
+		account.setId(Long.valueOf(123));
+		overview.setAccount(account);
+		writeJsonObject(overview);
 		*/
 	}
 

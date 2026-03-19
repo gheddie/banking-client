@@ -7,6 +7,7 @@ import de.gravitex.banking.client.tester.instance.AttachRecurringPositionToTradi
 import de.gravitex.banking.client.tester.instance.FailingManualWebTester;
 import de.gravitex.banking.client.tester.instance.ImportBookingFilesManualWebTester;
 import de.gravitex.banking.client.tester.instance.MergeTradingPartnersManualWebTester;
+import de.gravitex.banking.client.tester.instance.AccountOverviewManualWebTester;
 import de.gravitex.banking.client.tester.reporterstub.util.HttpResultWrapper;
 import de.gravitex.banking.client.tester.util.ManualWebTestDefinition;
 import de.gravitex.banking.client.tester.util.ManualWebTestListWrapper;
@@ -24,11 +25,11 @@ public class WebTesterMain {
 				.withTestDefinition(ManualWebTestDefinition.forTestClass(FailingManualWebTester.class, false))
 				.withTestDefinition(ManualWebTestDefinition
 						.forTestClass(AttachRecurringPositionToTradingPartnerManualWebTester.class, true))
-				.runTests();
+				.withTestDefinition(ManualWebTestDefinition.forTestClass(AccountOverviewManualWebTester.class, true)).runTests();
 	}
 
 	private static void registerActions() {
-		
+
 		ApplicationRegistry.getInstance().getActionFactory().registerAction(HttpResultWrapper.class,
 				CopyPayloadUpstreamAction.class);
 		ApplicationRegistry.getInstance().getActionFactory().registerAction(HttpResultWrapper.class,

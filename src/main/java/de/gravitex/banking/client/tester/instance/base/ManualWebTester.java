@@ -210,4 +210,9 @@ public abstract class ManualWebTester implements WebTester {
 		traceEnabled = true;
 		return this;
 	}
+	
+	public ManualWebTester disableTrace() {
+		traceEnabled = false;
+		return this;
+	}
 }

@@ -65,13 +65,13 @@ public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTest
 
 		Account cachedAccount = (Account) getObjectCache().getEntity(ACCOUNT);
 		
-		importBookings(cachedAccount, "TestUmsaetze1.csv", 6, 5);
+		importBookings(cachedAccount, "TestUmsaetze1.csv", 6);
 		
 		// 3 new bookings expected...
-		importBookings(cachedAccount, "TestUmsaetze2.csv", 3, 5);
+		importBookings(cachedAccount, "TestUmsaetze2.csv", 3);
 		
 		// (again) 3 new bookings expected...
-		importBookings(cachedAccount, "TestUmsaetze3.csv", 3, 5);
+		importBookings(cachedAccount, "TestUmsaetze3.csv", 3);
 		
 		// 3 booking import must be present...
 		expectSuccess(getBankingAccessor().readBookingImports(), null,
