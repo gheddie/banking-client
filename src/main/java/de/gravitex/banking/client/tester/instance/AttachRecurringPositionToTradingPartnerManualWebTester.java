@@ -25,13 +25,13 @@ public class AttachRecurringPositionToTradingPartnerManualWebTester extends Bank
 		creditInstitute.setImportType(ImportType.CSV_VB);
 		creditInstitute.setBic("GENODEF1WBU");
 		creditInstitute.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putCreditInstitute(creditInstitute), CREDIT_INSTITUTE, null);
+		expectSuccess(getBankingAccessor().putEntity(creditInstitute), CREDIT_INSTITUTE, null);
 
 		Account account = new Account();
 		account.setCreditInstitute((CreditInstitute) getObjectCache().getEntity(CREDIT_INSTITUTE));
 		account.setIdentifier("GIRO_PRIVAT");
 		account.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putAccount(account), ACCOUNT, null);
+		expectSuccess(getBankingAccessor().putEntity(account), ACCOUNT, null);
 
 		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
 

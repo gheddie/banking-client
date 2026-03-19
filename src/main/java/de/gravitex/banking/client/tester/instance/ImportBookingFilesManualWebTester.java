@@ -47,19 +47,19 @@ public class ImportBookingFilesManualWebTester extends BankingLogicManualWebTest
 		creditInstitute.setImportType(ImportType.CSV_VB);
 		creditInstitute.setBic("GENODEF1WBU");
 		creditInstitute.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putCreditInstitute(creditInstitute), CREDIT_INSTITUTE, null);
+		expectSuccess(getBankingAccessor().putEntity(creditInstitute), CREDIT_INSTITUTE, null);
 		
 		CreditInstitute creditInstituteDeletable = new CreditInstitute();
 		creditInstituteDeletable.setImportType(ImportType.CSV_VB);
 		creditInstituteDeletable.setBic("GENODEF2WBU");
 		creditInstituteDeletable.setName("Giro-Konto 2");
-		expectSuccess(getBankingAccessor().putCreditInstitute(creditInstituteDeletable), CREDIT_INSTITUTE_DELETABLE, null);
+		expectSuccess(getBankingAccessor().putEntity(creditInstituteDeletable), CREDIT_INSTITUTE_DELETABLE, null);
 
 		Account account = new Account();
 		account.setCreditInstitute((CreditInstitute) getObjectCache().getEntity(CREDIT_INSTITUTE));
 		account.setIdentifier("GIRO_PRIVAT");
 		account.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putAccount(account), ACCOUNT, null);
+		expectSuccess(getBankingAccessor().putEntity(account), ACCOUNT, null);
 		
 		expectSuccess(getBankingAccessor().readCreditInstitutes(), null, null);
 

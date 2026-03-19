@@ -150,7 +150,7 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
-		return ApplicationRegistry.getInstance().getBankingAccessor().patchBooking((Booking) aEntity);
+		return ApplicationRegistry.getInstance().getBankingAccessor().patchEntity((Booking) aEntity);
 	}
 	
 	@SuppressWarnings("unchecked")

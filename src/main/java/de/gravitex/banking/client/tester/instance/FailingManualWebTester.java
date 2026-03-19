@@ -22,7 +22,7 @@ public class FailingManualWebTester extends BankingLogicManualWebTester {
 		creditInstitute.setImportType(ImportType.CSV_VB);
 		creditInstitute.setBic("GENODEF1WBU");
 		creditInstitute.setName("Giro-Konto");
-		expectSuccess(getBankingAccessor().putCreditInstitute(creditInstitute), CREDIT_INSTITUTE, null);
+		expectSuccess(getBankingAccessor().putEntity(creditInstitute), CREDIT_INSTITUTE, null);
 		
 		expectSuccess(getBankingAccessor().readCreditInstitutes(), null,
 				ResponseLengthValidator.forExpectedResponseSize(99));

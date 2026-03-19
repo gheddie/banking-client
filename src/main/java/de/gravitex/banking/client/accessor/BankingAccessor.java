@@ -67,14 +67,6 @@ public class BankingAccessor implements IBankingAccessor {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Booking.class));
 	}
 
-	public HttpPatchResult patchCreditInstitute(CreditInstitute aCreditInstitute) {
-		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(CreditInstitute.class), aCreditInstitute);
-	}
-
-	public HttpPatchResult patchTradingPartner(TradingPartner aTradingPartner) {
-		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(TradingPartner.class), aTradingPartner);
-	}
-
 	public HttpGetResult readAdminData() {
 		return remoteHandler.readEntity(HttpRequestBuilder.forEntity(BookingAdminData.class), BookingAdminData.class);
 	}
@@ -82,11 +74,6 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpGetResult readAccounts() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(Account.class));
-	}
-
-	@Override
-	public HttpPatchResult patchAccount(Account account) {
-		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(Account.class), account);
 	}
 
 	@Override
@@ -106,32 +93,13 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpPutResult putTradingPartner(TradingPartner aTradingPartner) {
-		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(TradingPartner.class), aTradingPartner);
-	}
-
-	@Override
-	public HttpPutResult putCreditInstitute(CreditInstitute aCreditInstitute) {
-		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(CreditInstitute.class), aCreditInstitute);
-	}
-
-	@Override
-	public HttpPutResult putPurposeCategory(PurposeCategory aPurposeCategory) {
-		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(PurposeCategory.class), aPurposeCategory);
+	public HttpPutResult putEntity(IdEntity aEntity) {
+		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(aEntity.getClass()), aEntity);
 	}
 
 	@Override
 	public HttpGetResult readAccountInfos() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(AccountInfo.class));
-	}
-
-	public HttpPatchResult patchBooking(Booking aBooking) {
-		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(Booking.class), aBooking);
-	}
-
-	@Override
-	public HttpPatchResult patchPurposeCategory(PurposeCategory aPurposeCategory) {
-		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(PurposeCategory.class), aPurposeCategory);
 	}
 
 	@Override
@@ -154,16 +122,6 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpGetResult readRecurringPositions() {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(RecurringPosition.class));
-	}
-
-	@Override
-	public HttpPutResult putAccount(Account account) {
-		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(Account.class), account);
-	}
-
-	@Override
-	public HttpPutResult putRecurringPosition(RecurringPosition aRecurringPosition) {
-		return remoteHandler.putEntity(HttpRequestBuilder.forEntity(RecurringPosition.class), aRecurringPosition);
 	}
 
 	@Override
@@ -219,5 +177,10 @@ public class BankingAccessor implements IBankingAccessor {
 		requestBody.setUntilDate(to);
 		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingOverview.class), requestBody,
 				BookingOverview.class);
+	}
+
+	@Override
+	public HttpPatchResult patchEntity(IdEntity aEntity) {
+		return remoteHandler.patchEntity(HttpRequestBuilder.forEntity(aEntity.getClass()), aEntity);
 	}
 }

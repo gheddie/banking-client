@@ -194,13 +194,13 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
 		if (aEntity instanceof CreditInstitute) {
 			return ApplicationRegistry.getInstance().getBankingAccessor()
-					.patchCreditInstitute((CreditInstitute) aEntity);
+					.patchEntity((CreditInstitute) aEntity);
 		}
 		if (aEntity instanceof Account) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().patchAccount((Account) aEntity);
+			return ApplicationRegistry.getInstance().getBankingAccessor().patchEntity(aEntity);
 		}
 		if (aEntity instanceof Booking) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().patchBooking((Booking) aEntity);
+			return ApplicationRegistry.getInstance().getBankingAccessor().patchEntity((Booking) aEntity);
 		}
 		return null;		
 	}
@@ -232,10 +232,10 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	@Override
 	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
 		if (entity instanceof CreditInstitute) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().putCreditInstitute((CreditInstitute) entity);	
+			return ApplicationRegistry.getInstance().getBankingAccessor().putEntity((CreditInstitute) entity);	
 		}		
 		if (entity instanceof Account) {
-			return ApplicationRegistry.getInstance().getBankingAccessor().putAccount((Account) entity);	
+			return ApplicationRegistry.getInstance().getBankingAccessor().putEntity((Account) entity);	
 		}		
 		return null;
 	}

@@ -111,9 +111,9 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 		}
 		aTradingPartner.setRecurringPosition(rpos);
 		if (aExpectSuccess) {
-			expectSuccess(getBankingAccessor().patchTradingPartner(aTradingPartner), null, null);	
+			expectSuccess(getBankingAccessor().patchEntity(aTradingPartner), null, null);	
 		} else {
-			expectFailure(getBankingAccessor().patchTradingPartner(aTradingPartner), aExceptionMatcher);
+			expectFailure(getBankingAccessor().patchEntity(aTradingPartner), aExceptionMatcher);
 		}
 	}
 
@@ -152,7 +152,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	protected void createPurposeCategory(String aPurposeKey) {		
 		PurposeCategory purposeCategory = new PurposeCategory();
 		purposeCategory.setPurposeKey(aPurposeKey);
-		expectSuccess(getBankingAccessor().putPurposeCategory(purposeCategory), null, null);		
+		expectSuccess(getBankingAccessor().putEntity(purposeCategory), null, null);		
 	}
 	
 	protected void createDefaultPurposeCategories() {

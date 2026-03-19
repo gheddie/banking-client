@@ -105,14 +105,14 @@ public class PartnerTabbedPanel extends TabbedPanel implements EntityTablePanelL
 	@Override
 	public HttpPatchResult acceptEditedEntity(IdEntity aEntity) {
 		HttpPatchResult patchResult = ApplicationRegistry.getInstance().getBankingAccessor()
-				.patchTradingPartner((TradingPartner) aEntity);
+				.patchEntity((TradingPartner) aEntity);
 		reload();
 		return patchResult;
 	}
 	
 	@Override
 	public HttpPutResult acceptCreatedEntity(IdEntity entity) {
-		ApplicationRegistry.getInstance().getBankingAccessor().putTradingPartner((TradingPartner) entity);
+		ApplicationRegistry.getInstance().getBankingAccessor().putEntity((TradingPartner) entity);
 		return null;
 	}
 }
