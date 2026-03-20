@@ -25,12 +25,16 @@ public interface IBankingAccessor {
 	HttpGetResult readEntity(Class<?> aEntityClass);
 	HttpGetResult readEntityById(Long aEntityId, Class<?> aEntityClass);
 	public HttpGetResult readEntityListByReference(Class<? extends NoIdEntity> aResultClass, IdEntity aReference, String aReferringAttribute);
-
-	// misc
+	
+	// booking import
 	HttpGetResult importBookings(Account account);
-	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
-	HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners);
 	HttpGetResult readUnprocessedBookingImports(Account account);
 	HttpGetResult importBookingFile(Account account, String aBookingFileName);
+	
+	// booking overview
 	HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to);
+
+	// misc	
+	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
+	HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners);	
 }

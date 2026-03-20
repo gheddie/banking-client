@@ -84,17 +84,6 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected TradingPartner getTradingPartner(String aTradingKey) {
-		List<TradingPartner> aTradingPartners = (List<TradingPartner>) getBankingAccessor().readEntityList(TradingPartner.class).getEntityList();
-		for (TradingPartner aTradingPartner : aTradingPartners) {
-			if (aTradingPartner.getTradingKey().equals(aTradingKey)) {
-				return aTradingPartner;		
-			}
-		}
-		throw new ManualWebTesterException("trading partner not found for trading key {" + aTradingKey + "}!!!");
-	}
-	
-	@SuppressWarnings("unchecked")
 	protected void attachRecurringPosition(String aTradingKey, RecurringInterval aRecurringInterval, boolean aIncoming, boolean aExpectSuccess, ExceptionMatcher aExceptionMatcher) {
 
 		List<RecurringPosition> recurringPositions = (List<RecurringPosition>) getBankingAccessor()
@@ -103,7 +92,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 		for (RecurringPosition aRecurringPosition : recurringPositions) {
 			recurringPositionMap.put(makeRecurringPositionKey(aRecurringPosition), aRecurringPosition);
 		}
-		TradingPartner aTradingPartner = getTradingPartner(aTradingKey);
+		TradingPartner aTradingPartner = findTradingPartner(aTradingKey);
 		String rpKey = makeRecurringPositionKey(aRecurringInterval, aIncoming);
 		RecurringPosition rpos = recurringPositionMap.get(rpKey);
 		if (rpos == null) {
@@ -132,7 +121,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	protected List<TradingPartner> getTradingPartners(String... aTradingPartnerKeys) {
 		List<TradingPartner> list = new ArrayList<>();
 		for (String aTradingPartnerKey : aTradingPartnerKeys) {
-			list.add(getTradingPartner(aTradingPartnerKey));
+			list.add(findTradingPartner(aTradingPartnerKey));
 		}
 		return list;
 	}
@@ -161,5 +150,32 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 			createPurposeCategory(aPurposeKey);
 		}
 		enableTrace();
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected TradingPartner findTradingPartner(String aTradingKey) {
+		List<TradingPartner> aTradingPartners = (List<TradingPartner>) getBankingAccessor().readEntityList(TradingPartner.class).getEntityList();
+		for (TradingPartner aTradingPartner : aTradingPartners) {
+			if (aTradingPartner.getTradingKey().equals(aTradingKey)) {
+				return aTradingPartner;		
+			}
+		}
+		throw new ManualWebTesterException("trading partner not found for trading key {" + aTradingKey + "}!!!");
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected PurposeCategory findPurposeCategory(String aPurposeKey) {
+		List<PurposeCategory> aPurposeCategories = (List<PurposeCategory>) getBankingAccessor().readEntityList(PurposeCategory.class).getEntityList();
+		for (PurposeCategory aPurposeCategory : aPurposeCategories) {
+			if (aPurposeCategory.getPurposeKey().equals(aPurposeKey)) {
+				return aPurposeCategory;		
+			}
+		}
+		throw new ManualWebTesterException("purpose category not found for purpose key {" + aPurposeKey + "}!!!");
+	}	
+	
+	protected void attachPurposeCategory(TradingPartner aTradingPartner, PurposeCategory aPurposeCategory) {		
+		aTradingPartner.setPurposeCategory(aPurposeCategory);
+		expectSuccess(getBankingAccessor().patchEntity(aTradingPartner), null, null);
 	}
 }
