@@ -7,11 +7,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultSingleSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.ListModel;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
@@ -33,7 +37,7 @@ public class ManualWebTestListWrapperDialog extends JDialog implements EntityTab
 	private JTabbedPane testPane;
 
 	private JButton ok;
-	
+
 	public ManualWebTestListWrapperDialog(List<ManualWebTestDefinition> aTestDefinitions, Frame aParent) {
 		
 		super(aParent);

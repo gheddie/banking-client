@@ -1,13 +1,11 @@
 package de.gravitex.banking.client.gui.action;
 
-import java.util.List;
-
 import de.gravitex.banking.client.gui.action.base.TableContextAction;
 import de.gravitex.banking.client.gui.action.util.ActionProvider;
 import de.gravitex.banking.client.gui.dialog.ShowBookingCurrentDialog;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.entity.TradingPartner;
-import de.gravitex.banking_core.entity.view.BookingView;
+import de.gravitex.banking_core.dto.BookingCurrent;
 
 public class ShowBookingCurrentTableContextAction extends TableContextAction<TradingPartner> {
 
@@ -15,12 +13,11 @@ public class ShowBookingCurrentTableContextAction extends TableContextAction<Tra
 		super("Zeitlichen Buchungs-Verlauf anzeigen", tActionProvider);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void executeAction(TradingPartner aTradingPartner) {
-		List<BookingView> views = (List<BookingView>) ApplicationRegistry.getInstance().getBankingAccessor()
-				.readEntityListByReference(BookingView.class, aTradingPartner, "account").getEntityList();		
-		new ShowBookingCurrentDialog(aTradingPartner, views, ApplicationRegistry.getInstance().getParentView())
-				.setVisible(true);
+		new ShowBookingCurrentDialog(aTradingPartner,
+				(BookingCurrent) ApplicationRegistry.getInstance().getBankingAccessor()
+						.createBookingCurrent(aTradingPartner).getResponseObject(),
+				ApplicationRegistry.getInstance().getParentView()).setVisible(true);
 	}
 }

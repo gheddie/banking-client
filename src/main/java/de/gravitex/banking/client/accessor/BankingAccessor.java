@@ -15,6 +15,8 @@ import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking.entity.base.NoIdEntity;
+import de.gravitex.banking_core.controller.entity.BookingController;
+import de.gravitex.banking_core.dto.BookingCurrent;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.BookingOverview;
 import de.gravitex.banking_core.dto.BookingProgress;
@@ -24,6 +26,7 @@ import de.gravitex.banking_core.dto.MergeTradingPartners;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
 import de.gravitex.banking_core.dto.UnprocessedBookingImport;
 import de.gravitex.banking_core.entity.view.BookingView;
+import de.gravitex.banking_core.service.util.LocalDateRange;
 
 public class BankingAccessor implements IBankingAccessor {
 
@@ -68,16 +71,6 @@ public class BankingAccessor implements IBankingAccessor {
 	}
 
 	@Override
-	public HttpPostResult createBookingProgress(LocalDate from, LocalDate to, List<TradingPartner> aTradingPartners) {
-		BookingProgress aBookingProgressRequestBody = new BookingProgress();
-		aBookingProgressRequestBody.setStartDate(from);
-		aBookingProgressRequestBody.setEndDate(to);
-		aBookingProgressRequestBody.setTradingPartners(aTradingPartners);
-		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingProgress.class), aBookingProgressRequestBody,
-				BookingProgress.class);
-	}
-
-	@Override
 	public HttpGetResult readUnprocessedBookingImports(Account account) {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forDtoList(UnprocessedBookingImport.class).identified(account.getId(), "accountId"));
 	}
@@ -85,16 +78,6 @@ public class BankingAccessor implements IBankingAccessor {
 	@Override
 	public HttpGetResult importBookingFile(Account account, String aBookingFileName) {
 		return remoteHandler.readEntity(HttpRequestBuilder.forDto(ImportFileBookings.class).identified(account.getId(), "accountId").withPathVariable("fileName", aBookingFileName), BookingImportSummary.class);
-	}
-
-	@Override
-	public HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to) {
-		BookingOverview requestBody = new BookingOverview();
-		requestBody.setAccount(account);
-		requestBody.setFromDate(from);
-		requestBody.setUntilDate(to);
-		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingOverview.class), requestBody,
-				BookingOverview.class);
 	}
 
 	@Override
@@ -122,5 +105,23 @@ public class BankingAccessor implements IBankingAccessor {
 			String aReferringAttribute) {
 		return remoteHandler.readEntityList(HttpRequestBuilder.forEntityList(aResultClass)		
 				.byAttribute(aReferringAttribute).identified(aReference.getId()));
+	}
+	
+	@Override
+	public HttpPostResult createBookingOverview(Account account, LocalDate from, LocalDate to) {
+		BookingOverview requestBody = new BookingOverview();
+		requestBody.setAccount(account);
+		requestBody.setFromDate(from);
+		requestBody.setUntilDate(to);
+		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingOverview.class), requestBody,
+				BookingOverview.class);
+	}
+
+	@Override
+	public HttpPostResult createBookingCurrent(TradingPartner aTradingPartner) {
+		BookingCurrent requestBody = new BookingCurrent();
+		requestBody.setTradingPartner(aTradingPartner);
+		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingCurrent.class), requestBody,
+				BookingCurrent.class);
 	}
 }

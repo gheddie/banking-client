@@ -2,7 +2,8 @@ package de.gravitex.banking.client.gui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.util.List;
+import java.time.ZoneId;
+import java.util.Date;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -12,15 +13,15 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 
 import de.gravitex.banking.entity.TradingPartner;
-import de.gravitex.banking_core.entity.view.BookingView;
+import de.gravitex.banking_core.dto.BookingCurrent;
+import de.gravitex.banking_core.dto.BookingCurrentItem;
 
-/**
- * https://stackoverflow.com/questions/36239840/jfreechart-is-not-visible-in-modal-jdialog
- */
 public class ShowBookingCurrentDialog extends JDialog {
 
 	private static final long serialVersionUID = -2092767738191448861L;
@@ -29,67 +30,54 @@ public class ShowBookingCurrentDialog extends JDialog {
 
 	private TradingPartner tradingPartner;
 
-	private List<BookingView> bookingViews;
+	private BookingCurrent bookingCurrent;
 
 	private JPanel contentPanel;
 
-	public ShowBookingCurrentDialog(TradingPartner aTradingPartner, List<BookingView> aBookingViews, Window parent) {
+	public ShowBookingCurrentDialog(TradingPartner aTradingPartner, BookingCurrent aBookingCurrent, Window parent) {
 
 		super(parent);
-		
+
 		this.tradingPartner = aTradingPartner;
-		this.bookingViews = aBookingViews;
-		
+		this.bookingCurrent = aBookingCurrent;
+
 		setModal(true);
 		setSize(900, 600);
-		
+
 		setTitle("Buchungs-Verlauf für " + tradingPartner.getTradingKey());
 
 		setLocation(parent.getX() + OFFSET, parent.getY() + OFFSET);
-		
+
 		contentPanel = new JPanel();
 		contentPanel.setLayout(new BorderLayout());
-		
+
 		contentPanel.add(createGraphPanel(), BorderLayout.CENTER);
-		
-	    getContentPane().setLayout(new BorderLayout());
-	    getContentPane().add(contentPanel, BorderLayout.CENTER);
-	    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	    pack();
+
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		pack();
 	}
 
 	public JPanel createGraphPanel() {
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		XYSeries series1 = new XYSeries("First");
-		series1.add(1.0, 1.0);
-		series1.add(2.0, 4.0);
-		series1.add(3.0, 3.0);
-		series1.add(4.0, 5.0);
-		series1.add(5.0, 5.0);
-		series1.add(6.0, 7.0);
-		series1.add(7.0, 7.0);
-		series1.add(8.0, 8.0);
-		dataset.addSeries(series1);
-		final JFreeChart chart = createChart(dataset);
+
+		final JFreeChart chart = createChart();
 		final ChartPanel chartPanel = new ChartPanel(chart);
-		// chartPanel.setPreferredSize(new Dimension(400, 400));
 		contentPanel = new JPanel();
-		contentPanel.setLayout(new BorderLayout());		
+		contentPanel.setLayout(new BorderLayout());
 		contentPanel.add(chartPanel, BorderLayout.CENTER);
 		add(contentPanel, BorderLayout.CENTER);
-		
-		// contentPanel.revalidate();
-		
 		return contentPanel;
 	}
 
-	private JFreeChart createChart(XYSeriesCollection dataset) {
-		final JFreeChart result = ChartFactory.createXYLineChart(null, "X", "Y", dataset, PlotOrientation.VERTICAL,
-				true, true, false);
-		result.setTitle("Example");
-		final XYPlot plot = result.getXYPlot();
-		plot.setDomainGridlinesVisible(false);
-		plot.setRangeGridlinesVisible(false);
+	private JFreeChart createChart() {
+
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		for (BookingCurrentItem aItem : bookingCurrent.getItems()) {
+			dataset.addValue(aItem.getAmount(), "Buchungen", aItem.getDate().toString());
+		}
+		final JFreeChart result = ChartFactory.createBarChart("", "Daten", "Betrag", dataset,
+				PlotOrientation.VERTICAL, true, true, true);
 		return result;
 	}
 }

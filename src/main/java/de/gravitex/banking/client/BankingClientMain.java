@@ -6,13 +6,11 @@ import java.util.Arrays;
 
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import de.gravitex.banking.client.gui.action.CopyPayloadUpstreamAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTableContextAction;
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
 import de.gravitex.banking.client.gui.action.DeleteTableContextAction;
@@ -27,12 +25,11 @@ import de.gravitex.banking.client.gui.test.FPS3Rows;
 import de.gravitex.banking.client.gui.test.FPS4Rows;
 import de.gravitex.banking.client.gui.test.FpsMoo;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
-import de.gravitex.banking.client.tester.reporterstub.util.HttpResultWrapper;
 import de.gravitex.banking.entity.Account;
 import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.TradingPartner;
-import de.gravitex.banking_core.dto.BookingOverview;
+import de.gravitex.banking_core.dto.BookingCurrent;
 import de.gravitex.banking_core.entity.view.BookingView;
 
 public class BankingClientMain {
@@ -61,6 +58,16 @@ public class BankingClientMain {
 		account.setId(Long.valueOf(123));
 		overview.setAccount(account);
 		writeJsonObject(overview);
+		*/
+		
+		/*
+		BookingCurrent current = new BookingCurrent();
+		current.setFromDate(LocalDate.of(2000, 1, 1));
+		current.setUntilDate(LocalDate.of(2030, 12, 31));
+		TradingPartner partner = new TradingPartner();
+		partner.setId(Long.valueOf(123));
+		current.setTradingPartner(partner);
+		writeJsonObject(current);
 		*/
 	}
 

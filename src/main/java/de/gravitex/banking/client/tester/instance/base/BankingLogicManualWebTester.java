@@ -13,10 +13,12 @@ import de.gravitex.banking.client.tester.matcher.ResponseLengthValidator;
 import de.gravitex.banking.client.tester.matcher.exception.base.ExceptionMatcher;
 import de.gravitex.banking.client.tester.util.WebTestWatcher;
 import de.gravitex.banking.entity.Account;
+import de.gravitex.banking.entity.CreditInstitute;
 import de.gravitex.banking.entity.PurposeCategory;
 import de.gravitex.banking.entity.RecurringPosition;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.TradingPartnerBookingHistory;
+import de.gravitex.banking.enumerated.ImportType;
 import de.gravitex.banking.enumerated.RecurringInterval;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.UnprocessedBookingImport;
@@ -25,9 +27,13 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 
 	private static final String UNPROCESSED_BOOKING_IMPORTS = "UNPROCESSED_BOOKING_IMPORTS";
 	
-	private static final int EXPECTED_UNPROCESSED_COUNT = 6;
+	private static final int EXPECTED_UNPROCESSED_COUNT = 7;
 	
 	private static final Set<String> DEFAULT_PURPOSE_CATEGORIES = new HashSet<>();
+
+	private static final String CREDIT_INSTITUTE = "CREDIT_INSTITUTE";
+
+	private static final String ACCOUNT = "ACCOUNT";
 	static {
 		DEFAULT_PURPOSE_CATEGORIES.add("Altersvorsorge");
 		DEFAULT_PURPOSE_CATEGORIES.add("Apotheke");
@@ -177,5 +183,20 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	protected void attachPurposeCategory(TradingPartner aTradingPartner, PurposeCategory aPurposeCategory) {		
 		aTradingPartner.setPurposeCategory(aPurposeCategory);
 		expectSuccess(getBankingAccessor().patchEntity(aTradingPartner), null, null);
+	}
+	
+	protected void makeGiroPrivateAccount() {
+		
+		CreditInstitute creditInstitute = new CreditInstitute();
+		creditInstitute.setImportType(ImportType.CSV_VB);
+		creditInstitute.setBic("GENODEF1WBU");
+		creditInstitute.setName("Giro-Konto");
+		expectSuccess(getBankingAccessor().putEntity(creditInstitute), CREDIT_INSTITUTE, null);
+		
+		Account account = new Account();
+		account.setCreditInstitute((CreditInstitute) getObjectCache().getEntity(CREDIT_INSTITUTE));
+		account.setIdentifier("GIRO_PRIVAT");
+		account.setName("Giro-Konto");
+		expectSuccess(getBankingAccessor().putEntity(account), ACCOUNT, null);
 	}
 }

@@ -4,6 +4,7 @@ import de.gravitex.banking.client.gui.action.CopyPayloadDownstreamAction;
 import de.gravitex.banking.client.gui.action.CopyPayloadUpstreamAction;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.client.tester.instance.AttachRecurringPositionToTradingPartnerManualWebTester;
+import de.gravitex.banking.client.tester.instance.DetermineBookingFileDateManualWebTester;
 import de.gravitex.banking.client.tester.instance.FailingManualWebTester;
 import de.gravitex.banking.client.tester.instance.ImportBookingFilesManualWebTester;
 import de.gravitex.banking.client.tester.instance.MergeTradingPartnersManualWebTester;
@@ -19,13 +20,16 @@ public class WebTesterMain {
 		registerActions();
 
 		new ManualWebTestListWrapper()
+				.withTestDefinition(
+						ManualWebTestDefinition.forTestClass(DetermineBookingFileDateManualWebTester.class, true))
 				.withTestDefinition(ManualWebTestDefinition.forTestClass(ImportBookingFilesManualWebTester.class, true))
 				.withTestDefinition(
 						ManualWebTestDefinition.forTestClass(MergeTradingPartnersManualWebTester.class, true))
 				.withTestDefinition(ManualWebTestDefinition.forTestClass(FailingManualWebTester.class, false))
 				.withTestDefinition(ManualWebTestDefinition
 						.forTestClass(AttachRecurringPositionToTradingPartnerManualWebTester.class, true))
-				.withTestDefinition(ManualWebTestDefinition.forTestClass(AccountOverviewManualWebTester.class, true)).runTests();
+				.withTestDefinition(ManualWebTestDefinition.forTestClass(AccountOverviewManualWebTester.class, true))
+				.runTests();
 	}
 
 	private static void registerActions() {

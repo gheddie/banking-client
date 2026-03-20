@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 
 import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
+import de.gravitex.banking.client.dto.BookingOverviewAdapter;
 import de.gravitex.banking.client.gui.EntityTablePanel;
 import de.gravitex.banking.client.gui.EntityTablePanelListener;
 import de.gravitex.banking.client.gui.GuiUtil;
@@ -28,7 +29,6 @@ import de.gravitex.banking.client.gui.action.CreateBookingOverviewActualMonthTab
 import de.gravitex.banking.client.gui.action.CreateBookingOverviewFromBookingTableContextAction;
 import de.gravitex.banking.client.gui.action.filter.ActionFilter;
 import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewEntry;
-import de.gravitex.banking.client.gui.logic.bookingoverview.BookingOverviewModel;
 import de.gravitex.banking.client.registry.ApplicationRegistry;
 import de.gravitex.banking.entity.Booking;
 import de.gravitex.banking.entity.base.IdEntity;
@@ -44,15 +44,15 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 
 	private JList<BookingOverviewEntry> overviewEntryList;
 
-	private BookingOverviewModel bookingOverviewModel;
+	private BookingOverviewAdapter bookingOverviewAdapter;
 
 	private EntityTablePanel bookingTable;
 
 	private BookingView selectedBooking;
 
-	public BookingOverviewDialog(BookingOverviewModel aBookingOverviewModel) {
+	public BookingOverviewDialog(BookingOverviewAdapter aBookingOverviewAdapter) {
 		super(ApplicationRegistry.getInstance().getParentView());
-		this.bookingOverviewModel = aBookingOverviewModel;
+		this.bookingOverviewAdapter = aBookingOverviewAdapter;
 		setModal(true);		
 		setLocation(ApplicationRegistry.getInstance().getParentView().getX() + OFFSET,
 				ApplicationRegistry.getInstance().getParentView().getY() + OFFSET);
@@ -63,23 +63,31 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 		overviewEntryList.addListSelectionListener(this);
 		overviewEntryList.setCellRenderer(new BookingOverviewEntryCellRenderer());
 		JPanel nestedOverviewEntryList = GuiUtil.nestComponent(overviewEntryList, "Verwendungszwecke");
-		bookingTable = new EntityTablePanel("Buchungen zum Verwendungszweck", this, true, BookingView.class);
+		bookingTable = new EntityTablePanel("Buchungen zum Verwendungszweck", this, true, Booking.class);
 		add(GuiUtil.getSplitPane(nestedOverviewEntryList, bookingTable, false), BorderLayout.CENTER);
 		fillEntries();
-		setTitle(bookingOverviewModel.buildTitle() + " (" + bookingOverviewModel.getFilteredBookings().size()
-				+ " Buchungen)");
+		
+		setTitle(bookingOverviewAdapter.buildTitle() + " (" + bookingOverviewAdapter.countBookings()
+				+ " Buchungen), Saldo total: " + bookingOverviewAdapter.buildSumTotal());
 	}
 
 	private void fillEntries() {
+		
 		DefaultListModel<BookingOverviewEntry> model = new DefaultListModel<>();
-		List<BookingOverviewEntry> tmp = new ArrayList<>();
-		for (BookingOverviewEntry aBookingOverviewEntry : bookingOverviewModel.generateEntries()) {			
-			tmp.add(aBookingOverviewEntry);
+		List<BookingOverviewEntry> entries = new ArrayList<>();
+		
+		for (String aPurposeKey : bookingOverviewAdapter.getAssignedPurposeKeys()) {
+			entries.add(new BookingOverviewEntry(aPurposeKey, bookingOverviewAdapter.getBookings(aPurposeKey), bookingOverviewAdapter.getSum(aPurposeKey)));
 		}
-		Collections.sort(tmp, new BookingOverviewEntryComparator());
-		for (BookingOverviewEntry aBookingOverviewEntry : tmp) {
+		
+		entries.add(new BookingOverviewEntry("Nicht zugeordnet", bookingOverviewAdapter.getBookings(null), bookingOverviewAdapter.getUnassignedSum()));
+		
+		Collections.sort(entries, new BookingOverviewEntryComparator());
+		
+		for (BookingOverviewEntry aBookingOverviewEntry : entries) {
 			model.addElement(aBookingOverviewEntry);
 		}
+		
 		overviewEntryList.setModel(model);
 	}
 
@@ -100,10 +108,10 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 			if (StringHelper.isBlank(purposeKey)) {
 				purposeKey = DEFAULT_PURPOSE_KEY;
 			}
-			panel.add(new JLabel(bookingOverviewEntry.getBookingViews().size() + " Buchungen, Summe: "
-					+ bookingOverviewEntry.sumAmount() + " Euro"), BorderLayout.CENTER);
+			panel.add(new JLabel(bookingOverviewEntry.getBookings().size() + " Buchungen, Summe: "
+					+ bookingOverviewEntry.getAmount() + " Euro"), BorderLayout.CENTER);
 			panel.setOpaque(true);
-			panel.setBackground(getPanelColor(isSelected, bookingOverviewEntry.sumAmount()));
+			panel.setBackground(getPanelColor(isSelected, bookingOverviewEntry.getAmount()));
 			return GuiUtil.nestComponent(panel, purposeKey);
 		}
 
@@ -130,7 +138,7 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 	}
 
 	private void fillBookings(BookingOverviewEntry aBookingOverviewEntry) {
-		bookingTable.displayEntities(aBookingOverviewEntry.getBookingViews());
+		bookingTable.displayEntities(aBookingOverviewEntry.getBookings());
 	}
 
 	@Override
@@ -175,7 +183,7 @@ public class BookingOverviewDialog extends JDialog implements ListSelectionListe
 	private class BookingOverviewEntryComparator implements Comparator<BookingOverviewEntry>  {
 		@Override
 		public int compare(BookingOverviewEntry o1, BookingOverviewEntry o2) {
-			return o1.sumAmount().compareTo(o2.sumAmount()) * (1);
+			return o1.getAmount().compareTo(o2.getAmount()) * (1);
 		}
 	}
 }
