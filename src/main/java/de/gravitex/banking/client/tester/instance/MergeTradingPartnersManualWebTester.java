@@ -49,7 +49,7 @@ public class MergeTradingPartnersManualWebTester extends BankingLogicManualWebTe
 
 		MergeTradingPartners merge = new MergeTradingPartners();
 		merge.setNewTradingKey("123");
-		merge.setPartnersToMerge(getTradingPartners("Sternico GmbH", "Edeka Wendeburg"));
+		merge.setPartnersToMerge(findTradingPartners("Sternico GmbH", "Edeka Wendeburg"));
 		expectSuccess(getBankingAccessor().mergeTradingPartners(merge), null, null);
 
 		HttpGetResult readTradingPartnerBookingHistoriesResult = getBankingAccessor()
@@ -64,12 +64,12 @@ public class MergeTradingPartnersManualWebTester extends BankingLogicManualWebTe
 				histories);
 				
 		List<TradingPartnerBookingHistory> edeka = mapped.get("Edeka Wendeburg");
-		getValidator().notNull(edeka);
-		getValidator().validate(6, edeka.size());
+		getValidator().assertNotNull(edeka);
+		getValidator().compare(6, edeka.size());
 		
 		List<TradingPartnerBookingHistory> sternico = mapped.get("Sternico GmbH");
-		getValidator().notNull(sternico);
-		getValidator().validate(4, sternico.size());
+		getValidator().assertNotNull(sternico);
+		getValidator().compare(4, sternico.size());
 
 		return this;
 	}

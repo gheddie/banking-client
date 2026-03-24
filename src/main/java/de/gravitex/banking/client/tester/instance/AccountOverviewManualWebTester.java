@@ -101,8 +101,8 @@ public class AccountOverviewManualWebTester extends BankingLogicManualWebTester 
 		
 		// Gleiche Summen?
 		
-		getValidator().validate(puröposeSumFastfood, adapterMerged.getSum("Fast Food"));
-		getValidator().validate(puröposeSumEinkauf, adapterMerged.getSum("Einkauf"));
+		getValidator().compare(puröposeSumFastfood, adapterMerged.getSum("Fast Food"));
+		getValidator().compare(puröposeSumEinkauf, adapterMerged.getSum("Einkauf"));
 		
 		return this;
 	}

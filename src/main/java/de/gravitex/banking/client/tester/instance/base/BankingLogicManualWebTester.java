@@ -85,7 +85,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 		}
 		HttpGetResult importBookingFile = getBankingAccessor().importBookingFile(account, aBookingFileName);		
 		BookingImportSummary summary = (BookingImportSummary) importBookingFile.getEntity();
-		getValidator().validate(aExpectedImportCount, summary.getImportedBookings().size(), "expected import count");
+		getValidator().compare(aExpectedImportCount, summary.getImportedBookings().size(), "expected import count");
 		expectSuccess(importBookingFile, null, null);
 	}
 	
@@ -113,7 +113,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 	}
 
 	private String makeRecurringPositionKey(RecurringPosition aRecurringPosition) {
-		return makeRecurringPositionKey(aRecurringPosition.getRecurringInterval(), aRecurringPosition.getIncoming());
+		return makeRecurringPositionKey(aRecurringPosition.getRecurringInterval(), aRecurringPosition.isIncoming());
 	}
 
 	private String makeRecurringPositionKey(RecurringInterval aRecurringInterval, boolean aIncoming) {
@@ -124,7 +124,7 @@ public abstract class BankingLogicManualWebTester extends ManualWebTester {
 		return tmp + "@0";
 	}
 	
-	protected List<TradingPartner> getTradingPartners(String... aTradingPartnerKeys) {
+	protected List<TradingPartner> findTradingPartners(String... aTradingPartnerKeys) {
 		List<TradingPartner> list = new ArrayList<>();
 		for (String aTradingPartnerKey : aTradingPartnerKeys) {
 			list.add(findTradingPartner(aTradingPartnerKey));

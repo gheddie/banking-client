@@ -78,7 +78,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 		
 		warnForProduction(adminData);
 
-		fill();
+		fillData();
 	}
 
 	private void warnForProduction(BookingAdminData adminData) {
@@ -124,6 +124,15 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 			}
 		});
 		toolbar.add(showTradingPartnerHierarchy);
+		
+		JButton reloadData = new JButton("Daten neu laden");
+		reloadData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fillData();
+			}
+		});
+		toolbar.add(reloadData);
 	}
 
 	private void initTabbedPanels() {
@@ -144,7 +153,7 @@ public class BankingClient extends JFrame implements EntityTablePanelListener, C
 	}
 
 	@SuppressWarnings("unchecked")
-	private void fill() {
+	private void fillData() {
 		List<CreditInstitute> creditInstitutes = (List<CreditInstitute>) ApplicationRegistry.getInstance().getBankingAccessor()
 				.readEntityList(CreditInstitute.class).getEntityList();
 		if (creditInstitutes != null) {

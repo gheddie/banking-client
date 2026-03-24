@@ -30,6 +30,13 @@ public class ManualWebTestListWrapper implements WebTestWatcher {
 
 	private List<Class<? extends ManualWebTester>> testClasses;
 
+	private boolean confirmTests;
+	
+	public ManualWebTestListWrapper(boolean aConfirmTests) {
+		super();
+		this.confirmTests = aConfirmTests;
+	}
+
 	public ManualWebTestListWrapper withTestDefinition(ManualWebTestDefinition aTestDefinition) {
 		if (testAlreadyDefined(aTestDefinition)) {
 			throw new IllegalArgumentException(
@@ -79,11 +86,14 @@ public class ManualWebTestListWrapper implements WebTestWatcher {
 		wrapperDialog.publishResult(aManualWebTester, resultMap.get(aManualWebTester.getClass()));
 		Class<? extends ManualWebTester> successorClass = getSuccessor(aManualWebTester);
 		if (successorClass != null) {
-			ApplicationRegistry.getInstance().getInteractionHandler()
-					.confirm("Mit Test {" + successorClass.getSimpleName() + "} fortfahren?", true, wrapperDialog);	
+			if (confirmTests) {
+				ApplicationRegistry.getInstance().getInteractionHandler()
+				.confirm("Mit Test {" + successorClass.getSimpleName() + "} fortfahren?", true, wrapperDialog);				
+			}
 		} else {
 			ApplicationRegistry.getInstance().getInteractionHandler()
 			.confirm("Alle Tests beendet!!!", true, wrapperDialog);
+			wrapperDialog.onTestsFinished();
 		}	
 	}
 

@@ -1,6 +1,7 @@
 package de.gravitex.banking.client.accessor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import de.gravitex.banking.client.accessor.response.HttpDeleteResult;
 import de.gravitex.banking.client.accessor.response.HttpGetResult;
@@ -37,5 +38,8 @@ public interface IBankingAccessor {
 	HttpPostResult mergeTradingPartners(MergeTradingPartners aMergeTradingPartners);
 
 	// booking current
-	HttpPostResult createBookingCurrent(TradingPartner aTradingPartner);	
+	HttpPostResult createBookingCurrent(TradingPartner aTradingPartner);
+	
+	// recurring position
+	HttpPostResult getRecurringPositionProposals(List<TradingPartner> tradingPartners);	
 }

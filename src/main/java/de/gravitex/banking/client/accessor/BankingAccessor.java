@@ -9,24 +9,18 @@ import de.gravitex.banking.client.accessor.response.HttpPatchResult;
 import de.gravitex.banking.client.accessor.response.HttpPostResult;
 import de.gravitex.banking.client.accessor.response.HttpPutResult;
 import de.gravitex.banking.entity.Account;
-import de.gravitex.banking.entity.Booking;
-import de.gravitex.banking.entity.CreditInstitute;
-import de.gravitex.banking.entity.StandingOrder;
 import de.gravitex.banking.entity.TradingPartner;
 import de.gravitex.banking.entity.base.IdEntity;
 import de.gravitex.banking.entity.base.NoIdEntity;
-import de.gravitex.banking_core.controller.entity.BookingController;
 import de.gravitex.banking_core.dto.BookingCurrent;
 import de.gravitex.banking_core.dto.BookingImportSummary;
 import de.gravitex.banking_core.dto.BookingOverview;
-import de.gravitex.banking_core.dto.BookingProgress;
 import de.gravitex.banking_core.dto.ImportBookings;
 import de.gravitex.banking_core.dto.ImportFileBookings;
 import de.gravitex.banking_core.dto.MergeTradingPartners;
+import de.gravitex.banking_core.dto.RecurringPositionProposal;
 import de.gravitex.banking_core.dto.TradingPartnersMergeResult;
 import de.gravitex.banking_core.dto.UnprocessedBookingImport;
-import de.gravitex.banking_core.entity.view.BookingView;
-import de.gravitex.banking_core.service.util.LocalDateRange;
 
 public class BankingAccessor implements IBankingAccessor {
 
@@ -123,5 +117,13 @@ public class BankingAccessor implements IBankingAccessor {
 		requestBody.setTradingPartner(aTradingPartner);
 		return remoteHandler.post(HttpRequestBuilder.forEntity(BookingCurrent.class), requestBody,
 				BookingCurrent.class);
+	}
+
+	@Override
+	public HttpPostResult getRecurringPositionProposals(List<TradingPartner> tradingPartners) {
+		RecurringPositionProposal requestBody = new RecurringPositionProposal();
+		requestBody.setTradingPartners(tradingPartners);
+		return remoteHandler.post(HttpRequestBuilder.forEntity(RecurringPositionProposal.class), requestBody,
+				RecurringPositionProposal.class);
 	}
 }
